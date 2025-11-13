@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Logout{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Styles to center the focused card on the page */
+    .logout-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Calculate min-height to fill the viewport minus header/footer space from base.html */
+        min-height: calc(100vh - 80px); 
+        padding: 2rem;
+    }
+    
+    .card.logout-card {
+        max-width: 450px; /* Sets a comfortable maximum width */
+        width: 100%;
+        text-align: center;
+        border-radius: 10px;
+        overflow: hidden; /* Ensures border-radius applies to header */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* More pronounced shadow for focus */
+    }
+    
+    .card-header {
+        /* Matching the gradient from the base.html header for a branded feel */
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-size: 1.25rem;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        border-bottom: none; /* Remove default border */
+    }
+    
+    .logout-icon {
+        font-size: 3rem;
+        color: #667eea; /* Primary color for the main icon */
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+    
+    .card-body p {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 2rem;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Override for the primary logout button to use a danger/red color */
+    .btn-danger-primary {
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+        color: white !important;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .btn-danger-primary:hover {
+        background-color: #c82333 !important;
+        border-color: #bd2130 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="logout-container">
+    <div class="card logout-card">
+        <div class="card-header">
+            <i class="fas fa-power-off"></i> 
+            Confirm System Logout
+        </div>
+        
+        <div class="card-body">
+            <i class="fas fa-sign-out-alt logout-icon"></i>
+            
+            <p>
+                Are you sure you want to **log out**? 
+                Your current session will be terminated and you will be returned to the login page.
+            </p>
+            
+            <div class="btn-group">
+                <form method="POST" action="{{ url_for('logout') }}" style="margin: 0;">
+                    <button type="submit" class="btn btn-danger-primary">
+                        <i class="fas fa-door-open"></i> Log Out Now
+                    </button>
+                </form>
+                
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Cancel & Stay Logged In
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

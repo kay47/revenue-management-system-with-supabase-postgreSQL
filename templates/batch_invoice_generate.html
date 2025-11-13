@@ -1,0 +1,732 @@
+{% extends "base.html" %}
+
+{% block title %}Property Details{% endblock %}
+
+{% block extra_css %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group label .required {
+            color: #dc2626;
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control:disabled {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box i {
+            color: #3b82f6;
+            margin-right: 0.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: center;
+            min-width: 200px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .preview-section, .result-section {
+            margin-top: 2rem;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .preview-header i {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .preview-header h2 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .records-table th {
+            background: #f9fafb;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .records-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .records-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-file-invoice"></i> Batch Invoice Generation</h1>
+            <p>Generate multiple invoices at once with customizable filters</p>
+        </div>
+
+        <!-- Main Form -->
+        <div class="card">
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <strong>How it works:</strong> Select your filters below to preview eligible records, then click "Generate Invoices" to create them in bulk.
+            </div>
+
+            <form id="batchForm">
+                <div class="form-grid">
+                    <!-- Year Selection -->
+                    <div class="form-group">
+                        <label for="year">Select Year <span class="required">*</span></label>
+                        <select id="year" name="year" class="form-control" required>
+                            <option value="">Select Year</option>
+                        </select>
+                    </div>
+
+                    <!-- Bill Type -->
+                    <div class="form-group">
+                        <label for="billType">All Bill Types <span class="required">*</span></label>
+                        <select id="billType" name="billType" class="form-control" required>
+                            <option value="all">All Bill Types</option>
+                            <option value="property">Property Bills</option>
+                            <option value="business">Business Bills</option>
+                        </select>
+                    </div>
+
+                    <!-- Electoral Area -->
+                    <div class="form-group">
+                        <label for="electoralArea">All Electoral Areas</label>
+                        <select id="electoralArea" name="electoralArea" class="form-control">
+                            <option value="all">All Electoral Areas</option>
+                        </select>
+                    </div>
+
+                    <!-- Town -->
+                    <div class="form-group">
+                        <label for="town">All Towns</label>
+                        <select id="town" name="town" class="form-control">
+                            <option value="all">All Towns</option>
+                        </select>
+                    </div>
+
+                    <!-- Run Type -->
+                    <div class="form-group">
+                        <label for="runType">Run Type <span class="required">*</span></label>
+                        <select id="runType" name="runType" class="form-control" required>
+                            <option value="normal">Normal (Runs Ungenerated records)</option>
+                            <option value="force">Force Run (Runs All records)</option>
+                        </select>
+                    </div>
+
+                    <!-- Amount Type -->
+                    <div class="form-group">
+                        <label for="amountType">Amount Calculation <span class="required">*</span></label>
+                        <select id="amountType" name="amountType" class="form-control" required>
+                            <option value="fee_fixing">Fee Fixing</option>
+                            <option value="fixed_amount">Fixed Amount</option>
+                        </select>
+                    </div>
+
+                    <!-- Fixed Amount (Hidden by default) -->
+                    <div class="form-group hidden" id="fixedAmountGroup">
+                        <label for="fixedAmount">Fixed Amount (GHS) <span class="required">*</span></label>
+                        <input type="number" id="fixedAmount" name="fixedAmount" class="form-control" 
+                               step="0.01" min="0" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" id="previewBtn" class="btn btn-primary">
+                        <i class="fas fa-eye"></i>
+                        <span>Preview Records</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                    <button type="button" id="generateBtn" class="btn btn-success" disabled>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Generate Invoices</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Preview Section -->
+        <div id="previewSection" class="card hidden">
+            <div class="preview-header">
+                <i class="fas fa-list-alt"></i>
+                <h2>Preview Results</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="value" id="totalRecords">0</span>
+                    <span class="label">Total Records</span>
+                </div>
+                <div class="stat-card">
+                    <span class="value" id="propertyCount">0</span>
+                    <span class="label">Properties</span>
+                </div>
+                <div class="stat-card">
+                    <span class="value" id="businessCount">0</span>
+                    <span class="label">Businesses</span>
+                </div>
+                <div class="stat-card">
+                    <span class="value" id="totalAmount">GHS 0.00</span>
+                    <span class="label">Total Amount</span>
+                </div>
+            </div>
+
+            <div id="previewTableContainer"></div>
+        </div>
+
+        <!-- Result Section -->
+        <div id="resultSection" class="card hidden">
+            <div class="preview-header">
+                <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                <h2>Generation Results</h2>
+            </div>
+
+            <div id="resultMessage"></div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="value" id="createdCount" style="color: #10b981;">0</span>
+                    <span class="label">Invoices Created</span>
+                </div>
+                <div class="stat-card">
+                    <span class="value" id="skippedCount" style="color: #f59e0b;">0</span>
+                    <span class="label">Skipped (Existing)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="value" id="errorCount" style="color: #ef4444;">0</span>
+                    <span class="label">Errors</span>
+                </div>
+            </div>
+
+            <div id="errorList" class="hidden"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFilterOptions();
+            setupEventListeners();
+        });
+
+        // Load dropdown options
+        async function loadFilterOptions() {
+            try {
+                // Generate years (current + 5 back)
+                const currentYear = new Date().getFullYear();
+                const yearSelect = document.getElementById('year');
+                for (let i = 0; i <= 5; i++) {
+                    const year = currentYear - i;
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearSelect.appendChild(option);
+                }
+
+                // Load electoral areas and towns
+                const response = await fetch('/api/batch-invoice/filters');
+                const data = await response.json();
+
+                if (data.success) {
+                    populateSelect('electoralArea', data.electoral_areas);
+                    populateSelect('town', data.towns);
+                }
+            } catch (error) {
+                console.error('Error loading filters:', error);
+            }
+        }
+
+        function populateSelect(selectId, options) {
+            const select = document.getElementById(selectId);
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                select.appendChild(opt);
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Amount type change
+            document.getElementById('amountType').addEventListener('change', function() {
+                const fixedAmountGroup = document.getElementById('fixedAmountGroup');
+                const fixedAmountInput = document.getElementById('fixedAmount');
+
+                if (this.value === 'fixed_amount') {
+                    fixedAmountGroup.classList.remove('hidden');
+                    fixedAmountInput.required = true;
+                } else {
+                    fixedAmountGroup.classList.add('hidden');
+                    fixedAmountInput.required = false;
+                    fixedAmountInput.value = '';
+                }
+            });
+
+            // Preview button
+            document.getElementById('previewBtn').addEventListener('click', handlePreview);
+
+            // Generate button
+            document.getElementById('generateBtn').addEventListener('click', handleGenerate);
+        }
+
+        // Handle preview
+        async function handlePreview() {
+            const form = document.getElementById('batchForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const formData = getFormData();
+            
+            // Validate fixed amount if needed
+            if (formData.amountType === 'fixed_amount') {
+                if (!formData.fixedAmount || parseFloat(formData.fixedAmount) <= 0) {
+                    alert('Please enter a valid fixed amount greater than 0');
+                    return;
+                }
+            }
+
+            setLoading('preview', true);
+            document.getElementById('previewSection').classList.add('hidden');
+            document.getElementById('resultSection').classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/batch-invoice/preview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayPreview(data.preview);
+                    document.getElementById('generateBtn').disabled = false;
+                } else {
+                    alert(data.message || 'Error loading preview');
+                }
+            } catch (error) {
+                console.error('Preview error:', error);
+                alert('Error loading preview');
+            } finally {
+                setLoading('preview', false);
+            }
+        }
+
+        // Handle generate
+        async function handleGenerate() {
+            const totalRecords = parseInt(document.getElementById('totalRecords').textContent);
+            
+            if (!confirm(`Are you sure you want to generate invoices for ${totalRecords} record(s)?`)) {
+                return;
+            }
+
+            const formData = getFormData();
+
+            setLoading('generate', true);
+            document.getElementById('resultSection').classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/batch-invoice/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResult(data.result);
+                    document.getElementById('previewSection').classList.add('hidden');
+                    document.getElementById('generateBtn').disabled = true;
+                } else {
+                    alert(data.message || 'Error generating invoices');
+                }
+            } catch (error) {
+                console.error('Generation error:', error);
+                alert('Error generating invoices');
+            } finally {
+                setLoading('generate', false);
+            }
+        }
+
+        // Get form data
+        function getFormData() {
+            return {
+                year: document.getElementById('year').value,
+                billType: document.getElementById('billType').value,
+                runType: document.getElementById('runType').value,
+                amountType: document.getElementById('amountType').value,
+                fixedAmount: document.getElementById('fixedAmount').value,
+                electoralArea: document.getElementById('electoralArea').value,
+                town: document.getElementById('town').value
+            };
+        }
+
+        // Display preview
+        function displayPreview(preview) {
+            document.getElementById('totalRecords').textContent = preview.total_records;
+            document.getElementById('propertyCount').textContent = preview.property_count;
+            document.getElementById('businessCount').textContent = preview.business_count;
+            document.getElementById('totalAmount').textContent = `GHS ${preview.total_amount.toFixed(2)}`;
+
+            // Create table
+            let tableHTML = `
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Account No</th>
+                            <th>Name</th>
+                            <th>Electoral Area</th>
+                            <th>Town</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            preview.records.forEach(record => {
+                tableHTML += `
+                    <tr>
+                        <td><span class="badge badge-info">${record.type}</span></td>
+                        <td>${record.account_no}</td>
+                        <td>${record.name}</td>
+                        <td>${record.electoral_area}</td>
+                        <td>${record.town}</td>
+                        <td>GHS ${record.amount.toFixed(2)}</td>
+                        <td><span class="badge ${record.has_invoice ? 'badge-warning' : 'badge-success'}">
+                            ${record.has_invoice ? 'Update' : 'New'}
+                        </span></td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += '</tbody></table>';
+            document.getElementById('previewTableContainer').innerHTML = tableHTML;
+            document.getElementById('previewSection').classList.remove('hidden');
+        }
+
+        // Display result
+        function displayResult(result) {
+            // Success message
+            const message = `
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <strong>Batch Generation Complete!</strong><br>
+                        Successfully processed ${result.created + result.skipped + result.failed} records.
+                    </div>
+                </div>
+            `;
+            document.getElementById('resultMessage').innerHTML = message;
+
+            // Stats
+            document.getElementById('createdCount').textContent = result.created;
+            document.getElementById('skippedCount').textContent = result.skipped;
+            document.getElementById('errorCount').textContent = result.failed;
+
+            // Errors
+            if (result.errors && result.errors.length > 0) {
+                let errorHTML = '<div class="alert alert-error"><div><strong>Errors:</strong><ul style="margin-top: 0.5rem;">';
+                result.errors.slice(0, 10).forEach(error => {
+                    errorHTML += `<li>${error}</li>`;
+                });
+                if (result.errors.length > 10) {
+                    errorHTML += `<li><em>... and ${result.errors.length - 10} more errors</em></li>`;
+                }
+                errorHTML += '</ul></div></div>';
+                document.getElementById('errorList').innerHTML = errorHTML;
+                document.getElementById('errorList').classList.remove('hidden');
+            }
+
+            document.getElementById('resultSection').classList.remove('hidden');
+        }
+
+        // Set loading state
+        function setLoading(type, isLoading) {
+            const btn = type === 'preview' ? document.getElementById('previewBtn') : document.getElementById('generateBtn');
+            const spinner = btn.querySelector('.spinner');
+            const icon = btn.querySelector('i');
+
+            btn.disabled = isLoading;
+            
+            if (isLoading) {
+                icon.classList.add('hidden');
+                spinner.classList.remove('hidden');
+            } else {
+                icon.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,576 @@
+{% extends "base.html" %}
+
+{% block title %}Pending Adjustments - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .admin-header h1 {
+        margin: 0 0 0.5rem 0;
+        font-size: 2rem;
+    }
+    
+    .admin-header p {
+        margin: 0;
+        opacity: 0.9;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-left: 4px solid #667eea;
+    }
+    
+    .stat-card.warning {
+        border-left-color: #ffc107;
+    }
+    
+    .stat-card.success {
+        border-left-color: #28a745;
+    }
+    
+    .stat-card.danger {
+        border-left-color: #dc3545;
+    }
+    
+    .stat-label {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+    
+    .card-header {
+        padding: 1.5rem;
+        border-bottom: 2px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .adjustment-item {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #ffc107;
+    }
+    
+    .adjustment-item.high-value {
+        border-left-color: #dc3545;
+        background: #fff5f5;
+    }
+    
+    .adjustment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+    }
+    
+    .adjustment-title {
+        flex: 1;
+    }
+    
+    .adjustment-title h3 {
+        margin: 0 0 0.5rem 0;
+        color: #333;
+    }
+    
+    .adjustment-badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .badge-warning {
+        background: #fef3c7;
+        color: #78350f;
+    }
+    
+    .badge-danger {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    
+    .badge-success {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .badge-info {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+    
+    .adjustment-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .detail-label {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+    }
+    
+    .detail-value {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .amount-change {
+        background: white;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+    
+    .amount-flow {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .amount-box {
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-align: center;
+    }
+    
+    .amount-original {
+        background: #f3f4f6;
+        border: 2px solid #d1d5db;
+    }
+    
+    .amount-new {
+        background: #dbeafe;
+        border: 2px solid #3b82f6;
+    }
+    
+    .amount-arrow {
+        font-size: 1.5rem;
+        color: #666;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-size: 0.95rem;
+    }
+    
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+    
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        animation: fadeIn 0.3s;
+    }
+    
+    .modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .modal-header h3 {
+        margin: 0;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #666;
+    }
+    
+    .empty-state svg {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1rem;
+        color: #d1d5db;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1>⏳ Pending Adjustments</h1>
+    <p>Review and approve/reject invoice adjustments that require authorization</p>
+</div>
+
+<!-- Statistics -->
+<div class="stats-grid">
+    <div class="stat-card warning">
+        <div class="stat-label">Pending Approvals</div>
+        <div class="stat-value">{{ adjustments|length }}</div>
+    </div>
+    <div class="stat-card danger">
+        <div class="stat-label">High Value (>GHS 1,000)</div>
+        <div class="stat-value">{{ adjustments|selectattr('adjustment_amount', 'gt', 1000)|list|length }}</div>
+    </div>
+    <div class="stat-card info">
+        <div class="stat-label">Total Adjustment Value</div>
+        <div class="stat-value">GHS {{ "{:,.2f}".format(adjustments|sum(attribute='adjustment_amount')) }}</div>
+    </div>
+</div>
+
+<!-- Pending Adjustments List -->
+<div class="card">
+    <div class="card-header">
+        <h2>Adjustments Requiring Approval</h2>
+    </div>
+    <div class="card-body">
+        {% if adjustments and adjustments|length > 0 %}
+            {% for adjustment in adjustments %}
+            <div class="adjustment-item {% if adjustment.adjustment_amount|abs > 1000 %}high-value{% endif %}">
+                <!-- Header -->
+                <div class="adjustment-header">
+                    <div class="adjustment-title">
+                        <h3>
+                            {% if adjustment.invoice_type == 'Business' %}
+                                🏢 {{ adjustment.business_invoice.business.business_name }}
+                            {% else %}
+                                🏠 {{ adjustment.property_invoice.property.owner_name }}
+                            {% endif %}
+                        </h3>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">
+                            Invoice: <strong>{{ adjustment.invoice_no }}</strong> | 
+                            Created: {{ adjustment.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        </p>
+                    </div>
+                    <div class="adjustment-badges">
+                        <span class="badge badge-{% if adjustment.adjustment_type == 'Credit' or adjustment.adjustment_type == 'Waiver' %}success{% else %}danger{% endif %}">
+                            {{ adjustment.adjustment_type }}
+                        </span>
+                        {% if adjustment.adjustment_amount|abs > 1000 %}
+                            <span class="badge badge-danger">⚠️ High Value</span>
+                        {% endif %}
+                        {% if ((adjustment.adjustment_amount|abs / adjustment.original_amount) * 100) > 10 %}
+                            <span class="badge badge-warning">
+                                {{ "%.1f"|format((adjustment.adjustment_amount|abs / adjustment.original_amount) * 100) }}% Change
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Amount Change Visualization -->
+                <div class="amount-change">
+                    <div class="amount-flow">
+                        <div class="amount-box amount-original">
+                            <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.25rem;">Original Amount</div>
+                            <div style="font-size: 1.5rem; font-weight: bold;">GHS {{ "{:,.2f}".format(adjustment.original_amount) }}</div>
+                        </div>
+                        <div class="amount-arrow">
+                            {% if adjustment.adjustment_amount > 0 %}
+                                ➕
+                            {% else %}
+                                ➖
+                            {% endif %}
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.25rem;">Adjustment</div>
+                            <div style="font-size: 1.25rem; font-weight: bold; color: {% if adjustment.adjustment_amount > 0 %}#dc3545{% else %}#28a745{% endif %};">
+                                {% if adjustment.adjustment_amount > 0 %}+{% endif %}{{ "{:,.2f}".format(adjustment.adjustment_amount) }}
+                            </div>
+                        </div>
+                        <div class="amount-arrow">→</div>
+                        <div class="amount-box amount-new">
+                            <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.25rem;">New Amount</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #3b82f6;">GHS {{ "{:,.2f}".format(adjustment.new_amount) }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Details Grid -->
+                <div class="adjustment-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Reason</div>
+                        <div class="detail-value">{{ adjustment.reason }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Created By</div>
+                        <div class="detail-value">{{ adjustment.creator.username if adjustment.creator else 'System' }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Invoice Type</div>
+                        <div class="detail-value">{{ adjustment.invoice_type }}</div>
+                    </div>
+                    {% if adjustment.invoice_type == 'Business' %}
+                    <div class="detail-item">
+                        <div class="detail-label">Business Account</div>
+                        <div class="detail-value">{{ adjustment.business_invoice.business.account_no }}</div>
+                    </div>
+                    {% else %}
+                    <div class="detail-item">
+                        <div class="detail-label">Property Account</div>
+                        <div class="detail-value">{{ adjustment.property_invoice.property.account_no }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Description -->
+                <div style="background: white; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <div class="detail-label">Description</div>
+                    <p style="margin: 0; color: #333;">{{ adjustment.description }}</p>
+                </div>
+                
+                {% if adjustment.supporting_document %}
+                <div style="margin-bottom: 1rem;">
+                    <a href="{{ url_for('static', filename='uploads/' + adjustment.supporting_document) }}" 
+                       target="_blank" class="btn btn-secondary btn-sm">
+                        📎 View Supporting Document
+                    </a>
+                </div>
+                {% endif %}
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button onclick="openApprovalModal({{ adjustment.id }}, '{{ adjustment.invoice_no }}')" 
+                            class="btn btn-success">
+                        ✓ Approve
+                    </button>
+                    <button onclick="openRejectionModal({{ adjustment.id }}, '{{ adjustment.invoice_no }}')" 
+                            class="btn btn-danger">
+                        ✗ Reject
+                    </button>
+                    <a href="{{ url_for('view_' + adjustment.invoice_type.lower() + '_invoice', invoice_id=adjustment.business_invoice_id if adjustment.invoice_type == 'Business' else adjustment.property_invoice_id) }}" 
+                       class="btn btn-secondary">
+                        👁️ View Invoice
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3>No Pending Adjustments</h3>
+                <p>All adjustments have been processed. Great job!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Approval Modal -->
+<div id="approvalModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>✓ Approve Adjustment</h3>
+        </div>
+        <form id="approvalForm" method="POST">
+            <p>Are you sure you want to approve this adjustment for invoice <strong id="approvalInvoiceNo"></strong>?</p>
+            <div class="form-group">
+                <label class="form-label" for="approval_notes">Approval Notes (Optional)</label>
+                <textarea name="approval_notes" id="approval_notes" class="form-control" rows="3" 
+                          placeholder="Add any notes about this approval..."></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button type="button" onclick="closeModal('approvalModal')" class="btn btn-secondary">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-success">
+                    ✓ Approve Adjustment
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Rejection Modal -->
+<div id="rejectionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>✗ Reject Adjustment</h3>
+        </div>
+        <form id="rejectionForm" method="POST">
+            <p>Are you sure you want to reject this adjustment for invoice <strong id="rejectionInvoiceNo"></strong>?</p>
+            <div class="form-group">
+                <label class="form-label" for="rejection_notes">Rejection Reason *</label>
+                <textarea name="rejection_notes" id="rejection_notes" class="form-control" rows="3" 
+                          placeholder="Please explain why this adjustment is being rejected..." required></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button type="button" onclick="closeModal('rejectionModal')" class="btn btn-secondary">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-danger">
+                    ✗ Reject Adjustment
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+function openApprovalModal(adjustmentId, invoiceNo) {
+    document.getElementById('approvalInvoiceNo').textContent = invoiceNo;
+    document.getElementById('approvalForm').action = "{{ url_for('approve_adjustment', adjustment_id=0) }}".replace('0', adjustmentId);
+    document.getElementById('approvalModal').classList.add('active');
+}
+
+function openRejectionModal(adjustmentId, invoiceNo) {
+    document.getElementById('rejectionInvoiceNo').textContent = invoiceNo;
+    document.getElementById('rejectionForm').action = "{{ url_for('reject_adjustment', adjustment_id=0) }}".replace('0', adjustmentId);
+    document.getElementById('rejectionModal').classList.add('active');
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+}
+
+// Close modal when clicking outside
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal(this.id);
+        }
+    });
+});
+
+// Escape key closes modals
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.active').forEach(modal => {
+            closeModal(modal.id);
+        });
+    }
+});
+</script>
+{% endblock %}

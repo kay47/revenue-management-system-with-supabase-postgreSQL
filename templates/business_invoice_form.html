@@ -1,0 +1,507 @@
+{% extends "base.html" %}
+
+{% block title %}Create/Update Business Occupant Invoice{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2 style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-file-invoice"></i> Business Occupant Invoice</h2>
+        <p class="text-muted">Generate or update the invoice for Business: <strong>{{ business.business_name }}</strong> (Account No: <strong>{{ business.account_no }}</strong>)</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Invoice Generation Details</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('create_business_invoice', id=business.id) }}" id="invoiceForm">
+            <input type="hidden" name="business_id" value="{{ business.id }}">
+
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label for="generation_type">Action Type: <span class="text-danger">*</span></label>
+                    <select id="generation_type" name="generation_type" class="form-control" required>
+                        <option value="">-- Select Action --</option>
+                        <option value="generate_new">Generate New Bill</option>
+                        <option value="update_existing">Update Existing Bill</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="invoice_year">Invoice Year: <span class="text-danger">*</span></label>
+                    <select id="invoice_year" name="invoice_year" class="form-control" required>
+                        <option value="">-- Select Year --</option>
+                        {% for year in get_year_range(2020, current_year + 5) %}
+                        <option value="{{ year }}" {% if year == current_year %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="amount_type">Amount Calculation: <span class="text-danger">*</span></label>
+                    <select id="amount_type" name="amount_type" class="form-control" required>
+                        <option value="">-- Select Calculation Method --</option>
+                        <option value="fee_fixing">Fee Fixing (Rate from Business Categories)</option>
+                        <option value="fixed_amount">Fixed Amount (Manual Override)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="fixedAmountGroup" style="display: none;">
+                    <label for="amount">Fixed Amount (GH₵): <span class="text-danger">*</span></label>
+                    <input type="number" step="0.01" min="0" id="amount" name="amount" class="form-control" placeholder="e.g., 500.00">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tax_rate">Tax Rate (%):</label>
+                    <input type="number" step="0.01" min="0" max="100" id="tax_rate" name="tax_rate" class="form-control" value="0.00">
+                </div>
+
+                <div class="form-group">
+                    <label for="invoice_date">Invoice Date: <span class="text-danger">*</span></label>
+                    <input type="date" id="invoice_date" name="invoice_date" class="form-control" value="{{ today_date() }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="due_date">Due Date: <span class="text-danger">*</span></label>
+                    <input type="date" id="due_date" name="due_date" class="form-control" value="{{ default_due_date() }}" required>
+                </div>
+                
+            </div>
+
+            <!-- Business Categories Display (Read-only, for reference) -->
+            <div id="businessCategoriesDisplay" style="display: none; padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 1rem;">
+                <h5 style="color: #667eea; margin-bottom: 1rem;"><i class="fas fa-tags"></i> Business Categories (Used for Fee Fixing)</h5>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label><strong>Category 1:</strong></label>
+                        <input type="text" value="{{ business.category1 if business.category1 and business.category1 != 'NONE' else '-' }}" class="form-control" readonly style="background: #e9ecef;">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 2:</strong></label>
+                        <input type="text" value="{{ business.category2 if business.category2 and business.category2 != 'NONE' else '-' }}" class="form-control" readonly style="background: #e9ecef;">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 3:</strong></label>
+                        <input type="text" value="{{ business.category3 if business.category3 and business.category3 != 'NONE' else '-' }}" class="form-control" readonly style="background: #e9ecef;">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 4:</strong></label>
+                        <input type="text" value="{{ business.category4 if business.category4 and business.category4 != 'NONE' else '-' }}" class="form-control" readonly style="background: #e9ecef;">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 5:</strong></label>
+                        <input type="text" value="{{ business.category5 if business.category5 and business.category5 != 'NONE' else '-' }}" class="form-control" readonly style="background: #e9ecef;">
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 6:</strong></label>
+                        <input type="text" value="{{ business.category6 if business.category6 and business.category6 != 'NONE' else '-' }}" class="form-control" readonly style="background: #e9ecef;">
+                    </div>
+                </div>
+                <div id="matchedProductInfo" style="margin-top: 1rem; padding: 1rem; background: white; border: 1px solid #dee2e6; border-radius: 6px; display: none;">
+                    <p style="margin: 0; color: #155724; font-weight: 600;">
+                        <i class="fas fa-check-circle"></i> Matched Product Rate: <span id="productRate">-</span>
+                    </p>
+                </div>
+                <div id="noMatchWarning" style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px; display: none;">
+                    <p style="margin: 0; color: #856404; font-weight: 600;">
+                        <i class="fas fa-exclamation-triangle"></i> Warning: No matching product rate found for these categories. Please use Fixed Amount instead or contact administrator to add the product rate.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" rows="3" placeholder="A brief description of the service/item being billed."></textarea>
+            </div>
+            
+            <div id="statusMessage" class="alert mt-3" style="display: none;"></div>
+            
+            <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                <a href="{{ url_for('view_business', id=business.id) }}" class="btn btn-secondary">
+                    <i class="fas fa-times-circle"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary" id="submitButton" disabled>
+                    <i class="fas fa-plus-circle"></i> Generate Invoice
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    .form-control {
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        transition: border-color 0.3s;
+    }
+    .form-control:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+    }
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.3s, opacity 0.3s;
+    }
+    .btn-primary {
+        background-color: #667eea;
+        color: white;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #556ee6;
+        opacity: 0.9;
+    }
+    .btn-primary:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        opacity: 0.9;
+    }
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+        background: white;
+    }
+    .card-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        background-color: #f8f9fa;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+    .alert {
+        padding: 1rem;
+        border-radius: 5px;
+        font-weight: 500;
+    }
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+    .text-danger {
+        color: #dc3545;
+    }
+    .text-muted {
+        color: #6c757d;
+    }
+    .mb-0 {
+        margin-bottom: 0;
+    }
+    .mt-3 {
+        margin-top: 1rem;
+    }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const amountTypeSelect = document.getElementById('amount_type');
+        const fixedAmountGroup = document.getElementById('fixedAmountGroup');
+        const businessCategoriesDisplay = document.getElementById('businessCategoriesDisplay');
+        const matchedProductInfo = document.getElementById('matchedProductInfo');
+        const noMatchWarning = document.getElementById('noMatchWarning');
+        const productRateSpan = document.getElementById('productRate');
+        const amountInput = document.getElementById('amount');
+        const generationTypeSelect = document.getElementById('generation_type');
+        const invoiceYearSelect = document.getElementById('invoice_year');
+        const submitButton = document.getElementById('submitButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Helper function to decode HTML entities
+        function decodeHTML(html) {
+            const txt = document.createElement('textarea');
+            txt.innerHTML = html;
+            return txt.value;
+        }
+
+        // Business categories from Flask template (decode HTML entities)
+        const businessCategories = {
+            category1: decodeHTML('{{ business.category1 if business.category1 and business.category1 != "NONE" else "" }}'),
+            category2: decodeHTML('{{ business.category2 if business.category2 and business.category2 != "NONE" else "" }}'),
+            category3: decodeHTML('{{ business.category3 if business.category3 and business.category3 != "NONE" else "" }}'),
+            category4: decodeHTML('{{ business.category4 if business.category4 and business.category4 != "NONE" else "" }}'),
+            category5: decodeHTML('{{ business.category5 if business.category5 and business.category5 != "NONE" else "" }}'),
+            category6: decodeHTML('{{ business.category6 if business.category6 and business.category6 != "NONE" else "" }}')
+        };
+
+        // Generate rate key from business categories
+        const businessRateKey = [
+            businessCategories.category1 || 'N/A',
+            businessCategories.category2 || 'N/A',
+            businessCategories.category3 || 'N/A',
+            businessCategories.category4 || 'N/A',
+            businessCategories.category5 || 'N/A',
+            businessCategories.category6 || 'N/A'
+        ].join('-');
+
+        // Data structure to hold existing invoices
+        const existingInvoices = [
+            {% for invoice in existing_invoices %}
+                { year: {{ invoice.year }}, product_name: decodeHTML('{{ invoice.product_name }}'), invoice_no: '{{ invoice.invoice_no }}' },
+            {% endfor %}
+        ];
+
+        // Variable to store if product match was found
+        let hasProductMatch = false;
+        let matchedProductAmount = 0;
+
+        // Helper function to normalize values (only trim whitespace, keep case)
+        function normalize(val) {
+            if (!val || val === 'NONE' || val === 'N/A' || val === '') return '';
+            return val.toString().trim();  // Only trim whitespace, preserve case
+        }
+
+        // --- Function to check for matching product (Fee Fixing) ---
+        async function checkProductMatch() {
+            try {
+                // Fetch products from API
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                
+                // Normalize business categories (trim only)
+                const normBiz = {
+                    cat1: normalize(businessCategories.category1),
+                    cat2: normalize(businessCategories.category2),
+                    cat3: normalize(businessCategories.category3),
+                    cat4: normalize(businessCategories.category4),
+                    cat5: normalize(businessCategories.category5),
+                    cat6: normalize(businessCategories.category6)
+                };
+                
+                console.log('🔍 Searching for product match (case-sensitive)...');
+                console.log('Business Categories (decoded):', normBiz);
+                
+                // Find matching product based on business categories
+                const matchedProduct = products.find(product => {
+                    const normProd = {
+                        cat1: normalize(product.category1),
+                        cat2: normalize(product.category2),
+                        cat3: normalize(product.category3),
+                        cat4: normalize(product.category4),
+                        cat5: normalize(product.category5),
+                        cat6: normalize(product.category6)
+                    };
+                    
+                    // Case-sensitive comparison
+                    const isMatch = normBiz.cat1 === normProd.cat1 &&
+                                   normBiz.cat2 === normProd.cat2 &&
+                                   normBiz.cat3 === normProd.cat3 &&
+                                   normBiz.cat4 === normProd.cat4 &&
+                                   normBiz.cat5 === normProd.cat5 &&
+                                   normBiz.cat6 === normProd.cat6;
+                    
+                    if (isMatch) {
+                        console.log('✅ Match found!', product);
+                    }
+                    
+                    return isMatch;
+                });
+
+                if (matchedProduct) {
+                    hasProductMatch = true;
+                    matchedProductAmount = matchedProduct.amount;
+                    matchedProductInfo.style.display = 'block';
+                    noMatchWarning.style.display = 'none';
+                    productRateSpan.textContent = 'GH₵ ' + matchedProduct.amount.toFixed(2) + ' (' + matchedProduct.product_name + ')';
+                    console.log('✅ Product match found:', matchedProduct.product_name, '- GH₵', matchedProduct.amount);
+                } else {
+                    hasProductMatch = false;
+                    matchedProductAmount = 0;
+                    matchedProductInfo.style.display = 'none';
+                    noMatchWarning.style.display = 'block';
+                    console.log('❌ No matching product found');
+                    console.log('💡 Business is looking for:', normBiz);
+                }
+            } catch (error) {
+                console.error('❌ Error fetching products:', error);
+                hasProductMatch = false;
+                matchedProductAmount = 0;
+                noMatchWarning.style.display = 'block';
+                matchedProductInfo.style.display = 'none';
+            }
+        }
+
+        // --- Function to toggle amount type fields ---
+        function toggleAmountTypeFields() {
+            const amountType = amountTypeSelect.value;
+            
+            if (amountType === 'fixed_amount') {
+                // Show fixed amount input
+                fixedAmountGroup.style.display = 'flex';
+                amountInput.setAttribute('required', 'required');
+                
+                // Hide business categories display
+                businessCategoriesDisplay.style.display = 'none';
+                
+                // Reset product match state
+                hasProductMatch = true; // Allow form submission with fixed amount
+                matchedProductAmount = 0;
+            } else if (amountType === 'fee_fixing') {
+                // Hide fixed amount input
+                fixedAmountGroup.style.display = 'none';
+                amountInput.removeAttribute('required');
+                amountInput.value = '';
+                
+                // Show business categories display
+                businessCategoriesDisplay.style.display = 'block';
+                
+                // Check for product match
+                checkProductMatch();
+            } else {
+                // Neither selected - hide both
+                fixedAmountGroup.style.display = 'none';
+                businessCategoriesDisplay.style.display = 'none';
+                amountInput.removeAttribute('required');
+                amountInput.value = '';
+                hasProductMatch = false;
+                matchedProductAmount = 0;
+            }
+            validateForm();
+        }
+
+        // --- Function to validate invoice generation ---
+        function validateForm() {
+            const year = invoiceYearSelect.value;
+            const generationType = generationTypeSelect.value;
+            const amountType = amountTypeSelect.value;
+            
+            statusMessage.style.display = 'none';
+            submitButton.disabled = true;
+
+            // Basic validation - check if required fields are filled
+            if (!year || !generationType || !amountType) {
+                return; 
+            }
+
+            // Additional validation based on amount type
+            if (amountType === 'fixed_amount') {
+                const fixedAmount = parseFloat(amountInput.value);
+                if (!amountInput.value || isNaN(fixedAmount) || fixedAmount <= 0) {
+                    statusMessage.className = 'alert alert-danger';
+                    statusMessage.innerHTML = '<strong>❌ Error:</strong> Please enter a valid fixed amount greater than 0.';
+                    statusMessage.style.display = 'block';
+                    return;
+                }
+            } else if (amountType === 'fee_fixing') {
+                // Check if product match exists
+                if (!hasProductMatch) {
+                    statusMessage.className = 'alert alert-danger';
+                    statusMessage.innerHTML = '<strong>❌ Error:</strong> No matching product rate found for these business categories. Please use <strong>Fixed Amount</strong> instead or contact administrator to add the product rate.';
+                    statusMessage.style.display = 'block';
+                    return;
+                }
+            }
+
+            // Generate rate key for comparison
+            const rateKey = amountType === 'fee_fixing' ? businessRateKey : 'FixedRate';
+
+            // Find an existing invoice matching the year and the rate key
+            const existingInvoiceForYear = existingInvoices.find(inv => 
+                inv.year == year && inv.product_name == rateKey
+            );
+
+            // Logic for "Generate New Bill"
+            if (generationType === 'generate_new') {
+                if (existingInvoiceForYear) {
+                    statusMessage.className = 'alert alert-danger';
+                    statusMessage.innerHTML = '<strong>❌ Error:</strong> An invoice for year <strong>' + year + '</strong> with the selected configuration already exists (Invoice No: <strong>' + existingInvoiceForYear.invoice_no + '</strong>). You must select <strong>"Update Existing Bill"</strong> to modify it.';
+                    statusMessage.style.display = 'block';
+                } else {
+                    const amountDisplay = amountType === 'fee_fixing' 
+                        ? 'GH₵ ' + matchedProductAmount.toFixed(2)
+                        : 'GH₵ ' + parseFloat(amountInput.value).toFixed(2);
+                    
+                    statusMessage.className = 'alert alert-success';
+                    statusMessage.innerHTML = '✅ Ready to <strong>Generate New Bill</strong> for <strong>' + year + '</strong>. Amount: <strong>' + amountDisplay + '</strong>';
+                    statusMessage.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-plus-circle"></i> Generate Invoice';
+                }
+            } 
+            // Logic for "Update Existing Bill"
+            else if (generationType === 'update_existing') {
+                if (!existingInvoiceForYear) {
+                    statusMessage.className = 'alert alert-warning';
+                    statusMessage.innerHTML = '<strong>⚠️ Warning:</strong> No existing invoice found for year <strong>' + year + '</strong> with the selected configuration. Please select <strong>"Generate New Bill"</strong> to create a new one.';
+                    statusMessage.style.display = 'block';
+                } else {
+                    const amountDisplay = amountType === 'fee_fixing' 
+                        ? 'GH₵ ' + matchedProductAmount.toFixed(2)
+                        : 'GH₵ ' + parseFloat(amountInput.value).toFixed(2);
+                    
+                    statusMessage.className = 'alert alert-success';
+                    statusMessage.innerHTML = '🔄 Ready to <strong>Update Existing Bill</strong> (Invoice No: <strong>' + existingInvoiceForYear.invoice_no + '</strong>) for <strong>' + year + '</strong>. New Amount: <strong>' + amountDisplay + '</strong>';
+                    statusMessage.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-edit"></i> Update Invoice';
+                }
+            }
+        }
+
+        // --- Event Listeners ---
+        amountTypeSelect.addEventListener('change', toggleAmountTypeFields);
+        generationTypeSelect.addEventListener('change', validateForm);
+        invoiceYearSelect.addEventListener('change', validateForm);
+        amountInput.addEventListener('input', validateForm);
+        
+        // Initial setup
+        toggleAmountTypeFields();
+        validateForm();
+        
+        // Log initial state for debugging
+        console.log('📋 Invoice Form Initialized');
+        console.log('Business:', '{{ business.business_name }}');
+        console.log('Business Categories (decoded):', businessCategories);
+    });
+</script>
+{% endblock %}

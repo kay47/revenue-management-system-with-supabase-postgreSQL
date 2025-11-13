@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Add New User{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* General Header styles */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+    }
+
+    .card-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+    
+    /* Form Grid/Control styles */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.5rem; 
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        outline: none;
+    }
+    
+    .form-actions {
+        padding: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s, opacity 0.3s;
+        border: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .info-box {
+        background: #e7f3ff;
+        border: 1px solid #b3d9ff;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-box h4 {
+        color: #004080;
+        margin: 0 0 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .info-box p {
+        margin: 0;
+        color: #004080;
+        font-size: 0.9rem;
+    }
+
+    .info-box ul {
+        margin: 0.5rem 0 0 1.5rem;
+        color: #004080;
+        font-size: 0.9rem;
+    }
+
+    .info-box li {
+        margin: 0.25rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h2><i class="fas fa-user-plus"></i> Add New User</h2>
+        <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="m-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message | safe }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('create_user') }}">
+        <div class="card-body">
+            
+            <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> About Temporary Passwords</h4>
+                <p>When you create this user:</p>
+                <ul>
+                    <li>A secure temporary password will be automatically generated</li>
+                    <li>The temporary password will be displayed to you <strong>once</strong></li>
+                    <li>Please share it securely with the new user</li>
+                    <li>The user will be required to change it on first login</li>
+                </ul>
+            </div>
+
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label for="username">Username: <span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" id="username" name="username" 
+                           placeholder="Enter username" required>
+                    <small class="text-muted">Unique identifier for login</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address: <span style="color: red;">*</span></label>
+                    <input type="email" class="form-control" id="email" name="email" 
+                           placeholder="user@example.com" required>
+                    <small class="text-muted">Used for notifications and recovery</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone_number">Phone Number: <span style="color: red;">*</span></label>
+                    <input type="tel" class="form-control" id="phone_number" name="phone_number" 
+                           placeholder="0241234567" required 
+                           pattern="^(0|233)\d{9}$"
+                           title="Enter valid Ghana phone number (e.g., 0241234567 or 233241234567)">
+                    <small class="text-muted">Format: 0241234567 or 233241234567</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">User Role: <span style="color: red;">*</span></label>
+                    <select class="form-control" id="role" name="role" required>
+                        <option value="">-- Select Role --</option>
+                        <option value="user">User - Standard access</option>
+                        <option value="admin">Administrator - Full access</option>
+                    </select>
+                    <small class="text-muted">Determines access permissions</small>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+        <div class="form-actions">
+            <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-user-check"></i> Create User
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation feedback
+    const form = document.querySelector('form');
+    
+    form.addEventListener('submit', function(e) {
+        const phoneInput = document.getElementById('phone_number');
+        const phonePattern = /^(0|233)\d{9}$/;
+        
+        if (!phonePattern.test(phoneInput.value)) {
+            e.preventDefault();
+            alert('Please enter a valid Ghana phone number (e.g., 0241234567 or 233241234567)');
+            phoneInput.focus();
+            return false;
+        }
+    });
+    
+    // Phone number validation feedback
+    document.getElementById('phone_number').addEventListener('blur', function() {
+        const phonePattern = /^(0|233)\d{9}$/;
+        if (this.value && !phonePattern.test(this.value)) {
+            this.style.borderColor = '#dc3545';
+            this.nextElementSibling.style.color = '#dc3545';
+            this.nextElementSibling.textContent = 'Invalid phone number format';
+        } else {
+            this.style.borderColor = '#28a745';
+            this.nextElementSibling.style.color = '#6c757d';
+            this.nextElementSibling.textContent = 'Format: 0241234567 or 233241234567';
+        }
+    });
+</script>
+{% endblock %}

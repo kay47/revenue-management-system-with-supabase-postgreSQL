@@ -1,0 +1,8 @@
+# render.yaml
+   services:
+     - type: web
+       name: revenue-management
+       env: python
+       buildCommand: pip install -r requirements.txt
+       startCommand: gunicorn app:app
+       healthCheckPath: /health

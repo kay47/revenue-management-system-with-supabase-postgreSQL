@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}SMS Configuration Status{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-sms"></i> SMS Provider Configuration
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Current Provider -->
+                        <div class="col-md-6">
+                            <div class="alert alert-info">
+                                <h5><i class="fas fa-info-circle"></i> Active Provider</h5>
+                                <p class="mb-0">
+                                    <strong>Current Provider:</strong> 
+                                    <span class="badge badge-lg badge-{{ 'success' if status.provider == 'mock' else 'primary' }}">
+                                        {{ status.provider.upper() }}
+                                    </span>
+                                </p>
+                                <p class="mb-0 mt-2">
+                                    <strong>OTP Expiry:</strong> {{ status.expiry_minutes }} minutes
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Provider Status Cards -->
+                        <div class="col-md-6">
+                            <div class="alert alert-secondary">
+                                <h5><i class="fas fa-cog"></i> Configuration</h5>
+                                <p class="mb-0">
+                                    Set <code>SMS_PROVIDER</code> in <code>.env</code> to:
+                                    <br><code>mock</code>, <code>twilio</code>, <code>africastalking</code>, or <code>vonage</code>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Provider Details -->
+                    <div class="row mt-4">
+                        <!-- Mock SMS -->
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="card {{ 'border-success' if status.provider == 'mock' else '' }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-terminal"></i> Mock SMS
+                                    </h5>
+                                    <p class="card-text text-muted small">
+                                        Development/Testing mode<br>
+                                        Logs OTP to console and file
+                                    </p>
+                                    {% if status.provider == 'mock' %}
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-check"></i> ACTIVE
+                                    </span>
+                                    {% else %}
+                                    <span class="badge badge-secondary">Inactive</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Twilio -->
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="card {{ 'border-success' if status.provider == 'twilio' else '' }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-cloud"></i> Twilio
+                                    </h5>
+                                    <p class="card-text text-muted small">
+                                        Global SMS provider<br>
+                                        $15 free trial credit
+                                    </p>
+                                    {% if status.twilio_sid and status.twilio_token %}
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-check"></i> Configured
+                                    </span>
+                                    {% else %}
+                                    <span class="badge badge-warning">Not Configured</span>
+                                    {% endif %}
+                                    {% if status.provider == 'twilio' %}
+                                    <span class="badge badge-primary">ACTIVE</span>
+                                    {% endif %}
+                                    {% if status.twilio_phone %}
+                                    <p class="mb-0 mt-2 small">
+                                        <strong>Phone:</strong> {{ status.twilio_phone }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Africa's Talking -->
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="card {{ 'border-success' if status.provider == 'africastalking' else '' }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-globe-africa"></i> Africa's Talking
+                                    </h5>
+                                    <p class="card-text text-muted small">
+                                        Best for African countries<br>
+                                        Ghana, Kenya, Nigeria, etc.
+                                    </p>
+                                    {% if status.at_username and status.at_key %}
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-check"></i> Configured
+                                    </span>
+                                    {% else %}
+                                    <span class="badge badge-warning">Not Configured</span>
+                                    {% endif %}
+                                    {% if status.provider == 'africastalking' %}
+                                    <span class="badge badge-primary">ACTIVE</span>
+                                    {% endif %}
+                                    {% if status.at_username %}
+                                    <p class="mb-0 mt-2 small">
+                                        <strong>Username:</strong> {{ status.at_username }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vonage -->
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="card {{ 'border-success' if status.provider == 'vonage' else '' }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-broadcast-tower"></i> Vonage
+                                    </h5>
+                                    <p class="card-text text-muted small">
+                                        Global SMS coverage<br>
+                                        €2 free trial
+                                    </p>
+                                    {% if status.vonage_key and status.vonage_secret %}
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-check"></i> Configured
+                                    </span>
+                                    {% else %}
+                                    <span class="badge badge-warning">Not Configured</span>
+                                    {% endif %}
+                                    {% if status.provider == 'vonage' %}
+                                    <span class="badge badge-primary">ACTIVE</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuration Guide -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card bg-light">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-book"></i> Configuration Guide
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Add these variables to your <code>.env</code> file:</p>
+                                    
+                                    <h6 class="mt-3">Twilio:</h6>
+                                    <pre><code>SMS_PROVIDER=twilio
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE_NUMBER=+1234567890</code></pre>
+
+                                    <h6 class="mt-3">Africa's Talking:</h6>
+                                    <pre><code>SMS_PROVIDER=africastalking
+AFRICASTALKING_USERNAME=sandbox
+AFRICASTALKING_API_KEY=your_api_key</code></pre>
+
+                                    <h6 class="mt-3">Vonage:</h6>
+                                    <pre><code>SMS_PROVIDER=vonage
+                                        VONAGE_API_KEY=your_api_key
+                                        VONAGE_API_SECRET=your_api_secret
+                                        VONAGE_SENDER_ID=AWMA</code></pre>
+                                    <h6 class="mt-3">Mock (Development):</h6>
+                                    <pre><code>SMS_PROVIDER=mock</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

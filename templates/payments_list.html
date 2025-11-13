@@ -1,0 +1,592 @@
+{% extends "base.html" %}
+
+{% block title %}Payment History{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* General Card & Header styles */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+
+    /* Filter/Search Box Styles */
+    .filter-area {
+        padding: 1.5rem; 
+        background: #f9fafb; 
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .filter-area .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .filter-area select, .filter-area input[type="text"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    /* Table styles for consistency */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0;
+    }
+
+    .table th, .table td {
+        padding: 1rem 1.5rem;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+    }
+
+    .table thead tr {
+        background: #f8f9fa;
+        color: #667eea;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .table tbody tr:hover {
+        background: #f9fafb;
+    }
+    
+    .empty-state {
+        padding: 3rem; 
+        color: #999;
+        text-align: center;
+    }
+
+    /* Badge styling */
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.375rem;
+    }
+    
+    .badge-property {
+        color: #434190;
+        background-color: #e0e7ff;
+    }
+
+    .badge-business {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .badge-success {
+        color: #0c5460;
+        background-color: #d1ecf1;
+    }
+
+    /* Pagination Styles */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding: 1rem;
+    }
+
+    .pagination a,
+    .pagination span {
+        padding: 0.5rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #667eea;
+        transition: all 0.3s;
+    }
+
+    .pagination a:hover {
+        background: #f0f0f0;
+    }
+
+    .pagination .active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+
+    .pagination .disabled {
+        color: #ccc;
+        cursor: not-allowed;
+    }
+
+    /* ✅ NEW: Filter Controls */
+    .filter-controls {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .filter-group input[type="date"],
+    .filter-group select {
+        padding: 0.5rem;
+        border: 2px solid #dee2e6;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        min-width: 150px;
+    }
+    
+    .filter-group input[type="date"]:focus,
+    .filter-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .filter-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: flex-end;
+    }
+    
+    .btn-filter {
+        padding: 0.5rem 1rem;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-filter:hover {
+        background: #5568d3;
+    }
+    
+    .btn-clear-filter {
+        padding: 0.5rem 1rem;
+        background: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-clear-filter:hover {
+        background: #5a6268;
+    }
+    
+    .per-page-selector {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: auto;
+    }
+    
+    .per-page-selector label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .per-page-selector select {
+        padding: 0.5rem;
+        border: 2px solid #dee2e6;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+    
+    .active-filters {
+        padding: 0.75rem 1.5rem;
+        background: #fff3cd;
+        border-bottom: 1px solid #ffc107;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .filter-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        background: white;
+        border: 1px solid #ffc107;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        color: #856404;
+    }
+    
+    .filter-tag strong {
+        color: #000;
+    }
+
+    .results-summary {
+        padding: 1rem 1.5rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .results-summary strong {
+        color: #667eea;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-history"></i> Payment History</h2>
+        <div style="display: flex; gap: 0.75rem;">
+            <a href="{{ url_for('export_payments') }}" class="btn btn-success">
+                <i class="fas fa-download"></i> Export CSV
+            </a>
+            <button onclick="window.print()" class="btn btn-secondary">
+                <i class="fas fa-print"></i> Print
+            </button>
+        </div>
+    </div>
+    
+    <div class="filter-area">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Filter by Payment Mode:</label>
+                <select id="filterMode" onchange="filterPayments()">
+                    <option value="">All Payment Modes</option>
+                    <option value="Cash">Cash</option>
+                    <option value="MoMo">MoMo</option>
+                    <option value="Mobile Money Number">Mobile Money Number</option>
+                    <option value="Cheque">Cheque</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Filter by Invoice Type:</label>
+                <select id="filterType" onchange="filterPayments()">
+                    <option value="">All Invoice Types</option>
+                    <option value="Property">Property</option>
+                    <option value="Business">Business</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Filter by Payment Status:</label>
+                <select id="filterStatus" onchange="filterPayments()">
+                    <option value="">All Statuses</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Failed">Failed</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Search by Invoice/Payer:</label>
+                <input type="text" id="filterSearch" onkeyup="filterPayments()" 
+                       placeholder="Invoice No, Payer Name/Phone...">
+            </div>
+            
+            <div style="display: flex; align-items: flex-end;">
+                <button onclick="location.reload()" class="btn btn-secondary" style="width: 100%;">
+                    <i class="fas fa-sync-alt"></i> Reset Filters
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Controls -->
+<div class="filter-controls">
+    <form method="GET" action="{{ url_for('list_payments') }}" style="display: contents;">
+        <div class="filter-group">
+            <label for="date_from">
+                <i class="fas fa-calendar-alt"></i> Start Date
+            </label>
+            <input type="date" 
+                   id="date_from" 
+                   name="date_from" 
+                   value="{{ date_from }}"
+                   max="{{ today_date() }}">
+        </div>
+        
+        <div class="filter-group">
+            <label for="date_to">
+                <i class="fas fa-calendar-alt"></i> End Date
+            </label>
+            <input type="date" 
+                   id="date_to" 
+                   name="date_to" 
+                   value="{{ date_to }}"
+                   max="{{ today_date() }}">
+        </div>
+        
+        <div class="filter-actions">
+            <button type="submit" class="btn-filter">
+                <i class="fas fa-filter"></i> Apply Filters
+            </button>
+            
+            {% if date_from or date_to %}
+            <a href="{{ url_for('list_payments') }}" class="btn-clear-filter">
+                <i class="fas fa-times"></i> Clear
+            </a>
+            {% endif %}
+        </div>
+        
+        <!-- Per Page Selector -->
+        <div class="per-page-selector">
+            <label for="per_page">Show:</label>
+            <select id="per_page" name="per_page" onchange="this.form.submit()">
+                <option value="20" {% if per_page == 20 %}selected{% endif %}>20</option>
+                <option value="50" {% if per_page == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if per_page == 100 %}selected{% endif %}>100</option>
+                <option value="200" {% if per_page == 200 %}selected{% endif %}>200</option>
+            </select>
+        </div>
+        
+        <!-- Hidden field to preserve search -->
+        {% if search %}
+        <input type="hidden" name="search" value="{{ search }}">
+        {% endif %}
+    </form>
+</div>
+
+<!-- Active Filters Display -->
+{% if date_from or date_to %}
+<div class="active-filters">
+    <strong><i class="fas fa-filter"></i> Active Filters:</strong>
+    {% if date_from %}
+    <span class="filter-tag">
+        <strong>From:</strong> {{ date_from }}
+    </span>
+    {% endif %}
+    {% if date_to %}
+    <span class="filter-tag">
+        <strong>To:</strong> {{ date_to }}
+    </span>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if pagination %}
+<div class="results-summary">
+        <div>
+            <strong>Total Payment: {{ pagination.total }}</strong>
+            {% if date_from or date_to %}
+            <span style="color: #666; font-size: 0.9rem;">(filtered results)</span>
+            {% endif %}
+        </div>
+        <div style="color: #6b7280;">
+            Page {{ pagination.page }} of {{ pagination.pages }} | Showing {{ per_page }} per page
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Invoice No</th>
+                    <th>Type</th>
+                    <th>Payer</th>
+                    <th>Amount</th>
+                    <th>Mode</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if pagination.items %}
+                    {% for payment in pagination.items %}
+                    <tr class="payment-row" 
+                        data-mode="{{ payment.payment_mode }}" 
+                        data-type="{{ payment.invoice_type }}" 
+                        data-status="{{ payment.status }}"
+                        data-search="{{ payment.invoice_no|lower }} {{ (payment.payer_name or '')|lower }} {{ (payment.payer_phone or '')|lower }}">
+                        <td>
+                            <a href="{{ url_for('view_payment', payment_id=payment.id) }}" 
+                                style="color: #667eea; text-decoration: none; font-weight: 600;">
+                                #{{ payment.invoice_no }}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="badge badge-{{ 'property' if payment.invoice_type == 'Property' else 'business' }}">
+                                {{ payment.invoice_type }}
+                            </span>
+                        </td>
+                        <td>
+                            {{ payment.payer_name or 'N/A' }} <br>
+                            <small class="text-muted">{{ payment.payer_phone or 'N/A' }}</small>
+                        </td>
+                        <td><strong>{{ format_currency(payment.payment_amount) }}</strong></td>
+                        <td>{{ payment.payment_mode }}</td>
+                        <td>{{ format_date(payment.payment_date) }}</td>
+                        <td>
+                            <span class="badge badge-success">
+                                {{ payment.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('view_payment', payment_id=payment.id) }}" 
+                                class="btn btn-secondary" 
+                                style="padding: 0.5rem 0.8rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <i class="fas fa-money-bill-alt" style="font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                                No payments found in the history.
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    {% if pagination.pages > 1 %}
+    <div class="pagination">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('list_payments', page=pagination.prev_num, search=search) }}">
+                <i class="fas fa-chevron-left"></i> Previous
+            </a>
+        {% else %}
+            <span class="disabled">
+                <i class="fas fa-chevron-left"></i> Previous
+            </span>
+        {% endif %}
+        
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == pagination.page %}
+                    <span class="active">{{ page_num }}</span>
+                {% else %}
+                    <a href="{{ url_for('list_payments', page=page_num, search=search) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                <span>...</span>
+            {% endif %}
+        {% endfor %}
+        
+        {% if pagination.has_next %}
+            <a href="{{ url_for('list_payments', page=pagination.next_num, search=search) }}">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+        {% else %}
+            <span class="disabled">
+                Next <i class="fas fa-chevron-right"></i>
+            </span>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filterPayments() {
+        const modeFilter = document.getElementById('filterMode').value.toLowerCase();
+        const typeFilter = document.getElementById('filterType').value.toLowerCase();
+        const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
+        const searchText = document.getElementById('filterSearch').value.toLowerCase();
+        
+        const rows = document.querySelectorAll('.payment-row');
+        let visibleCount = 0;
+        
+        rows.forEach(row => {
+            const mode = row.getAttribute('data-mode').toLowerCase();
+            const type = row.getAttribute('data-type').toLowerCase();
+            const status = row.getAttribute('data-status').toLowerCase();
+            const searchData = row.getAttribute('data-search').toLowerCase();
+            
+            const modeMatch = !modeFilter || mode === modeFilter;
+            const typeMatch = !typeFilter || type === typeFilter;
+            const statusMatch = !statusFilter || status === statusFilter;
+            const searchMatch = !searchText || searchData.includes(searchText);
+            
+            if (modeMatch && typeMatch && statusMatch && searchMatch) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Show message if no results
+        const tbody = document.querySelector('.table tbody');
+        const existingMsg = document.getElementById('no-results-msg');
+        
+        if (visibleCount === 0 && !existingMsg) {
+            const noResultsRow = document.createElement('tr');
+            noResultsRow.id = 'no-results-msg';
+            noResultsRow.innerHTML = `
+                <td colspan="8">
+                    <div class="empty-state">
+                        <i class="fas fa-search" style="font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        No payments match your filters.
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(noResultsRow);
+        } else if (visibleCount > 0 && existingMsg) {
+            existingMsg.remove();
+        }
+    }
+</script>
+{% endblock %}

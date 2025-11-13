@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}Database Integrity Check{% endblock %}
+
+{% block extra_css %}
+<style>
+    .integrity-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border-left: 4px solid;
+    }
+
+    .stat-card.success {
+        border-color: #10b981;
+    }
+
+    .stat-card.warning {
+        border-color: #f59e0b;
+    }
+
+    .stat-card.danger {
+        border-color: #ef4444;
+    }
+
+    .stat-card h3 {
+        font-size: 2rem;
+        margin: 0;
+        color: #333;
+    }
+
+    .stat-card p {
+        margin: 0.5rem 0 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .issue-section {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .issue-section h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .issue-section h3 i {
+        color: #ef4444;
+    }
+
+    .issue-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .issue-table th {
+        background: #f9fafb;
+        padding: 0.75rem;
+        text-align: left;
+        font-weight: 600;
+        color: #374151;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .issue-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .issue-table tr:hover {
+        background: #f9fafb;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .badge-danger {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .badge-warning {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .badge-info {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .no-issues {
+        text-align: center;
+        padding: 3rem;
+        color: #10b981;
+    }
+
+    .no-issues i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-cleanup {
+        background: #ef4444;
+        color: white;
+    }
+
+    .btn-cleanup:hover {
+        background: #dc2626;
+    }
+
+    .btn-reset {
+        background: #f59e0b;
+        color: white;
+    }
+
+    .btn-reset:hover {
+        background: #d97706;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="integrity-header">
+    <div>
+        <h1><i class="fas fa-database"></i> Database Integrity Check</h1>
+        <p style="color: #666; margin-top: 0.5rem;">Monitor and fix database inconsistencies</p>
+    </div>
+    <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Admin
+    </a>
+</div>
+
+<!-- Stats Overview -->
+<div class="stats-grid">
+    <div class="stat-card {% if issues.total_issues == 0 %}success{% elif issues.total_issues < 10 %}warning{% else %}danger{% endif %}">
+        <h3>{{ issues.total_issues }}</h3>
+        <p>Total Issues Found</p>
+    </div>
+    <div class="stat-card {% if issues.orphaned_property_invoices|length == 0 %}success{% else %}danger{% endif %}">
+        <h3>{{ issues.orphaned_property_invoices|length }}</h3>
+        <p>Orphaned Property Invoices</p>
+    </div>
+    <div class="stat-card {% if issues.orphaned_business_invoices|length == 0 %}success{% else %}danger{% endif %}">
+        <h3>{{ issues.orphaned_business_invoices|length }}</h3>
+        <p>Orphaned Business Invoices</p>
+    </div>
+    <div class="stat-card {% if issues.orphaned_payments|length == 0 %}success{% else %}danger{% endif %}">
+        <h3>{{ issues.orphaned_payments|length }}</h3>
+        <p>Orphaned Payments</p>
+    </div>
+    <div class="stat-card {% if issues.orphaned_adjustments|length == 0 %}success{% else %}danger{% endif %}">
+        <h3>{{ issues.orphaned_adjustments|length }}</h3>
+        <p>Orphaned Adjustments</p>
+    </div>
+    <div class="stat-card {% if issues.missing_products|length == 0 %}success{% else %}warning{% endif %}">
+        <h3>{{ issues.missing_products|length }}</h3>
+        <p>Missing Products</p>
+    </div>
+</div>
+
+{% if issues.total_issues > 0 %}
+<!-- Action Buttons -->
+<div class="issue-section">
+    <h3><i class="fas fa-tools"></i> Fix Issues</h3>
+    <p style="color: #666; margin-bottom: 1rem;">
+        <i class="fas fa-exclamation-triangle"></i> 
+        <strong>Warning:</strong> These actions will permanently delete orphaned records. This cannot be undone!
+    </p>
+    <div class="action-buttons">
+        <form method="POST" action="{{ url_for('database_cleanup') }}" 
+              onsubmit="return confirm('⚠️ Are you sure you want to delete all orphaned records?\n\nThis action cannot be undone!')">
+            <button type="submit" class="btn btn-cleanup">
+                <i class="fas fa-trash-alt"></i> Clean Up Orphaned Records
+            </button>
+        </form>
+        <form method="POST" action="{{ url_for('reset_sequences') }}"
+              onsubmit="return confirm('Reset database auto-increment sequences?\n\nThis is safe but may affect new record IDs.')">
+            <button type="submit" class="btn btn-reset">
+                <i class="fas fa-redo"></i> Reset Sequences
+            </button>
+        </form>
+        <button onclick="location.reload()" class="btn btn-secondary">
+            <i class="fas fa-sync"></i> Refresh Check
+        </button>
+    </div>
+</div>
+
+<!-- Orphaned Property Invoices -->
+{% if issues.orphaned_property_invoices|length > 0 %}
+<div class="issue-section">
+    <h3><i class="fas fa-exclamation-triangle"></i> Orphaned Property Invoices</h3>
+    <p style="color: #666; margin-bottom: 1rem;">
+        These invoices reference deleted properties and should be removed.
+    </p>
+    <table class="issue-table">
+        <thead>
+            <tr>
+                <th>Invoice No</th>
+                <th>Property ID (Deleted)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in issues.orphaned_property_invoices[:50] %}
+            <tr>
+                <td>{{ invoice.invoice_no }}</td>
+                <td><span class="badge badge-danger">{{ invoice.property_id }}</span></td>
+                <td><span class="badge badge-warning">Orphaned</span></td>
+            </tr>
+            {% endfor %}
+            {% if issues.orphaned_property_invoices|length > 50 %}
+            <tr>
+                <td colspan="3" style="text-align: center; color: #666; font-style: italic;">
+                    ... and {{ issues.orphaned_property_invoices|length - 50 }} more
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- Orphaned Business Invoices -->
+{% if issues.orphaned_business_invoices|length > 0 %}
+<div class="issue-section">
+    <h3><i class="fas fa-exclamation-triangle"></i> Orphaned Business Invoices</h3>
+    <p style="color: #666; margin-bottom: 1rem;">
+        These invoices reference deleted businesses and should be removed.
+    </p>
+    <table class="issue-table">
+        <thead>
+            <tr>
+                <th>Invoice No</th>
+                <th>Business ID (Deleted)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in issues.orphaned_business_invoices[:50] %}
+            <tr>
+                <td>{{ invoice.invoice_no }}</td>
+                <td><span class="badge badge-danger">{{ invoice.business_id }}</span></td>
+                <td><span class="badge badge-warning">Orphaned</span></td>
+            </tr>
+            {% endfor %}
+            {% if issues.orphaned_business_invoices|length > 50 %}
+            <tr>
+                <td colspan="3" style="text-align: center; color: #666; font-style: italic;">
+                    ... and {{ issues.orphaned_business_invoices|length - 50 }} more
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- Orphaned Payments -->
+{% if issues.orphaned_payments|length > 0 %}
+<div class="issue-section">
+    <h3><i class="fas fa-exclamation-triangle"></i> Orphaned Payments</h3>
+    <p style="color: #666; margin-bottom: 1rem;">
+        These payments reference deleted invoices and should be removed.
+    </p>
+    <table class="issue-table">
+        <thead>
+            <tr>
+                <th>Invoice No</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in issues.orphaned_payments[:50] %}
+            <tr>
+                <td>{{ payment.invoice_no }}</td>
+                <td><span class="badge badge-info">{{ payment.type }}</span></td>
+                <td>GH₵ {{ "%.2f"|format(payment.amount) }}</td>
+                <td><span class="badge badge-warning">Orphaned</span></td>
+            </tr>
+            {% endfor %}
+            {% if issues.orphaned_payments|length > 50 %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: #666; font-style: italic;">
+                    ... and {{ issues.orphaned_payments|length - 50 }} more
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- Orphaned Adjustments -->
+{% if issues.orphaned_adjustments|length > 0 %}
+<div class="issue-section">
+    <h3><i class="fas fa-exclamation-triangle"></i> Orphaned Adjustments</h3>
+    <p style="color: #666; margin-bottom: 1rem;">
+        These adjustments reference deleted invoices and should be removed.
+    </p>
+    <table class="issue-table">
+        <thead>
+            <tr>
+                <th>Invoice No</th>
+                <th>Type</th>
+                <th>Adjustment Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for adj in issues.orphaned_adjustments[:50] %}
+            <tr>
+                <td>{{ adj.invoice_no }}</td>
+                <td><span class="badge badge-info">{{ adj.type }}</span></td>
+                <td>{{ adj.adjustment_type }}</td>
+                <td><span class="badge badge-warning">Orphaned</span></td>
+            </tr>
+            {% endfor %}
+            {% if issues.orphaned_adjustments|length > 50 %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: #666; font-style: italic;">
+                    ... and {{ issues.orphaned_adjustments|length - 50 }} more
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- Missing Products -->
+{% if issues.missing_products|length > 0 %}
+<div class="issue-section">
+    <h3><i class="fas fa-info-circle"></i> Missing Product References</h3>
+    <p style="color: #666; margin-bottom: 1rem;">
+        These products are referenced in business invoices but no longer exist in the products table. 
+        This is informational only - invoices will not be deleted.
+    </p>
+    <table class="issue-table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Referenced in Invoices</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in issues.missing_products %}
+            <tr>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.invoice_count }} invoice(s)</td>
+                <td><span class="badge badge-warning">Missing</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% else %}
+<!-- No Issues Found -->
+<div class="issue-section">
+    <div class="no-issues">
+        <i class="fas fa-check-circle"></i>
+        <h2 style="color: #10b981; margin-bottom: 0.5rem;">Database is Healthy!</h2>
+        <p style="color: #666;">No integrity issues detected. All records are properly linked.</p>
+        <div style="margin-top: 2rem;">
+            <button onclick="location.reload()" class="btn btn-secondary">
+                <i class="fas fa-sync"></i> Run Check Again
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

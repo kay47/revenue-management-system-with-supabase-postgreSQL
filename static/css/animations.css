@@ -1,0 +1,547 @@
+/* ============================================
+   COMPLETE POS SYSTEM ANIMATION STYLES
+   For: Dashboard, Products, POS, Sales, Reports
+   ============================================ */
+
+/* ============================================
+   BASE ANIMATIONS
+   ============================================ */
+
+/* Navbar Gradient */
+.navbar.navbar-dark.bg-primary {
+    background: linear-gradient(135deg, #2148f7 0%, #2908e6 100%) !important;
+}
+   
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.08);
+        opacity: 0.9;
+    }
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* ============================================
+   DASHBOARD ANIMATIONS
+   ============================================ */
+
+/* Animate all cards with stagger effect */
+.card {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+/* Stagger stat cards */
+.row.mb-4 > .col-lg-3:nth-child(1) .card,
+.row.mb-4 > .col-md-6:nth-child(1) .card {
+    animation-delay: 0.1s;
+}
+
+.row.mb-4 > .col-lg-3:nth-child(2) .card,
+.row.mb-4 > .col-md-6:nth-child(2) .card {
+    animation-delay: 0.2s;
+}
+
+.row.mb-4 > .col-lg-3:nth-child(3) .card,
+.row.mb-4 > .col-md-6:nth-child(3) .card {
+    animation-delay: 0.3s;
+}
+
+.row.mb-4 > .col-lg-3:nth-child(4) .card,
+.row.mb-4 > .col-md-6:nth-child(4) .card {
+    animation-delay: 0.4s;
+}
+
+/* Quick Actions sidebar */
+.col-lg-3 .card.sticky-top {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.col-lg-3 .card.sticky-top .btn {
+    animation: fadeIn 0.5s ease-out backwards;
+}
+
+.col-lg-3 .card.sticky-top .btn:nth-child(1) { animation-delay: 0.2s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(2) { animation-delay: 0.3s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(3) { animation-delay: 0.4s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(4) { animation-delay: 0.5s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(5) { animation-delay: 0.6s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(6) { animation-delay: 0.7s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(7) { animation-delay: 0.8s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(8) { animation-delay: 0.9s; }
+.col-lg-3 .card.sticky-top .btn:nth-child(9) { animation-delay: 1s; }
+
+/* Stat numbers */
+.card h3, .card h4 {
+    animation: countUp 0.8s ease-out backwards;
+    animation-delay: 0.5s;
+}
+
+/* Card icons */
+.card-body i.fs-2, .card-body i.bi-box-seam, 
+.card-body i.bi-exclamation-triangle,
+.card-body i.bi-cart-check, .card-body i.bi-people,
+.card-body i.bi-boxes, .card-body i.bi-currency-dollar,
+.card-body i.bi-graph-up-arrow, .card-body i.bi-stack {
+    animation: scaleUp 0.6s ease-out backwards;
+    animation-delay: 0.6s;
+}
+
+/* Warning badges pulse */
+.badge.bg-warning {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.badge.bg-danger {
+    animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* Table rows */
+.table tbody tr {
+    animation: fadeIn 0.5s ease-out backwards;
+}
+
+.table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+.table tbody tr:nth-child(2) { animation-delay: 0.15s; }
+.table tbody tr:nth-child(3) { animation-delay: 0.2s; }
+.table tbody tr:nth-child(4) { animation-delay: 0.25s; }
+.table tbody tr:nth-child(5) { animation-delay: 0.3s; }
+
+/* Progress bars */
+.progress-bar {
+    animation: slideInLeft 1s ease-out backwards;
+    animation-delay: 0.5s;
+}
+
+/* ============================================
+   PRODUCTS PAGE ANIMATIONS
+   ============================================ */
+
+/* Product cards grid */
+.product-card {
+    animation: scaleUp 0.5s ease-out backwards;
+}
+
+/* Stagger product cards */
+.product-item:nth-child(1) .product-card { animation-delay: 0.1s; }
+.product-item:nth-child(2) .product-card { animation-delay: 0.15s; }
+.product-item:nth-child(3) .product-card { animation-delay: 0.2s; }
+.product-item:nth-child(4) .product-card { animation-delay: 0.25s; }
+.product-item:nth-child(5) .product-card { animation-delay: 0.3s; }
+.product-item:nth-child(6) .product-card { animation-delay: 0.35s; }
+.product-item:nth-child(7) .product-card { animation-delay: 0.4s; }
+.product-item:nth-child(8) .product-card { animation-delay: 0.45s; }
+.product-item:nth-child(9) .product-card { animation-delay: 0.5s; }
+
+/* Product images */
+.product-card img, .card-img-top {
+    animation: fadeIn 0.8s ease-out backwards;
+    animation-delay: 0.3s;
+}
+
+/* Search bar animation */
+.input-group {
+    animation: slideDown 0.6s ease-out;
+}
+
+/* Filter buttons */
+.btn-group .btn {
+    animation: fadeIn 0.5s ease-out backwards;
+}
+
+.btn-group .btn:nth-child(1) { animation-delay: 0.1s; }
+.btn-group .btn:nth-child(2) { animation-delay: 0.15s; }
+.btn-group .btn:nth-child(3) { animation-delay: 0.2s; }
+.btn-group .btn:nth-child(4) { animation-delay: 0.25s; }
+
+/* ============================================
+   POS PAGE ANIMATIONS
+   ============================================ */
+
+/* POS product grid items */
+#productsContainer .product-item {
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+#productsContainer .product-item:nth-child(1) { animation-delay: 0.1s; }
+#productsContainer .product-item:nth-child(2) { animation-delay: 0.15s; }
+#productsContainer .product-item:nth-child(3) { animation-delay: 0.2s; }
+#productsContainer .product-item:nth-child(4) { animation-delay: 0.25s; }
+#productsContainer .product-item:nth-child(5) { animation-delay: 0.3s; }
+#productsContainer .product-item:nth-child(6) { animation-delay: 0.35s; }
+
+/* Cart section */
+.col-lg-4 .card {
+    animation: slideInRight 0.8s ease-out;
+}
+
+/* Cart items */
+.cart-item {
+    animation: slideInRight 0.4s ease-out;
+}
+
+/* Add to cart button click effect */
+.add-to-cart-btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* Cart badge bounce when updated */
+#cartCount {
+    animation: bounceIn 0.5s ease-out;
+}
+
+/* Modal animations */
+.modal.show .modal-dialog {
+    animation: scaleUp 0.3s ease-out;
+}
+
+/* ============================================
+   SALES & REPORTS ANIMATIONS
+   ============================================ */
+
+/* Sales list items */
+.list-group-item {
+    animation: fadeIn 0.5s ease-out backwards;
+}
+
+.list-group-item:nth-child(1) { animation-delay: 0.1s; }
+.list-group-item:nth-child(2) { animation-delay: 0.15s; }
+.list-group-item:nth-child(3) { animation-delay: 0.2s; }
+.list-group-item:nth-child(4) { animation-delay: 0.25s; }
+.list-group-item:nth-child(5) { animation-delay: 0.3s; }
+
+/* Charts */
+canvas {
+    animation: fadeIn 1s ease-out;
+    animation-delay: 0.8s;
+}
+
+/* Report cards */
+.card.border-primary,
+.card.border-success,
+.card.border-info,
+.card.border-warning {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+/* ============================================
+   FORMS ANIMATIONS
+   ============================================ */
+
+/* Form groups */
+.form-group, .mb-3 {
+    animation: fadeIn 0.5s ease-out backwards;
+}
+
+.form-group:nth-child(1), .mb-3:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2), .mb-3:nth-child(2) { animation-delay: 0.15s; }
+.form-group:nth-child(3), .mb-3:nth-child(3) { animation-delay: 0.2s; }
+.form-group:nth-child(4), .mb-3:nth-child(4) { animation-delay: 0.25s; }
+.form-group:nth-child(5), .mb-3:nth-child(5) { animation-delay: 0.3s; }
+
+/* Form buttons */
+.form-actions .btn {
+    animation: fadeInUp 0.5s ease-out backwards;
+    animation-delay: 0.4s;
+}
+
+/* ============================================
+   NAVBAR ANIMATIONS
+   ============================================ */
+
+.navbar-brand {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.navbar-nav .nav-item {
+    animation: slideDown 0.5s ease-out backwards;
+}
+
+.navbar-nav .nav-item:nth-child(1) { animation-delay: 0.1s; }
+.navbar-nav .nav-item:nth-child(2) { animation-delay: 0.15s; }
+.navbar-nav .nav-item:nth-child(3) { animation-delay: 0.2s; }
+.navbar-nav .nav-item:nth-child(4) { animation-delay: 0.25s; }
+
+/* ============================================
+   ALERT ANIMATIONS
+   ============================================ */
+
+.alert {
+    animation: slideInRight 0.5s ease-out;
+}
+
+/* Flash messages */
+.alert-dismissible {
+    animation: slideDown 0.5s ease-out;
+}
+
+/* ============================================
+   HOVER EFFECTS
+   ============================================ */
+
+/* Card hover */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Button hover */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Stat card hover */
+.card.text-white {
+    transition: all 0.3s ease;
+}
+
+.card.text-white:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Product card hover */
+.product-card {
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Table row hover */
+.table tbody tr {
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: translateX(5px);
+}
+
+/* Link hover */
+a {
+    transition: color 0.2s ease;
+}
+
+/* Badge hover */
+.badge {
+    transition: transform 0.2s ease;
+}
+
+.badge:hover {
+    transform: scale(1.1);
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+/* Shimmer effect for loading */
+.loading-shimmer {
+    background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e0e0e0 50%,
+        #f0f0f0 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Spinner animation */
+.spinner-border {
+    animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ============================================
+   PAGE TRANSITIONS
+   ============================================ */
+
+/* Page heading */
+h1, h2, h3.text-primary {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Pagination */
+.pagination {
+    animation: fadeIn 0.6s ease-out;
+    animation-delay: 0.3s;
+}
+
+/* ============================================
+   RECEIPT ANIMATIONS
+   ============================================ */
+
+.receipt-header {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.receipt-item {
+    animation: slideInLeft 0.4s ease-out backwards;
+}
+
+.receipt-item:nth-child(1) { animation-delay: 0.1s; }
+.receipt-item:nth-child(2) { animation-delay: 0.15s; }
+.receipt-item:nth-child(3) { animation-delay: 0.2s; }
+.receipt-item:nth-child(4) { animation-delay: 0.25s; }
+.receipt-item:nth-child(5) { animation-delay: 0.3s; }
+
+.receipt-total {
+    animation: bounceIn 0.6s ease-out;
+    animation-delay: 0.5s;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Reduce animation delays on mobile */
+    .card,
+    .btn,
+    .product-card,
+    .cart-item,
+    .table tbody tr,
+    .form-group,
+    .mb-3 {
+        animation-delay: 0s !important;
+        animation-duration: 0.4s;
+    }
+    
+    /* Disable hover lift effects on mobile */
+    .card:hover,
+    .product-card:hover {
+        transform: none;
+    }
+}
+
+/* ============================================
+   PRINT MEDIA - DISABLE ANIMATIONS
+   ============================================ */
+
+@media print {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}

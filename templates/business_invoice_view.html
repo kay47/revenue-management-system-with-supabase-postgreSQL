@@ -1,0 +1,1171 @@
+{% extends "base.html" %}
+
+{% block title %}Invoice Details{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* === SHARED INVOICE STYLES === */
+    .card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1.5rem;
+        border-bottom: 2px solid #f0f0f0;
+        background: #fff;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    /* === TAB NAVIGATION === */
+    .tabs-wrapper {
+        border-bottom: 2px solid #e0e0e0;
+        margin: 0;
+        background: #f8f9fa;
+    }
+
+    .nav-tabs {
+        border-bottom: none;
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-wrap: wrap;
+    }
+
+    .nav-tabs li {
+        margin: 0;
+    }
+
+    .nav-tabs li a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        color: #6c757d;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .nav-tabs li a:hover {
+        color: #667eea;
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    .nav-tabs li.active a {
+        color: #667eea;
+        border-bottom-color: #667eea;
+        background: #fff;
+        font-weight: 600;
+    }
+
+    .tab-content {
+        background: #fff;
+    }
+
+    .tab-pane {
+        display: none;
+    }
+
+    .tab-pane.active {
+        display: block;
+    }
+
+    /* === INVOICE DISPLAY === */
+    .invoice {
+        position: relative;
+        z-index: 1;
+        padding: 2rem;
+        background: #fff;
+    }
+
+    #watermark {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        opacity: 0.05;
+        pointer-events: none;
+    }
+
+    #watermark img {
+        width: 600px;
+        height: auto;
+    }
+
+    .invoice header {
+        margin-bottom: 2rem;
+    }
+
+    .bill-info {
+        margin: 2rem 0;
+    }
+
+    .invoice-items {
+        margin: 2rem 0;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .invoice-items thead th {
+        background: #f8f9fa;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .invoice-items tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .invoice-summary {
+        margin-top: 2rem;
+    }
+
+    /* === BUTTONS === */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        margin: 0.25rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    .btn-link {
+        background: transparent;
+        color: #667eea;
+        padding: 0.25rem 0.5rem;
+        text-decoration: underline;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    /* === TABLE STYLES === */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .table thead th {
+        background: #f8f9fa;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background: #f8f9fa;
+    }
+
+    .table-sm {
+        font-size: 0.875rem;
+    }
+
+    .table-sm td, .table-sm th {
+        padding: 0.5rem;
+    }
+
+    .table tfoot tr {
+        background: #f9fafb;
+        font-weight: bold;
+    }
+
+    .table tfoot td {
+        padding: 1rem;
+        border-top: 2px solid #dee2e6;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* === GRID SYSTEM === */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+    }
+
+    .col-sm-6, .col-md-6, .col-md-5 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 15px;
+    }
+
+    .col-sm-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* === UTILITY CLASSES === */
+    .ib {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mt-0 { margin-top: 0; }
+    .mt-3 { margin-top: 1rem; }
+    .mb-0 { margin-bottom: 0; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-3 { margin-bottom: 1rem; }
+    .mr-2 { margin-right: 0.5rem; }
+    .mr-4 { margin-right: 1.5rem; }
+    .ml-2 { margin-left: 0.5rem; }
+    .pt-3 { padding-top: 1rem; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+        .col-sm-6, .col-md-6, .col-md-5 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .card-header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-tabs {
+            overflow-x: auto;
+        }
+
+        .invoice {
+            padding: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>INVOICE #{{ invoice.invoice_no }}</h2>
+        <div>
+            <button onclick="window.open('{{ url_for('print_business_invoice', invoice_id=invoice.id) }}', '_blank')" class="btn btn-primary">
+                🖨️ Print Invoice
+            </button>
+            <a href="{{ url_for('view_business', id=business.id) }}" class="btn btn-secondary">
+                Back to Business
+            </a>
+        </div>
+    </div>
+    
+    <!-- Tabs Navigation -->
+    <div class="tabs-wrapper">
+        <ul class="nav-tabs">
+            <li class="active">
+                <a href="#invoices" data-tab="invoices">
+                    <span>🧾</span> Invoices
+                </a>
+            </li>
+            <li>
+                <a href="#payment" data-tab="payment">
+                    <span>💳</span> Payment
+                </a>
+            </li>
+            <li>
+                <a href="#transactions" data-tab="transactions">
+                    <span>💰</span> Transactions
+                </a>
+            </li>
+            <li>
+                <a href="#adjustment" data-tab="adjustment">
+                    <span>⚖️</span> Adjustment
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tab-content">
+        <!-- Invoice Tab -->
+        <div class="tab-pane active" id="invoices">
+            <div class="card-body">
+                <div class="invoice">
+                    <!-- Invoice Header -->
+                    <header class="clearfix">
+                        <div class="row">
+                            <div class="col-sm-6 mt-3">
+                                <h2 class="h2 mt-0 mb-1 text-dark font-weight-bold">INVOICE</h2>
+                                <h6 class="h4 m-0 text-dark font-weight-bold" style="font-size:90%;">#{{ invoice.invoice_no }}</h6>
+                            </div>
+                            <div class="col-sm-6 text-right mt-3 mb-3">
+                                <address class="ib mr-2">
+                                    AYAWASO WEST MUNICIPAL ASSEMBLY<br>
+                                    P O Box YK 1484, KANDA<br>
+                                    DZORWULU<br>
+                                    0302-961448<br>
+                                    GhanaPostGPS: GA-160-8880
+                                </address>
+                                <div class="ib">
+                                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="width:9em;height:9em;" onerror="this.style.display='none'">
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <!-- Bill Info -->
+                    <div class="bill-info">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="bill-to">
+                                    <p class="h5 mb-1 text-dark font-weight-semibold">To:</p>
+                                    <address>
+                                        {{ business.business_name }}<br>
+                                        {{ business.account_no }}<br>
+                                        {{ business.street_name or '' }}<br>
+                                        {{ business.electoral_area }}<br>
+                                    </address>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bill-data text-right">
+                                    <p class="mb-0">
+                                        <span class="text-dark"><b>Invoice Date:</b></span>
+                                        <span class="value">
+                                            {% if invoice.invoice_date %}
+                                                {{ invoice.invoice_date.strftime('%Y-%m-%d') if invoice.invoice_date is not string else invoice.invoice_date }}
+                                            {% else %}
+                                                {{ invoice.created_at.strftime('%Y-%m-%d') }}
+                                            {% endif %}
+                                        </span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-dark"><b>Due Date:</b></span>
+                                        <span class="value">
+                                            {% if invoice.due_date %}
+                                                {{ invoice.due_date.strftime('%Y-%m-%d') if invoice.due_date is not string else invoice.due_date }}
+                                            {% else %}
+                                                {{ invoice.year }}-{{ '%02d' % ((invoice.created_at.month + 1) % 12 or 12) }}-{{ '%02d' % invoice.created_at.day }}
+                                            {% endif %}
+                                        </span>
+                                    </p>
+                                    <br>
+                                    <p class="mb-0">
+                                        <span class="text-dark"><b>Office Contact:</b></span>
+                                        <span class="value">0302-961642</span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-dark"><b>Bank Name:</b></span>
+                                        <span class="value">Fidelity Bank</span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-dark"><b>Account No:</b></span>
+                                        <span class="value">1070032630416</span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-dark"><b>Bank Branch:</b></span>
+                                        <span class="value">Dzorwulu</span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-dark"><b>Swift Code:</b></span>
+                                        <span class="value">FBLIGHAC</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Invoice Items Table -->
+                    <table class="table table-responsive-md invoice-items" style="white-space:normal;">
+                        <thead>
+                            <tr class="text-dark">
+                                <th class="font-weight-semibold">Invoice Type</th>
+                                <th class="font-weight-semibold">Category</th>
+                                <th class="font-weight-semibold">Category</th>
+                                <th class="font-weight-semibold">Category</th>
+                                <th class="font-weight-semibold">Category</th>
+                                <th class="text-center font-weight-semibold">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BOP</td>
+                                <td>{{ business.category3 or 'N/A' }}</td>
+                                <td>{{ business.category4 or 'N/A' }}</td>
+                                <td>{{ business.category5 or 'N/A' }}</td>
+                                <td>{{ business.category6 or 'N/A' }}</td>
+                                <td><strong>GHS {{ "{:,.2f}".format(invoice.amount) }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Invoice Summary -->
+{% set invoice_total = invoice.total_amount if invoice.total_amount else invoice.amount %}
+
+{# Step 2: Calculate total paid on current invoice #}
+{% set total_paid_current = total_paid %}
+
+{# Step 3: Calculate outstanding balance BEFORE credit #}
+{% set outstanding_before_credit = invoice_total - total_paid_current %}
+
+{# Step 4: Get available credit from previous years (passed from backend) #}
+{% set available_credit_amount = available_credit if available_credit else 0 %}
+
+{# Step 5: Apply credit to current invoice outstanding #}
+{% set credit_applied_to_current = 0 %}
+{% set outstanding_after_credit = outstanding_before_credit %}
+
+{% if available_credit_amount > 0 and outstanding_before_credit > 0 %}
+    {# Apply as much credit as possible to current invoice #}
+    {% if available_credit_amount >= outstanding_before_credit %}
+        {% set credit_applied_to_current = outstanding_before_credit %}
+        {% set outstanding_after_credit = 0 %}
+    {% else %}
+        {% set credit_applied_to_current = available_credit_amount %}
+        {% set outstanding_after_credit = outstanding_before_credit - available_credit_amount %}
+    {% endif %}
+{% endif %}
+
+{# Step 6: Calculate overpayment (only if paid MORE than invoice total) #}
+{% set overpayment_on_current = 0 %}
+{% if total_paid_current > invoice_total %}
+    {% set overpayment_on_current = total_paid_current - invoice_total %}
+{% endif %}
+
+{# Step 7: Calculate grand total outstanding (current + arrears) #}
+{% set grand_total_outstanding = outstanding_after_credit + total_arrears %}
+
+{# Step 8: Determine if invoice is fully paid #}
+{% set is_fully_paid = grand_total_outstanding <= 0.01 %}
+
+
+{# ============================================
+   INVOICE SUMMARY TABLE
+   ============================================ #}
+<div class="invoice-summary">
+    <div class="row justify-content-end">
+        <div class="col-sm-6">
+            <table class="table h6 text-dark">
+                <tbody>
+                    {# Subtotal for current year #}
+                    <tr>
+                        <td width="60%" class="text-right">Subtotal ({{ invoice.year }})</td>
+                        <td width="40%" class="text-left">GHS {{ "{:,.2f}".format(invoice.amount) }}</td>
+                    </tr>
+                    
+                    {# Tax (if applicable) #}
+                    {% if invoice.tax_amount and invoice.tax_amount > 0 %}
+                    <tr>
+                        <td width="60%" class="text-right">Tax ({{ invoice.tax_rate }}%)</td>
+                        <td width="40%" class="text-left">GHS {{ "{:,.2f}".format(invoice.tax_amount) }}</td>
+                    </tr>
+                    {% endif %}
+                    
+                    {# Arrears from previous years #}
+                    <tr class="font-weight-semibold" style="background: #fff3cd;">
+                        <td width="60%" class="text-right">
+                            <strong>Arrears (Previous Years)</strong>
+                            {% if arrears_breakdown and arrears_breakdown|length > 0 %}
+                            <button type="button" class="btn btn-sm btn-link" onclick="toggleArrearsBreakdown()" style="padding: 0; margin-left: 5px;">
+                                <span id="arrears-toggle-icon">▼</span>
+                            </button>
+                            {% endif %}
+                        </td>
+                        <td width="40%" class="text-left">
+                            <strong style="color: #856404;">GHS {{ "{:,.2f}".format(total_arrears) }}</strong>
+                        </td>
+                    </tr>
+                    
+                    {# Arrears Breakdown (collapsible) #}
+                    {% if arrears_breakdown and arrears_breakdown|length > 0 %}
+                    <tr id="arrears-breakdown" style="display: none;">
+                        <td colspan="2" style="padding: 0;">
+                            <table class="table table-sm mb-0" style="font-size: 0.85rem; background: #fffbf0;">
+                                <thead>
+                                    <tr style="background: #fff3cd;">
+                                        <th>Year</th>
+                                        <th>Invoice No</th>
+                                        <th class="text-right">Original</th>
+                                        <th class="text-right">Credit</th>
+                                        <th class="text-right">Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for arrear in arrears_breakdown %}
+                                    <tr>
+                                        <td>{{ arrear.year }}</td>
+                                        <td><small>{{ arrear.invoice_no }}</small></td>
+                                        <td class="text-right">{{ "{:,.2f}".format(arrear.get('original_balance', arrear.total - arrear.paid)) }}</td>
+                                        <td class="text-right" style="color: #2e7d32;">
+                                            {% if arrear.get('credit_applied', 0) > 0 %}
+                                                -{{ "{:,.2f}".format(arrear.credit_applied) }}
+                                            {% else %}
+                                                0.00
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-right"><strong>{{ "{:,.2f}".format(arrear.balance) }}</strong></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    
+                    {# Payment for current year #}
+                    <tr>
+                        <td width="60%" class="text-right">Payment ({{ invoice.year }})</td>
+                        <td width="40%" class="text-left">GHS {{ "{:,.2f}".format(total_paid_current) }}</td>
+                    </tr>
+                    
+                    {# Credit Applied (if any) #}
+                    {% if credit_applied_to_current > 0 %}
+                    <tr style="background: #e8f5e9; border: 2px solid #4caf50;">
+                        <td width="60%" class="text-right">
+                            <strong style="color: #2e7d32;">💳 Credit Applied</strong>
+                            <br><small style="color: #2e7d32; font-weight: normal;">(from previous overpayments)</small>
+                        </td>
+                        <td width="40%" class="text-left">
+                            <strong style="color: #2e7d32;">- GHS {{ "{:,.2f}".format(credit_applied_to_current) }}</strong>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    
+                    {# Overpayment on current invoice (if any) #}
+                    {% if overpayment_on_current > 0 %}
+                    <tr style="background: #fff9e6; border: 2px solid #ffc107;">
+                        <td width="60%" class="text-right">
+                            <strong style="color: #856404;">💰 Overpayment</strong>
+                            <br><small style="color: #856404; font-weight: normal;">(excess on this invoice)</small>
+                        </td>
+                        <td width="40%" class="text-left">
+                            <strong style="color: #856404;">GHS {{ "{:,.2f}".format(overpayment_on_current) }}</strong>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    
+                    {# Penalty (placeholder) #}
+                    <tr>
+                        <td width="60%" class="text-right">Penalty</td>
+                        <td width="40%" class="text-left">GHS 0.00</td>
+                    </tr>
+                    
+                    {# Total Outstanding (FINAL AMOUNT DUE) #}
+                    <tr class="font-weight-bold" style="background: #f8f9fa; border-top: 2px solid #dee2e6;">
+                        <td width="60%" class="text-right">
+                            <strong>
+                                {% if credit_applied_to_current > 0 %}
+                                    Total Outstanding (After Credit)
+                                {% else %}
+                                    Total Outstanding
+                                {% endif %}
+                            </strong>
+                        </td>
+                        <td width="40%" class="text-left">
+                            {% if is_fully_paid %}
+                                <strong style="color: #16a34a; font-size: 1.1rem;">
+                                    GHS 0.00 (PAID ✓)
+                                </strong>
+                            {% else %}
+                                <strong style="color: #dc3545; font-size: 1.1rem;">
+                                    GHS {{ "{:,.2f}".format(grand_total_outstanding) }}
+                                </strong>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    {# ============================================
+       NOTICE BOXES
+       ============================================ #}
+    
+    {# Credit Applied Notice #}
+    {% if credit_applied_to_current > 0 %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border-left: 4px solid #4caf50;">
+                <p style="color: #2e7d32; margin: 0; font-size: 0.9rem;">
+                    <strong>💳 Credit Applied:</strong> A credit balance of 
+                    <strong>GHS {{ "{:,.2f}".format(credit_applied_to_current) }}</strong> from previous overpayments 
+                    has been applied to this invoice, reducing your outstanding balance.
+                    {% if (available_credit_amount - credit_applied_to_current) > 0 %}
+                        <br>Remaining credit available: <strong>GHS {{ "{:,.2f}".format(available_credit_amount - credit_applied_to_current) }}</strong>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {# Overpayment Notice #}
+    {% if overpayment_on_current > 0 %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div style="background: #fff3cd; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border-left: 4px solid #ffc107;">
+                <p style="color: #856404; margin: 0; font-size: 0.9rem;">
+                    <strong>💰 Overpayment Recorded:</strong> This invoice has received 
+                    <strong>GHS {{ "{:,.2f}".format(overpayment_on_current) }}</strong> more than the invoice amount. 
+                    This excess will be available as credit for future invoices or can be refunded as per assembly policy.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {# Arrears Warning (only if no credit/overpayment) #}
+    {% if total_arrears > 0 and credit_applied_to_current == 0 and overpayment_on_current == 0 %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div style="background: #fff3cd; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border-left: 4px solid #ffc107;">
+                <p style="color: #856404; margin: 0; font-size: 0.9rem;">
+                    <strong>⚠️ Outstanding Arrears:</strong> This invoice includes 
+                    <strong>GHS {{ "{:,.2f}".format(total_arrears) }}</strong> in unpaid arrears 
+                    from {{ arrears_breakdown|length }} previous invoice(s). 
+                    Please settle all outstanding amounts.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {# ============================================
+       AMOUNT IN WORDS
+       ============================================ #}
+    <div class="row justify-content-end">
+        <div class="col-sm-12">
+            <table class="table wordify h6 text-dark">
+                <tbody>
+                    <tr class="b-top-0">
+                        <td class="text-right">
+                            Amount in words: 
+                            {% if is_fully_paid %}
+                                <strong>Zero Ghana Cedis only</strong> 
+                                (Fully Paid
+                                {% if credit_applied_to_current > 0 %}
+                                    - Credit of GHS {{ "{:,.2f}".format(credit_applied_to_current) }} applied
+                                {% endif %}
+                                {% if overpayment_on_current > 0 %}
+                                    - Overpayment: GHS {{ "{:,.2f}".format(overpayment_on_current) }} available as credit
+                                {% endif %}).
+                            {% else %}
+                                <strong>{{ grand_total_outstanding|in_words }}</strong>
+                                {% if credit_applied_to_current > 0 %}
+                                    (After GHS {{ "{:,.2f}".format(credit_applied_to_current) }} credit applied)
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            {# Payment Instructions #}
+            <div class="row">
+                <div class="col-md-6 pt-3">
+                    <b><u>Momo Account Details And Instructions</u></b><br>
+                    Momo code: <b>2503</b><br>
+                    1. Dial <b>*776*100#</b> on MTN, Vodafone and Airtel/Tigo<br>
+                    2. Enter merchant code: <b>2503</b><br>
+                    3. Merchant details will be displayed<br>
+                    4. Enter amount<br>
+                    5. Enter narration - Please include your 
+                    {% if invoice.property_id %}
+                        Property Account Number: <b>{{ property.account_no }}</b>
+                    {% else %}
+                        Business Account Number: <b>{{ business.account_no }}</b>
+                    {% endif %}<br>
+                    6. Confirm payment with Momo PIN.<br><br>
+                    
+                    <div style="background: #fee; padding: 1rem; border-radius: 4px; margin-top: 1rem; border-left: 4px solid #dc3545;">
+                        <p style="color: #721c24; margin: 0; font-size: 0.9rem;">
+                            <strong>⚠️ Important:</strong> Payment should be made at the Revenue Office or at the Assembly's Revenue Collector or the Bank or Mobile money details on this bill. Legal action shall be taken against defaulters after 31st March upon receipt of bill.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-5 pt-3">
+                    <div class="text-right">
+                        <img src="{{ url_for('static', filename='images/MFO_signature.jpg') }}" alt="Signature" style="width:12em;height:8em;" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <img src="{{ url_for('static', filename='images/MCD_signature.jpg') }}" alt="Signature" style="width:12em;height:8em;" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+            
+            <div class="text-right mr-4">
+                <button type="button" onclick="window.open('{{ url_for('print_business_invoice', invoice_id=invoice.id) }}', '_blank')" class="btn btn-primary ml-2">
+                    <i class="fa fa-print"></i> Save to PDF/Print
+                </button>
+            </div>
+            
+            <div id="watermark">
+                <img src="{{ url_for('static', filename='images/ghana_coat_of_arms.png') }}" alt="Watermark" onerror="this.style.display='none'">
+            </div>
+        </div>
+        
+        <!-- Payment Tab -->
+        <div class="tab-pane" id="payment">
+            <div class="card-body">
+                <!-- Invoice Status Display -->
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    {% if invoice.status == 'Paid' %}
+                        <div style="display: inline-block; padding: 1.5rem 2rem; background: #d1fae5; color: #065f46; border-radius: 8px; font-size: 1.25rem; font-weight: 600;">
+                            ✓ This Invoice Has Been Paid
+                        </div>
+                    {% elif invoice.status == 'Partially Paid' %}
+                        <div style="display: inline-block; padding: 1.5rem 2rem; background: #fef3c7; color: #78350f; border-radius: 8px; font-size: 1.25rem; font-weight: 600;">
+                            ⊙ This Invoice Has Been Partially Paid
+                        </div>
+                    {% else %}
+                        <div style="display: inline-block; padding: 1.5rem 2rem; background: #fee2e2; color: #991b1b; border-radius: 8px; font-size: 1.25rem; font-weight: 600;">
+                            ⏳ Payment Pending
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Payment Summary -->
+                {% set invoice_total = invoice.total_amount if invoice.total_amount else invoice.amount %}
+                {% set current_invoice_balance = invoice_total - total_paid %}
+                {% set grand_total_outstanding = current_invoice_balance + total_arrears %}
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="background: #f9fafb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #667eea;">
+                        <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">Invoice Amount ({{ invoice.year }})</div>
+                        <div style="font-size: 1.75rem; font-weight: bold; color: #667eea;">
+                            GHS {{ "{:,.2f}".format(invoice_total) }}
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #ffc107;">
+                        <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">Arrears (Previous Years)</div>
+                        <div style="font-size: 1.75rem; font-weight: bold; color: #856404;">
+                            GHS {{ "{:,.2f}".format(total_arrears) }}
+                        </div>
+                        {% if arrears_breakdown and arrears_breakdown|length > 0 %}
+                        <div style="font-size: 0.75rem; color: #856404; margin-top: 0.5rem;">
+                            From {{ arrears_breakdown|length }} unpaid invoice(s)
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="background: #f9fafb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #16a34a;">
+                        <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">Amount Paid ({{ invoice.year }})</div>
+                        <div style="font-size: 1.75rem; font-weight: bold; color: #16a34a;">
+                            GHS {{ "{:,.2f}".format(total_paid) }}
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fee2e2; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                        <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">Total Outstanding</div>
+                        <div style="font-size: 1.75rem; font-weight: bold; color: #dc2626;">
+                            GHS {{ "{:,.2f}".format(grand_total_outstanding) }}
+                        </div>
+                        <div style="font-size: 0.75rem; color: #991b1b; margin-top: 0.5rem;">
+                            Current: GHS {{ "{:,.2f}".format(current_invoice_balance) }} + 
+                            Arrears: GHS {{ "{:,.2f}".format(total_arrears) }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Arrears Breakdown (if present) -->
+                {% if total_arrears > 0 %}
+                <div style="background: #fffbf0; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid #ffc107;">
+                    <h4 style="color: #856404; margin-bottom: 1rem;">
+                        📋 Outstanding Arrears Breakdown
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead style="background: #fff3cd;">
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Invoice No</th>
+                                    <th class="text-right">Invoice Total</th>
+                                    <th class="text-right">Amount Paid</th>
+                                    <th class="text-right">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for arrear in arrears_breakdown %}
+                                <tr>
+                                    <td><strong>{{ arrear.year }}</strong></td>
+                                    <td>{{ arrear.invoice_no }}</td>
+                                    <td class="text-right">GHS {{ "{:,.2f}".format(arrear.total) }}</td>
+                                    <td class="text-right">GHS {{ "{:,.2f}".format(arrear.paid) }}</td>
+                                    <td class="text-right">
+                                        <strong style="color: #dc2626;">GHS {{ "{:,.2f}".format(arrear.balance) }}</strong>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tr style="background: #fff3cd; font-weight: bold;">
+                                    <td colspan="4" class="text-right">Total Arrears:</td>
+                                    <td class="text-right">
+                                        <strong style="color: #dc2626;">GHS {{ "{:,.2f}".format(total_arrears) }}</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Pay Invoice Button -->
+                {% if invoice.status != 'Paid' or total_arrears > 0 %}
+                <div style="text-align: center; padding: 3rem; background: #f9fafb; border-radius: 8px;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <svg style="width: 80px; height: 80px; color: #667eea;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 style="color: #333; margin-bottom: 1rem;">Record Payment for this Invoice</h3>
+                    <p style="color: #666; margin-bottom: 2rem;">
+                        Click the button below to record a payment for this invoice.<br>
+                        You can pay via Cash, Mobile Money, or Cheque.
+                        {% if total_arrears > 0 %}
+                        <br><br>
+                        <strong style="color: #856404;">
+                            ⚠️ Note: This invoice has GHS {{ "{:,.2f}".format(total_arrears) }} in arrears from previous years.
+                        </strong>
+                        {% endif %}
+                    </p>
+                    <a href="{{ url_for('pay_business_invoice', invoice_id=invoice.id) }}" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">
+                        💳 Pay Invoice Now
+                    </a>
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">✓</div>
+                    <h3 style="color: #065f46; margin-bottom: 1rem;">Invoice Fully Paid</h3>
+                    <p style="color: #666;">This invoice has been fully paid. View transaction history in the Transactions tab.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Transactions Tab -->
+<div class="tab-pane" id="transactions">
+    <div class="card-body">
+        <h3 style="margin-bottom: 1.5rem; color: #667eea;">Payment Transaction History</h3>
+        
+        {% if payments and payments|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Payment Mode</th>
+                        <th>GCR Number</th>
+                        <th>Payment Type</th>
+                        <th>Paid By</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Recorded By</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                    <tr {% if payment.payment_type == 'Overpayment' %}style="background: #fff9e6;"{% endif %}>
+                        <td>{{ payment.payment_date.strftime('%Y-%m-%d %H:%M') if payment.payment_date else 'N/A' }}</td>
+                        <td>
+                            {% if payment.payment_mode == 'Cash' %}
+                                💵 Cash
+                            {% elif payment.payment_mode in ['MoMo', 'Mobile Money Number'] %}
+                                📱 Mobile Money
+                            {% elif payment.payment_mode == 'Cheque' %}
+                                🏦 Cheque
+                            {% else %}
+                                {{ payment.payment_mode }}
+                            {% endif %}
+                        </td>
+                        <td>{{ payment.gcr_number or 'N/A' }}</td>
+                        <td>
+                            {% if payment.payment_type == 'Overpayment' %}
+                                <span style="padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem; background: #fff3cd; color: #856404; font-weight: 600;">
+                                    💰 {{ payment.payment_type }}
+                                </span>
+                            {% else %}
+                                {{ payment.payment_type or 'N/A' }}
+                            {% endif %}
+                        </td>
+                        <td>{{ payment.paid_by or 'N/A' }}</td>
+                        <td>
+                            <strong>GHS {{ "{:,.2f}".format(payment.payment_amount) }}</strong>
+                            {% if payment.payment_type == 'Overpayment' %}
+                                <br><small style="color: #856404;">⚠️ Excess payment</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span style="padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem; 
+                                {% if payment.status == 'Completed' %}
+                                    background: #d1fae5; color: #065f46;
+                                {% else %}
+                                    background: #fee2e2; color: #991b1b;
+                                {% endif %}">
+                                {{ payment.status }}
+                            </span>
+                        </td>
+                        <td>{{ payment.created_by or 'System' }}</td>
+                        <td>
+                            {% if payment.notes %}
+                                <small style="color: #856404;">{{ payment.notes }}</small>
+                            {% else %}
+                                <span style="color: #999;">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr style="background: #f9fafb; font-weight: bold;">
+                        <td colspan="5" class="text-right">Total Paid:</td>
+                        <td colspan="4">
+                            GHS {{ "{:,.2f}".format(total_paid) }}
+                            {% set overpayment_total = total_paid - (invoice.total_amount if invoice.total_amount else invoice.amount) %}
+                            {% if overpayment_total > 0 %}
+                                <br><small style="color: #856404; font-weight: normal;">
+                                    (Includes GHS {{ "{:,.2f}".format(overpayment_total) }} overpayment)
+                                </small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <!-- Overpayment Notice -->
+        {% set overpayment_total = total_paid - (invoice.total_amount if invoice.total_amount else invoice.amount) %}
+        {% if overpayment_total > 0 %}
+        <div style="background: #fff3cd; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border-left: 4px solid #ffc107;">
+            <p style="color: #856404; margin: 0; font-size: 0.9rem;">
+                <strong>💰 Overpayment Notice:</strong> This invoice has received 
+                <strong>GHS {{ "{:,.2f}".format(overpayment_total) }}</strong> more than the invoice amount. 
+                The excess can be applied to future invoices.
+            </p>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div style="text-align: center; padding: 3rem; color: #666;">
+            <p>No transactions recorded yet.</p>
+            <p style="font-size: 0.9rem; margin-top: 1rem;">
+                Payments made for this invoice will appear here.
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+        
+        <!-- Adjustment Tab -->
+<div class="tab-pane" id="adjustment">
+    <div class="card-body">
+        <div class="card mb-4 p-4">
+            <h5 class="card-title">Apply New Adjustment (Credit/Debit)</h5>
+            <form method="GET" action="{{ url_for('create_business_adjustment', invoice_id=invoice.id) }}">
+                <div class="form-row row g-3">
+                    <div class="col-md-12 form-group">
+                        <button type="submit" class="btn btn-primary w-100">
+                            ➕ Create New Adjustment
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <h4 class="mb-3">Adjustment History</h4>
+        {% if adjustments %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount (GHS)</th>
+                        <th>Original</th>
+                        <th>New Amount</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Created By</th>
+                        <th>Approved By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for adj in adjustments %}
+                    <tr class="{% if adj.adjustment_type == 'Credit' or adj.adjustment_type == 'Waiver' %}table-success{% elif adj.adjustment_type == 'Penalty' %}table-danger{% endif %}">
+                        <td>{{ adj.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            <span class="badge bg-{% if adj.adjustment_type == 'Credit' or adj.adjustment_type == 'Waiver' %}success{% else %}danger{% endif %}">
+                                {{ adj.adjustment_type }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if adj.adjustment_amount > 0 %}
+                                <span style="color: #dc3545;">+{{ "{:,.2f}".format(adj.adjustment_amount) }}</span>
+                            {% else %}
+                                <span style="color: #28a745;">{{ "{:,.2f}".format(adj.adjustment_amount) }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ "{:,.2f}".format(adj.original_amount) }}</td>
+                        <td><strong>{{ "{:,.2f}".format(adj.new_amount) }}</strong></td>
+                        <td>
+                            <strong>{{ adj.reason }}</strong><br>
+                            <small>{{ adj.description }}</small>
+                        </td>
+                        <td>
+                            {% if adj.status == 'Approved' %}
+                                <span class="badge bg-success">✓ Approved</span>
+                            {% elif adj.status == 'Rejected' %}
+                                <span class="badge bg-danger">✗ Rejected</span>
+                            {% else %}
+                                <span class="badge bg-warning">⏳ Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ adj.creator.username if adj.creator else 'System' }}</td>
+                        <td>
+                            {% if adj.approver %}
+                                {{ adj.approver.username }}<br>
+                                <small>{{ adj.approved_at.strftime('%Y-%m-%d') if adj.approved_at else '' }}</small>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="alert alert-info">No adjustments have been made to this invoice yet.</p>
+        {% endif %}
+    </div>
+</div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // === TAB SWITCHING ===
+    document.querySelectorAll('.nav-tabs a').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const targetId = this.getAttribute('href').replace('#', '');
+            
+            // Remove active from all
+            document.querySelectorAll('.nav-tabs li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+                pane.style.display = 'none';
+            });
+            
+            // Add active to clicked
+            this.parentElement.classList.add('active');
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) {
+                targetPane.classList.add('active');
+                targetPane.style.display = 'block';
+            }
+        });
+    });
+    
+    // Initialize hidden panes
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        if (!pane.classList.contains('active')) {
+            pane.style.display = 'none';
+        }
+    });
+});
+
+// Toggle arrears breakdown
+function toggleArrearsBreakdown() {
+    const breakdown = document.getElementById('arrears-breakdown');
+    const icon = document.getElementById('arrears-toggle-icon');
+    
+    if (breakdown && icon) {
+        if (breakdown.style.display === 'none' || breakdown.style.display === '') {
+            breakdown.style.display = '';
+            icon.textContent = '▲';
+        } else {
+            breakdown.style.display = 'none';
+            icon.textContent = '▼';
+        }
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,519 @@
+{% extends "base.html" %}
+
+{% block title %}Bulk Upload Properties{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 1fr;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-group input[type="file"],
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: #fff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group select {
+        cursor: pointer;
+    }
+    
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+        background: #fff;
+    }
+    
+    .card-header h5 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        color: #333;
+    }
+    
+    .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .alert-info {
+        background: #e6f7ff;
+        border: 1px solid #91d5ff;
+        color: #0050b3;
+    }
+
+    .alert-warning {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #856404;
+    }
+    
+    .alert i {
+        font-size: 1.25rem;
+    }
+    
+    .alert strong {
+        font-weight: 700;
+    }
+    
+    .list-instructions {
+        padding-left: 1.5rem;
+        margin-top: 0.5rem;
+        color: #555;
+    }
+    
+    .list-instructions li {
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-success {
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    .btn-success:hover {
+        background: #0ea775;
+    }
+
+    /* Update Mode Helper */
+    .update-mode-info {
+        display: none;
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        border-left: 4px solid;
+    }
+
+    .update-mode-info.active {
+        display: block;
+    }
+
+    .update-mode-info.skip {
+        background: #e3f2fd;
+        border-color: #2196f3;
+        color: #0d47a1;
+    }
+
+    .update-mode-info.update {
+        background: #fff3e0;
+        border-color: #ff9800;
+        color: #e65100;
+    }
+
+    .update-mode-info.fail {
+        background: #ffebee;
+        border-color: #f44336;
+        color: #b71c1c;
+    }
+
+    /* File Size Info */
+    .file-size-info {
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        color: #856404;
+        display: none;
+    }
+
+    .file-size-info.show {
+        display: block;
+    }
+
+    /* Upload Progress */
+    .upload-progress {
+        display: none;
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .upload-progress.active {
+        display: block;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        height: 30px;
+        background: #e9ecef;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        width: 0%;
+        transition: width 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+    }
+
+    .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-content-header">
+    <h2><i class="fas fa-upload"></i> Bulk Upload Properties</h2>
+    <a href="{{ url_for('list_properties') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Properties
+    </a>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="m-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message | safe }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="row" style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+    <div style="flex: 2; min-width: 300px;">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-file-upload"></i> Upload CSV/Excel File</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                    <!-- 🔧 NEW: Update Mode Selection -->
+                    <div class="form-group">
+                        <label for="update_mode">
+                            <i class="fas fa-cog"></i> Action for Existing Properties
+                        </label>
+                        <select name="update_mode" id="update_mode" class="form-control" required>
+                            <option value="skip">Skip existing (don't modify)</option>
+                            <option value="update">Update existing properties</option>
+                            <option value="fail">Fail on duplicates (strict mode)</option>
+                        </select>
+                        
+                        <!-- Dynamic info box based on selection -->
+                        <div class="update-mode-info skip active" id="info-skip">
+                            <i class="fas fa-info-circle"></i> <strong>Skip Mode:</strong> 
+                            Existing properties with the same account number will be ignored. Only new properties will be added.
+                        </div>
+                        <div class="update-mode-info update" id="info-update">
+                            <i class="fas fa-exclamation-triangle"></i> <strong>Update Mode:</strong> 
+                            Existing properties will be updated with new data from the file. This will overwrite current values!
+                        </div>
+                        <div class="update-mode-info fail" id="info-fail">
+                            <i class="fas fa-times-circle"></i> <strong>Strict Mode:</strong> 
+                            Upload will fail if any duplicate account numbers are found. Use this to ensure you're only adding new properties.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Select File</label>
+                        <input type="file" id="file" name="file" 
+                               accept=".csv,.xlsx" required>
+                        <small class="text-muted" style="display: block; margin-top: 0.25rem;">
+                            Accepted formats: CSV, XLSX (Max: 1GB)
+                        </small>
+                        
+                        <!-- File Size Info -->
+                        <div class="file-size-info" id="fileSizeInfo"></div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Important:</strong> Make sure your file matches the template format. 
+                            <span style="font-weight: 500;">Large files may take several minutes to process.</span>
+                        </div>
+                    </div>
+
+                    <!-- Upload Progress -->
+                    <div class="upload-progress" id="uploadProgress">
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <div class="spinner"></div>
+                            <strong id="progressStatus">Uploading file...</strong>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar">0%</div>
+                        </div>
+                        <div class="progress-info">
+                            <span id="progressText">Preparing upload...</span>
+                            <span id="progressSpeed"></span>
+                        </div>
+                        <p style="margin-top: 1rem; text-align: center; color: #666; font-size: 0.875rem;">
+                            <i class="fas fa-info-circle"></i> Please do not close this page or refresh your browser.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; text-align: center;">
+                        <button type="submit" class="btn btn-primary" id="submitBtn" style="padding: 1rem 3rem;">
+                            <i class="fas fa-cloud-upload-alt"></i> Process Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div style="flex: 1; min-width: 250px;">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Instructions</h5>
+            </div>
+            <div class="card-body">
+                <ol class="list-instructions">
+                    <li>Download the template file</li>
+                    <li>Fill in the property details exactly as required</li>
+                    <li><strong>Choose update mode</strong> (skip/update/fail)</li>
+                    <li>Save as CSV or Excel (.xlsx)</li>
+                    <li>Upload the file (up to 1GB)</li>
+                    <li>Wait for processing to complete</li>
+                </ol>
+                
+                <a href="{{ url_for('download_property_template') }}" 
+                   class="btn btn-success w-100" style="margin-top: 1rem;">
+                    <i class="fas fa-download"></i> Download Template
+                </a>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem;">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-asterisk"></i> Required Fields</h5>
+            </div>
+            <div class="card-body">
+                <ul class="small" style="list-style: none; padding-left: 0; columns: 2; font-size: 0.9rem;">
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> account_no</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> owner_name</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> electoral_area</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> town</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> block_no</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> parcel_no</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> division_no</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> category</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> property_class</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> zone</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> use_code</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> valuation_status</li>
+                    <li><i class="fas fa-check-circle" style="color: #667eea; margin-right: 0.5rem;"></i> rateable_value</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem;">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="small" style="list-style: none; padding-left: 0; font-size: 0.85rem; color: #555;">
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Use <strong>Update Mode</strong> to modify existing properties
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Account numbers must be unique
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Phone numbers: 0XXXXXXXXX format
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Rateable value must be numeric
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Update mode info toggle
+document.getElementById('update_mode').addEventListener('change', function() {
+    const mode = this.value;
+    
+    // Hide all info boxes
+    document.querySelectorAll('.update-mode-info').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Show selected mode info
+    document.getElementById('info-' + mode).classList.add('active');
+    
+    // Update submit button text based on mode
+    const submitBtn = document.getElementById('submitBtn');
+    const btnIcon = '<i class="fas fa-cloud-upload-alt"></i>';
+    
+    if (mode === 'update') {
+        submitBtn.innerHTML = btnIcon + ' Process Upload (Update Mode)';
+        submitBtn.style.background = '#ff9800';
+    } else if (mode === 'fail') {
+        submitBtn.innerHTML = btnIcon + ' Process Upload (Strict Mode)';
+        submitBtn.style.background = '#f44336';
+    } else {
+        submitBtn.innerHTML = btnIcon + ' Process Upload';
+        submitBtn.style.background = '';
+    }
+});
+
+// File size validation and display
+document.getElementById('file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const fileSizeInfo = document.getElementById('fileSizeInfo');
+    
+    if (file) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        const sizeGB = (file.size / (1024 * 1024 * 1024)).toFixed(2);
+        
+        if (file.size > 1024 * 1024 * 1024) {
+            fileSizeInfo.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <strong>File too large:</strong> ${sizeGB} GB (Max: 1GB)`;
+            fileSizeInfo.style.background = '#f8d7da';
+            fileSizeInfo.style.borderColor = '#dc3545';
+            fileSizeInfo.style.color = '#721c24';
+            document.getElementById('submitBtn').disabled = true;
+        } else if (sizeMB > 100) {
+            fileSizeInfo.innerHTML = `<i class="fas fa-info-circle"></i> <strong>File size:</strong> ${sizeMB} MB - This may take several minutes to process`;
+            fileSizeInfo.style.background = '#fff3cd';
+            fileSizeInfo.style.borderColor = '#ffc107';
+            fileSizeInfo.style.color = '#856404';
+            document.getElementById('submitBtn').disabled = false;
+        } else {
+            fileSizeInfo.innerHTML = `<i class="fas fa-check-circle"></i> <strong>File size:</strong> ${sizeMB} MB`;
+            fileSizeInfo.style.background = '#d4edda';
+            fileSizeInfo.style.borderColor = '#28a745';
+            fileSizeInfo.style.color = '#155724';
+            document.getElementById('submitBtn').disabled = false;
+        }
+        
+        fileSizeInfo.classList.add('show');
+    } else {
+        fileSizeInfo.classList.remove('show');
+    }
+});
+
+// Upload progress tracking
+document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    const fileInput = document.getElementById('file');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        e.preventDefault();
+        alert('Please select a file to upload');
+        return;
+    }
+    
+    // Show progress bar
+    document.getElementById('uploadProgress').classList.add('active');
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').innerHTML = '<div class="spinner"></div> Uploading...';
+    
+    // Simulate progress
+    let progress = 0;
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const progressStatus = document.getElementById('progressStatus');
+    const progressSpeed = document.getElementById('progressSpeed');
+    
+    const startTime = Date.now();
+    const fileSize = file.size;
+    
+    const interval = setInterval(function() {
+        const increment = fileSize > 100 * 1024 * 1024 ? 2 : 5;
+        progress += increment;
+        
+        if (progress >= 95) {
+            progress = 95;
+            progressText.textContent = 'Processing data on server...';
+            progressStatus.textContent = 'Processing file...';
+            clearInterval(interval);
+        } else {
+            const elapsed = (Date.now() - startTime) / 1000;
+            const uploaded = (fileSize * progress / 100);
+            const speed = (uploaded / elapsed / 1024 / 1024).toFixed(2);
+            
+            progressText.textContent = `Uploaded: ${(uploaded / 1024 / 1024).toFixed(2)} MB of ${(fileSize / 1024 / 1024).toFixed(2)} MB`;
+            progressSpeed.textContent = `${speed} MB/s`;
+        }
+        
+        progressBar.style.width = progress + '%';
+        progressBar.textContent = Math.floor(progress) + '%';
+    }, 500);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% block content %}
+<div class="two-column-login">
+    <div class="login-left">
+        <div class="info-section">
+            <h1>Get more things done with <br><span>Catalonia Revenue Platform</span></h1>
+            <p>Access the most powerful tool to collect data and mobilize revenue.</p>
+            <img src="{{ url_for('static', filename='images/undraw_team-up_qeem.svg') }}" alt="Illustration">
+        </div>
+    </div>
+    
+    <div class="login-right">
+        <div class="login-box">
+            <h2>Login</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn-login">Login</button>
+                    <div class="forgot-password">
+                        <a href="{{ url_for('forgot_password') }}">Forgot your password?</a>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.two-column-login {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Left section */
+.login-left {
+    flex: 1;
+    background-color: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+}
+
+.info-section {
+    max-width: 450px;
+    text-align: center; /* Center text and image horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center vertically */
+}
+
+.info-section h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0a347f;
+    margin-bottom: 1rem;
+}
+
+.info-section h1 span {
+    color: #007bff;
+}
+
+.info-section p {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    color: #555;
+}
+
+.info-section img {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+}
+
+/* Right section */
+.login-right {
+    flex: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+
+.login-box {
+    width: 100%;
+    max-width: 380px;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-box h2 {
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #fff;
+    padding-left: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-login {
+    width: 100%;
+    background: white;
+    color: #667eea;
+    font-weight: 700;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+
+.forgot-password {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.forgot-password a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+}
+
+.forgot-password a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+</style>
+{% endblock %}

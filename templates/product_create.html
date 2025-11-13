@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Product Creation{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        outline: none;
+    }
+
+    .form-actions {
+        padding: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s, opacity 0.3s;
+    }
+
+    .section-divider {
+        margin: 2rem 0 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e0e0e0;
+        color: #667eea;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-cube"></i> Product Creation</h2>
+        <a href="{{ url_for('list_products') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="m-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message | safe }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('create_product') }}" id="productForm">
+        <div class="card-body">
+            
+            <!-- Basic Product Information -->
+            <h3 class="section-divider">
+                <i class="fas fa-tag"></i> Basic Product Information
+            </h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="product_name">Product/Service Name: <span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" id="product_name" name="product_name" required 
+                           value="{{ product.product_name | default('') }}" placeholder="e.g., Restaurant License - Small">
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount (GHS): <span style="color: red;">*</span></label>
+                    <input type="number" class="form-control" id="amount" name="amount" step="0.01" required 
+                           value="{{ product.amount or '' }}" placeholder="0.00">
+                </div>
+            </div>
+
+            <!-- Product Categories -->
+            <h3 class="section-divider" style="margin-top: 2.5rem;">
+                <i class="fas fa-sitemap"></i> Product Categories (Optional)
+            </h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="category1">Category 1:</label>
+                    <input type="text" class="form-control" id="category1" name="category1" 
+                           value="{{ product.category1 or '' }}" placeholder="e.g., Food Service">
+                </div>
+                <div class="form-group">
+                    <label for="category2">Category 2:</label>
+                    <input type="text" class="form-control" id="category2" name="category2" 
+                           value="{{ product.category2 or '' }}" placeholder="e.g., Small Scale">
+                </div>
+                <div class="form-group">
+                    <label for="category3">Category 3:</label>
+                    <input type="text" class="form-control" id="category3" name="category3" 
+                           value="{{ product.category3 or '' }}" placeholder="e.g., Indoor">
+                </div>
+                <div class="form-group">
+                    <label for="category4">Category 4:</label>
+                    <input type="text" class="form-control" id="category4" name="category4" 
+                           value="{{ product.category4 or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="category5">Category 5:</label>
+                    <input type="text" class="form-control" id="category5" name="category5" 
+                           value="{{ product.category5 or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="category6">Category 6:</label>
+                    <input type="text" class="form-control" id="category6" name="category6" 
+                           value="{{ product.category6 or '' }}">
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="form-actions">
+            <a href="{{ url_for('list_products') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Create Product
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-focus on first input
+    document.getElementById('product_name').focus();
+</script>
+{% endblock %}

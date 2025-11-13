@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}Create/Update Property Invoice{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2 style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-file-invoice"></i> Property Invoice</h2>
+        <p class="text-muted">Generate or update the **Property Rate Invoice** for Account: <strong>{{ property.account_no }}</strong></p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Invoice Generation Details</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('create_invoice', id=property.id) }}" id="invoiceForm">
+            <input type="hidden" name="property_id" value="{{ property.id }}">
+
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label for="generation_type">Action Type: <span class="text-danger">*</span></label>
+                    <select id="generation_type" name="generation_type" class="form-control" required>
+                        <option value="">-- Select Action --</option>
+                        <option value="generate_new">Generate New Bill</option>
+                        <option value="update_existing">Update Existing Bill</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="invoice_year">Invoice Year: <span class="text-danger">*</span></label>
+                    <select id="invoice_year" name="invoice_year" class="form-control" required>
+                        <option value="">-- Select Year --</option>
+                        {% for year in get_year_range() %}
+                        <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!--<div class="form-group">
+                    <label for="product_id">Rate/Product Item: <span class="text-danger">*</span></label>
+                    <select id="product_id" name="product_id" class="form-control" required>
+                        <option value="">-- Select Rate/Product --</option>
+                        <option value="1">Annual Property Rate</option>
+                        <option value="2">Sanitation Fee</option>
+                        <option value="3">Special Permit Fee</option>
+                    </select>
+                </div>-->
+
+                <div class="form-group">
+                    <label for="amount_type">Amount Calculation: <span class="text-danger">*</span></label>
+                    <select id="amount_type" name="amount_type" class="form-control" required>
+                        <option value="">-- Select Calculation Method --</option>
+                        <option value="fee_fixing">Fee Fixing (Rateable Value * Rate Impost)</option>
+                        <option value="fixed_amount">Fixed Amount</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="fixedAmountGroup" style="display: none;">
+                    <label for="amount">Fixed Amount (GH₵): <span class="text-danger">*</span></label>
+                    <input type="number" step="0.01" min="0" id="amount" name="amount" class="form-control" placeholder="e.g., 500.00">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tax_rate">Tax Rate (%):</label>
+                    <input type="number" step="0.01" min="0" max="100" id="tax_rate" name="tax_rate" class="form-control" value="0.00">
+                </div>
+
+                <div class="form-group">
+                    <label for="invoice_date">Invoice Date: <span class="text-danger">*</span></label>
+                    <input type="date" id="invoice_date" name="invoice_date" class="form-control" value="{{ today_date() }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="due_date">Due Date: <span class="text-danger">*</span></label>
+                    <input type="date" id="due_date" name="due_date" class="form-control" value="{{ default_due_date() }}" required>
+                </div>
+                
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" rows="3" placeholder="A brief description of the service/item being billed."></textarea>
+            </div>
+            
+            <div id="statusMessage" class="alert mt-3" style="display: none;"></div>
+            
+            <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                <a href="{{ url_for('view_property', id=property.id) }}" class="btn btn-secondary">
+                    <i class="fas fa-times-circle"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary" id="submitButton" disabled>
+                    <i class="fas fa-plus-circle"></i> Generate Invoice
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Kept your existing CSS for consistency */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    .form-control {
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        transition: border-color 0.3s;
+    }
+    .form-control:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+    }
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.3s, opacity 0.3s;
+    }
+    .btn-primary {
+        background-color: #667eea;
+        color: white;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #556ee6;
+        opacity: 0.9;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        opacity: 0.9;
+    }
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+        background: white;
+    }
+    .card-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        background-color: #f8f9fa;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+    .alert {
+        padding: 1rem;
+        border-radius: 5px;
+        font-weight: 500;
+    }
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const amountTypeSelect = document.getElementById('amount_type');
+        const fixedAmountGroup = document.getElementById('fixedAmountGroup');
+        const amountInput = document.getElementById('amount');
+        const generationTypeSelect = document.getElementById('generation_type');
+        const invoiceYearSelect = document.getElementById('invoice_year');
+        const submitButton = document.getElementById('submitButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Data structure to hold existing invoices (passed from Flask)
+        const existingInvoices = [
+            {% for invoice in existing_invoices %}
+                { year: {{ invoice.year }}, invoice_id: {{ invoice.id }} },
+            {% endfor %}
+        ];
+
+        // --- Function to toggle fixed amount visibility ---
+        function toggleFixedAmountInput() {
+            if (amountTypeSelect.value === 'fixed_amount') {
+                fixedAmountGroup.style.display = 'flex';
+                amountInput.setAttribute('required', 'required');
+            } else {
+                fixedAmountGroup.style.display = 'none';
+                amountInput.removeAttribute('required');
+                amountInput.value = ''; // Clear value if hidden
+            }
+            validateForm();
+        }
+
+        // --- Function to validate invoice generation based on year ---
+        function validateForm() {
+            const year = invoiceYearSelect.value;
+            const generationType = generationTypeSelect.value;
+            const amountType = amountTypeSelect.value;
+            
+            statusMessage.style.display = 'none';
+            submitButton.disabled = true;
+
+            // Check if all required fields are selected
+            if (!year || !generationType || !amountType) {
+                return; 
+            }
+
+            // If fixed amount is selected, check if amount is entered
+            if (amountType === 'fixed_amount' && (!amountInput.value || parseFloat(amountInput.value) <= 0)) {
+                statusMessage.className = 'alert alert-warning';
+                statusMessage.innerHTML = '<strong>Warning:</strong> Please enter a valid fixed amount.';
+                statusMessage.style.display = 'block';
+                return;
+            }
+
+            const existingInvoiceForYear = existingInvoices.find(inv => inv.year == year);
+
+            // Logic for "Generate New Bill"
+            if (generationType === 'generate_new') {
+                if (existingInvoiceForYear) {
+                    statusMessage.className = 'alert alert-danger';
+                    statusMessage.innerHTML = '<strong>Error:</strong> An invoice for year ' + year + ' already exists (Invoice ID: ' + existingInvoiceForYear.invoice_id + '). You must select "Update Existing Bill" to modify it.';
+                    statusMessage.style.display = 'block';
+                    submitButton.disabled = true;
+                } else {
+                    statusMessage.className = 'alert alert-success';
+                    statusMessage.innerHTML = '✅ Ready to <strong>Generate New Bill</strong> for ' + year + '.';
+                    statusMessage.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-plus-circle"></i> Generate Invoice';
+                }
+            } 
+            // Logic for "Update Existing Bill"
+            else if (generationType === 'update_existing') {
+                if (!existingInvoiceForYear) {
+                    statusMessage.className = 'alert alert-warning';
+                    statusMessage.innerHTML = '<strong>Warning:</strong> No existing invoice found for year ' + year + '. Please select "Generate New Bill" to create a new one.';
+                    statusMessage.style.display = 'block';
+                    submitButton.disabled = true;
+                } else {
+                    statusMessage.className = 'alert alert-success';
+                    statusMessage.innerHTML = '🔄 Ready to <strong>Update Existing Bill</strong> (Invoice ID: ' + existingInvoiceForYear.invoice_id + ') for ' + year + '.';
+                    statusMessage.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-edit"></i> Update Invoice';
+                }
+            }
+        }
+
+        // --- Event Listeners ---
+        amountTypeSelect.addEventListener('change', toggleFixedAmountInput);
+        generationTypeSelect.addEventListener('change', validateForm);
+        invoiceYearSelect.addEventListener('change', validateForm);
+        
+        // Add listener for amount input to validate in real-time
+        amountInput.addEventListener('input', validateForm);
+        
+        // Initial call to set up the form state
+        toggleFixedAmountInput();
+        validateForm();
+    });
+</script>
+{% endblock %}

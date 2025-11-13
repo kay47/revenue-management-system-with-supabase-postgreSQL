@@ -1,0 +1,434 @@
+{% extends "base.html" %}
+
+{% block title %}Product Details - {{ product.product_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .info-section {
+        background: #f9fafb;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .info-section h3 {
+        color: #667eea;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+    }
+    
+    .detail-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+    }
+    
+    .detail-value {
+        color: #333;
+        font-size: 1rem;
+    }
+    
+    .detail-value.empty {
+        color: #999;
+        font-style: italic;
+    }
+    
+    .detail-value.amount {
+        color: #10b981;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    
+    .edit-mode {
+        display: none;
+    }
+    
+    .edit-mode.active {
+        display: block;
+    }
+    
+    .view-mode.hidden {
+        display: none;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #555;
+        font-size: 0.9rem;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        outline: none;
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+    }
+    
+    .stats-card h4 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    .stats-card p {
+        margin: 0.5rem 0 0;
+        opacity: 0.9;
+        font-size: 0.9rem;
+    }
+    
+    .invoices-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    
+    .invoices-table th,
+    .invoices-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .invoices-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #667eea;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    }
+    
+    .invoices-table tbody tr:hover {
+        background: #f9fafb;
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.375rem;
+    }
+    
+    .badge-success {
+        color: #155724;
+        background-color: #d4edda;
+    }
+    
+    .badge-warning {
+        color: #856404;
+        background-color: #fff3cd;
+    }
+    
+    .badge-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-cube"></i> Product Details</h2>
+        <div style="display: flex; gap: 0.75rem;">
+            <a href="{{ url_for('list_products') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+            <button onclick="toggleEditMode()" class="btn btn-primary" id="editBtn">
+                <i class="fas fa-edit"></i> Edit Product
+            </button>
+            <button onclick="deleteProduct({{ product.id }}, '{{ product.product_name }}')" 
+                    class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Delete
+            </button>
+        </div>
+    </div>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="m-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message | safe }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <div class="card-body">
+        <!-- VIEW MODE -->
+        <div id="viewMode" class="view-mode">
+            <div class="info-section">
+                <h3><i class="fas fa-info-circle"></i> Basic Information</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Product ID</div>
+                        <div class="detail-value">#{{ product.id }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Product Name</div>
+                        <div class="detail-value">{{ product.product_name }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Amount</div>
+                        <div class="detail-value amount">{{ format_currency(product.amount) }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Created At</div>
+                        <div class="detail-value">{{ format_date(product.created_at) }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h3><i class="fas fa-sitemap"></i> Categories</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Category 1</div>
+                        <div class="detail-value {{ 'empty' if not product.category1 }}">
+                            {{ product.category1 or 'Not set' }}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Category 2</div>
+                        <div class="detail-value {{ 'empty' if not product.category2 }}">
+                            {{ product.category2 or 'Not set' }}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Category 3</div>
+                        <div class="detail-value {{ 'empty' if not product.category3 }}">
+                            {{ product.category3 or 'Not set' }}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Category 4</div>
+                        <div class="detail-value {{ 'empty' if not product.category4 }}">
+                            {{ product.category4 or 'Not set' }}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Category 5</div>
+                        <div class="detail-value {{ 'empty' if not product.category5 }}">
+                            {{ product.category5 or 'Not set' }}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Category 6</div>
+                        <div class="detail-value {{ 'empty' if not product.category6 }}">
+                            {{ product.category6 or 'Not set' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EDIT MODE -->
+        <div id="editMode" class="edit-mode">
+            <form method="POST" action="{{ url_for('edit_product', id=product.id) }}" id="editForm">
+                <div class="info-section">
+                    <h3><i class="fas fa-edit"></i> Edit Basic Information</h3>
+                    <div class="detail-grid">
+                        <div class="form-group">
+                            <label for="product_name">Product Name: <span style="color: red;">*</span></label>
+                            <input type="text" class="form-control" id="product_name" 
+                                   name="product_name" required 
+                                   value="{{ product.product_name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount (GHS): <span style="color: red;">*</span></label>
+                            <input type="number" class="form-control" id="amount" 
+                                   name="amount" step="0.01" required 
+                                   value="{{ product.amount }}">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3><i class="fas fa-sitemap"></i> Edit Categories</h3>
+                    <div class="detail-grid">
+                        <div class="form-group">
+                            <label for="category1">Category 1:</label>
+                            <input type="text" class="form-control" id="category1" 
+                                   name="category1" value="{{ product.category1 or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="category2">Category 2:</label>
+                            <input type="text" class="form-control" id="category2" 
+                                   name="category2" value="{{ product.category2 or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="category3">Category 3:</label>
+                            <input type="text" class="form-control" id="category3" 
+                                   name="category3" value="{{ product.category3 or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="category4">Category 4:</label>
+                            <input type="text" class="form-control" id="category4" 
+                                   name="category4" value="{{ product.category4 or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="category5">Category 5:</label>
+                            <input type="text" class="form-control" id="category5" 
+                                   name="category5" value="{{ product.category5 or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="category6">Category 6:</label>
+                            <input type="text" class="form-control" id="category6" 
+                                   name="category6" value="{{ product.category6 or '' }}">
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" onclick="toggleEditMode()" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- USAGE STATISTICS -->
+        {% if bop_invoices %}
+        <div class="info-section" style="margin-top: 2rem;">
+            <h3><i class="fas fa-chart-bar"></i> Usage Statistics</h3>
+            <div class="detail-grid">
+                <div class="stats-card">
+                    <h4>{{ bop_invoices|length }}</h4>
+                    <p>Business Invoices Using This Product</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3><i class="fas fa-file-invoice"></i> Business Invoices</h3>
+            <div class="table-responsive">
+                <table class="invoices-table">
+                    <thead>
+                        <tr>
+                            <th>Invoice No</th>
+                            <th>Business</th>
+                            <th>Amount</th>
+                            <th>Year</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invoice in bop_invoices %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('view_business_invoice', invoice_id=invoice.id) }}" 
+                                   style="color: #667eea; text-decoration: none; font-weight: 600;">
+                                    {{ invoice.invoice_no }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('view_business', id=invoice.business_id) }}"
+                                   style="color: #333; text-decoration: none;">
+                                    {{ invoice.business.business_name }}
+                                </a>
+                            </td>
+                            <td>{{ format_currency(invoice.amount) }}</td>
+                            <td>{{ invoice.year }}</td>
+                            <td>
+                                <span class="badge badge-{{ 'success' if invoice.status == 'Paid' else ('warning' if invoice.status == 'Partially Paid' else 'danger') }}">
+                                    {{ invoice.status }}
+                                </span>
+                            </td>
+                            <td>{{ format_date(invoice.created_at) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="info-section" style="text-align: center; padding: 2rem; color: #999;">
+            <i class="fas fa-info-circle" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <p>This product is not currently used in any business invoices.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleEditMode() {
+        const viewMode = document.getElementById('viewMode');
+        const editMode = document.getElementById('editMode');
+        const editBtn = document.getElementById('editBtn');
+        
+        if (editMode.classList.contains('active')) {
+            // Switch to view mode
+            editMode.classList.remove('active');
+            viewMode.classList.remove('hidden');
+            editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Product';
+        } else {
+            // Switch to edit mode
+            editMode.classList.add('active');
+            viewMode.classList.add('hidden');
+            editBtn.innerHTML = '<i class="fas fa-eye"></i> View Mode';
+            // Focus on first input
+            document.getElementById('product_name').focus();
+        }
+    }
+    
+    function deleteProduct(id, productName) {
+        if (confirm(`Are you sure you want to delete product "${productName}"?\n\nThis action cannot be undone.`)) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/product/delete/${id}`;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+{% endblock %}

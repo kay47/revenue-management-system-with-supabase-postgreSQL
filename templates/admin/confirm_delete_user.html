@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Delete User{% endblock %}
+
+{% block extra_css %}
+<style>
+    .confirm-container {
+        max-width: 600px;
+        margin: 3rem auto;
+    }
+
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 2px solid #dc3545;
+    }
+
+    .card-header {
+        background: #dc3545;
+        color: white;
+        padding: 1.5rem;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .card-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .warning-icon {
+        font-size: 4rem;
+        color: #dc3545;
+        text-align: center;
+        margin: 2rem 0 1rem;
+    }
+
+    .user-details {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+
+    .user-details h4 {
+        margin-top: 0;
+        color: #333;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #666;
+    }
+
+    .warning-message {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+
+    .warning-message ul {
+        margin: 0.5rem 0 0 1.5rem;
+        padding: 0;
+    }
+
+    .warning-message li {
+        margin: 0.5rem 0;
+        color: #856404;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        padding: 1.5rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s;
+        font-size: 1rem;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+
+    .confirmation-checkbox {
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #fff;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+    }
+
+    .confirmation-checkbox label {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .confirmation-checkbox input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.85em;
+        font-weight: 700;
+        border-radius: 0.375rem;
+    }
+    
+    .badge-admin {
+        color: #995b00;
+        background-color: #ffebcc;
+    }
+
+    .badge-regular {
+        color: #434190;
+        background-color: #e0e7ff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-container">
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-exclamation-triangle"></i> Confirm User Deletion</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="warning-icon">
+                <i class="fas fa-user-times"></i>
+            </div>
+
+            <h3 style="text-align: center; color: #dc3545; margin-bottom: 1.5rem;">
+                Are you absolutely sure?
+            </h3>
+
+            <div class="user-details">
+                <h4><i class="fas fa-user"></i> User Information</h4>
+                <div class="detail-row">
+                    <span class="detail-label">Username:</span>
+                    <strong>{{ user.username }}</strong>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email:</span>
+                    <span>{{ user.email }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phone:</span>
+                    <span>{{ user.phone_number }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Role:</span>
+                    <span class="badge badge-{{ 'admin' if user.role == 'admin' else 'regular' }}">
+                        {{ user.role }}
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Created:</span>
+                    <span>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+            </div>
+
+            <div class="warning-message">
+                <strong><i class="fas fa-exclamation-circle"></i> Warning: This action cannot be undone!</strong>
+                <ul>
+                    <li>All user data will be permanently deleted</li>
+                    <li>User will lose access to the system immediately</li>
+                    <li>Any associated audit logs will reference a deleted user</li>
+                    <li>This action is irreversible</li>
+                </ul>
+            </div>
+
+            <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}" id="deleteForm">
+                <div class="confirmation-checkbox">
+                    <label>
+                        <input type="checkbox" id="confirmDelete" required>
+                        I understand this action is permanent and cannot be undone
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-danger" id="deleteBtn" disabled>
+                        <i class="fas fa-trash"></i> Delete User Permanently
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const confirmCheckbox = document.getElementById('confirmDelete');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const deleteForm = document.getElementById('deleteForm');
+
+    confirmCheckbox.addEventListener('change', function() {
+        deleteBtn.disabled = !this.checked;
+    });
+
+    deleteForm.addEventListener('submit', function(e) {
+        if (!confirmCheckbox.checked) {
+            e.preventDefault();
+            alert('Please confirm that you understand this action is permanent.');
+            return false;
+        }
+
+        const finalConfirm = confirm(
+            `FINAL CONFIRMATION:\n\n` +
+            `Delete user "${user.username}"?\n\n` +
+            `This action is IRREVERSIBLE!`
+        );
+
+        if (!finalConfirm) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
+{% endblock %}

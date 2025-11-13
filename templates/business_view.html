@@ -1,0 +1,751 @@
+{% extends "base.html" %}
+
+{% block title %}Business Details{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Consolidated form and grid styles for consistency */
+    .form-grid-3 {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .view-mode {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: #f5f5f5; /* Read-only background */
+        cursor: default;
+        color: #333;
+    }
+    
+    /* Edit Mode Styles */
+    .edit-mode .view-mode:not([readonly]):not(:disabled) {
+        background-color: white !important;
+        cursor: text !important;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .required {
+        color: #dc3545;
+        margin-left: 5px;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+        background: #fff;
+    }
+    
+    .card-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        color: #333;
+    }
+
+    /* Unified Tab Styles */
+    .tabs-wrapper {
+        border-bottom: 2px solid #e0e0e0;
+        margin: 0;
+        background: #f8f9fa;
+        padding: 0 1.5rem;
+    }
+
+    .nav-tabs {
+        border-bottom: none;
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-tabs li a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        color: #6c757d;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .nav-tabs li.active a, .nav-tabs li a:hover {
+        color: #667eea;
+        border-bottom-color: #667eea;
+        background: #fff;
+    }
+
+    .tab-content {
+        padding: 1.5rem;
+    }
+
+    .tab-pane {
+        display: none;
+    }
+
+    .tab-pane.active {
+        display: block;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    /* Table styles from properties_list.html for Invoices tab */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .table th, .table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table th {
+        background: #f8f9fa;
+        color: #667eea;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .table tbody tr:hover {
+        background: #f9fafb;
+    }
+    
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-briefcase"></i> Business Account - {{ business.account_no }}</h2>
+        <div>
+            <button onclick="toggleEditMode()" class="btn btn-primary" id="editBtn">
+                <i class="fas fa-edit"></i> Edit Business
+            </button>
+            <button onclick="confirmDelete()" class="btn" style="background: #dc3545; color: white;">
+                <i class="fas fa-trash-alt"></i> Delete Business
+            </button>
+            <a href="{{ url_for('list_businesses') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+    
+    <div class="tabs-wrapper">
+        <ul class="nav-tabs">
+            <li class="active">
+                <a href="#business-info" data-tab="business-info">
+                    <i class="fas fa-info-circle"></i> Business Info
+                </a>
+            </li>
+            <li>
+                <a href="#owner-info" data-tab="owner-info">
+                    <i class="fas fa-user-tie"></i> Owner Info
+                </a>
+            </li>
+            <li>
+                <a href="#location-info" data-tab="location-info">
+                    <i class="fas fa-map-marked-alt"></i> Location Info
+                </a>
+            </li>
+            <li>
+                <a href="#categories" data-tab="categories">
+                    <i class="fas fa-tags"></i> Classification
+                </a>
+            </li>
+            <li>
+                <a href="#invoices" data-tab="invoices">
+                    <i class="fas fa-file-invoice"></i> Invoice(s)
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <form method="POST" action="{{ url_for('edit_business', id=business.id) }}" id="businessForm">
+        <div class="tab-content">
+            <div class="tab-pane active" id="business-info">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-briefcase"></i> Business Details</h4>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Business Name: <span class="required">*</span></strong></label>
+                        <input type="text" name="business_name" value="{{ business.business_name }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Primary Contact: <span class="required">*</span></strong></label>
+                        <input type="tel" name="primary_contact" value="{{ business.primary_contact }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Email:</strong></label>
+                        <input type="email" name="email" value="{{ business.email or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Account No:</strong></label>
+                        <input type="text" value="{{ business.account_no }}" class="view-mode" readonly style="background-color: #e9ecef;">
+                    </div>
+                </div>
+                
+                <div class="btn-group" id="editButtons-business" style="display: none;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Update Business Info</button>
+                    <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="owner-info">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-user-tie"></i> Owner Details</h4>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Owner Name: <span class="required">*</span></strong></label>
+                        <input type="text" name="owner_name" value="{{ business.owner_name }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Owner Contact: <span class="required">*</span></strong></label>
+                        <input type="tel" name="owner_contact" value="{{ business.owner_contact }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Owner National ID:</strong></label>
+                        <input type="text" name="owner_national_id" value="{{ business.owner_national_id or '' }}" class="view-mode" readonly>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="editButtons-owner" style="display: none;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Update Owner Info</button>
+                    <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="location-info">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-map-marked-alt"></i> Location Details</h4>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Electoral Area: <span class="required">*</span></strong></label>
+                        <select name="electoral_area" class="view-mode" disabled>
+                            <option value="">-- SELECT OPTION --</option>
+                            <option value="Dzorwulu" {% if business.electoral_area == 'Dzorwulu' %}selected{% endif %}>Dzorwulu</option>
+                            <option value="Roman Ridge" {% if business.electoral_area == 'Roman Ridge' %}selected{% endif %}>Roman Ridge</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Town: <span class="required">*</span></strong></label>
+                        <input type="text" name="town" value="{{ business.town or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Street Name:</strong></label>
+                        <input type="text" name="street_name" value="{{ business.street_name or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>House/Apt No:</strong></label>
+                        <input type="text" name="house_no" value="{{ business.house_no or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>GhanaPost GPS code:</strong></label>
+                        <input type="text" name="ghanapost_gps" value="{{ business.ghanapost_gps or '' }}" class="view-mode" readonly>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="editButtons-location" style="display: none;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Update Location Info</button>
+                    <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="categories">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-tags"></i> Business Classification</h4>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Display Category:</strong></label>
+                        <select name="display_category" id="display_category_edit" class="view-mode" disabled>
+                            <option value="">SELECT OPTION</option>
+                            <option value="A" {% if business.display_category == 'A' %}selected{% endif %}>A</option>
+                            <option value="B" {% if business.display_category == 'B' %}selected{% endif %}>B</option>
+                            <option value="C" {% if business.display_category == 'C' %}selected{% endif %}>C</option>
+                            <option value="D" {% if business.display_category == 'D' %}selected{% endif %}>D</option>
+                            <option value="E" {% if business.display_category == 'E' %}selected{% endif %}>E</option>
+                            <option value="F" {% if business.display_category == 'F' %}selected{% endif %}>F</option>
+                            <option value="G" {% if business.display_category == 'G' %}selected{% endif %}>G</option>
+                            <option value="H" {% if business.display_category == 'H' %}selected{% endif %}>H</option>
+                            <option value="I" {% if business.display_category == 'I' %}selected{% endif %}>I</option>
+                            <option value="J" {% if business.display_category == 'J' %}selected{% endif %}>J</option>
+                            <option value="K" {% if business.display_category == 'K' %}selected{% endif %}>K</option>
+                            <option value="L" {% if business.display_category == 'L' %}selected{% endif %}>L</option>
+                            <option value="M" {% if business.display_category == 'M' %}selected{% endif %}>M</option>
+                            <option value="N" {% if business.display_category == 'N' %}selected{% endif %}>N</option>
+                            <option value="O" {% if business.display_category == 'O' %}selected{% endif %}>O</option>
+                            <option value="P" {% if business.display_category == 'P' %}selected{% endif %}>P</option>
+                            <option value="Q" {% if business.display_category == 'Q' %}selected{% endif %}>Q</option>
+                            <option value="R" {% if business.display_category == 'R' %}selected{% endif %}>R</option>
+                            <option value="S" {% if business.display_category == 'S' %}selected{% endif %}>S</option>
+                            <option value="T" {% if business.display_category == 'T' %}selected{% endif %}>T</option>
+                            <option value="U" {% if business.display_category == 'U' %}selected{% endif %}>U</option>
+                            <option value="V" {% if business.display_category == 'V' %}selected{% endif %}>V</option>
+                            <option value="W" {% if business.display_category == 'W' %}selected{% endif %}>W</option>
+                            <option value="X" {% if business.display_category == 'X' %}selected{% endif %}>X</option>
+                            <option value="Y" {% if business.display_category == 'Y' %}selected{% endif %}>Y</option>
+                            <option value="Z" {% if business.display_category == 'Z' %}selected{% endif %}>Z</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Property Account No:</strong></label>
+                        <input type="text" name="property_account_no" value="{{ business.property_account_no or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Division No:</strong></label>
+                        <select name="division_no" class="view-mode" disabled>
+                            <option value="">SELECT OPTION</option>
+                            <option value="1" {% if business.division_no == 1 or business.division_no == '1' %}selected{% endif %}>Division 1</option>
+                            <option value="2" {% if business.division_no == 2 or business.division_no == '2' %}selected{% endif %}>Division 2</option>
+                            <option value="3" {% if business.division_no == 3 or business.division_no == '3' %}selected{% endif %}>Division 3</option>
+                            <option value="4" {% if business.division_no == 4 or business.division_no == '4' %}selected{% endif %}>Division 4</option>
+                            <option value="5" {% if business.division_no == 5 or business.division_no == '5' %}selected{% endif %}>Division 5</option>
+                            <option value="6" {% if business.division_no == 6 or business.division_no == '6' %}selected{% endif %}>Division 6</option>
+                            <option value="7" {% if business.division_no == 7 or business.division_no == '7' %}selected{% endif %}>Division 7</option>
+                            <option value="8" {% if business.division_no == 8 or business.division_no == '8' %}selected{% endif %}>Division 8</option>
+                            <option value="9" {% if business.division_no == 9 or business.division_no == '9' %}selected{% endif %}>Division 9</option>
+                            <option value="10" {% if business.division_no == 10 or business.division_no == '10' %}selected{% endif %}>Division 10</option>
+                            <option value="11" {% if business.division_no == 11 or business.division_no == '11' %}selected{% endif %}>Division 11</option>
+                            <option value="12" {% if business.division_no == 12 or business.division_no == '12' %}selected{% endif %}>Division 12</option>
+                            <option value="13" {% if business.division_no == 13 or business.division_no == '13' %}selected{% endif %}>Division 13</option>
+                            <option value="14" {% if business.division_no == 14 or business.division_no == '14' %}selected{% endif %}>Division 14</option>
+                            <option value="15" {% if business.division_no == 15 or business.division_no == '15' %}selected{% endif %}>Division 15</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h5 style="color: #667eea; margin: 2rem 0 1rem;"><i class="fas fa-list"></i> Business Categories</h5>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Category 1:</strong></label>
+                        <select name="category1" id="category1_edit" class="view-mode" disabled>
+                            <option value="">N/A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 2:</strong></label>
+                        <select name="category2" id="category2_edit" class="view-mode" disabled>
+                            <option value="">N/A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 3:</strong></label>
+                        <select name="category3" id="category3_edit" class="view-mode" disabled>
+                            <option value="">N/A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 4:</strong></label>
+                        <select name="category4" id="category4_edit" class="view-mode" disabled>
+                            <option value="">N/A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 5:</strong></label>
+                        <select name="category5" id="category5_edit" class="view-mode" disabled>
+                            <option value="">N/A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Category 6:</strong></label>
+                        <select name="category6" id="category6_edit" class="view-mode" disabled>
+                            <option value="">N/A</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="editButtons-categories" style="display: none;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Update Classification</button>
+                    <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="invoices">
+    <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-list-alt"></i> Invoice History</h4>
+    
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Invoice No.</th>
+                    <th>Year</th>
+                    <th>Amount (GHS)</th>
+                    <th>Tax (GHS)</th>
+                    <th>Total (GHS)</th>
+                    <th>Amount Paid (GHS)</th>
+                    <th>Balance (GHS)</th>
+                    <th>Category 1</th>
+                    <th>Category 2</th>
+                    <th>Category 3</th>
+                    <th>Category 4</th>
+                    <th>Category 5</th>
+                    <th>Category 6</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if invoices %}
+                {% for invoice in invoices %}
+                {% set invoice_total = invoice.total_amount if invoice.total_amount else invoice.amount %}
+                {% set payments = invoice.payments if invoice.payments else [] %}
+                {% set total_paid = payments|sum(attribute='payment_amount') if payments else 0 %}
+                {% set balance = invoice_total - total_paid %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('view_business_invoice', invoice_id=invoice.id) }}" 
+                            style="color: #667eea; text-decoration: none; font-weight: 500;">
+                            {{ invoice.invoice_no }}
+                        </a>
+                    </td>
+                    <td>{{ invoice.year }}</td>
+                    <td>{{ "{:,.2f}".format(invoice.amount) }}</td>
+                    <td>{{ "{:,.2f}".format(invoice.tax_amount or 0) }}</td>
+                    <td><strong>{{ "{:,.2f}".format(invoice_total) }}</strong></td>
+                    <td>
+                        <strong style="color: #10b981;">{{ "{:,.2f}".format(total_paid) }}</strong>
+                    </td>
+                    <td>
+                        <strong style="color: {% if balance > 0 %}#dc3545{% else %}#10b981{% endif %};">
+                            {{ "{:,.2f}".format(balance) }}
+                        </strong>
+                    </td>
+                    <td>{{ business.category1 if business.category1 and business.category1 != 'NONE' else '-' }}</td>
+                    <td>{{ business.category2 if business.category2 and business.category2 != 'NONE' else '-' }}</td>
+                    <td>{{ business.category3 if business.category3 and business.category3 != 'NONE' else '-' }}</td>
+                    <td>{{ business.category4 if business.category4 and business.category4 != 'NONE' else '-' }}</td>
+                    <td>{{ business.category5 if business.category5 and business.category5 != 'NONE' else '-' }}</td>
+                    <td>{{ business.category6 if business.category6 and business.category6 != 'NONE' else '-' }}</td>
+                    <td>
+                        {% if invoice.status == 'Paid' %}
+                            <span class="badge" style="background: #10b981; color: white; padding: 0.4rem 0.8rem; border-radius: 4px;">Paid</span>
+                        {% elif invoice.status == 'Partially Paid' %}
+                            <span class="badge" style="background: #f59e0b; color: white; padding: 0.4rem 0.8rem; border-radius: 4px;">Partial</span>
+                        {% else %}
+                            <span class="badge" style="background: #dc3545; color: white; padding: 0.4rem 0.8rem; border-radius: 4px;">Unpaid</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('view_business_invoice', invoice_id=invoice.id) }}" 
+                           class="btn btn-secondary" 
+                           style="padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap;">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if invoices %}
+<tr style="background: #f0f4ff; font-weight: bold; border-top: 3px solid #667eea;">
+    <td colspan="2" class="text-right" style="padding: 1rem;"><strong>TOTALS:</strong></td>
+    <td style="color: #667eea;">
+        <strong>GHS {{ "{:,.2f}".format(invoices|sum(attribute='amount')) }}</strong>
+    </td>
+    <td style="color: #667eea;">
+        <strong>GHS {{ "{:,.2f}".format(invoices|map(attribute='tax_amount')|select|sum) }}</strong>
+    </td>
+    <td style="color: #667eea;">
+        {% set total_all_invoices = namespace(value=0) %}
+        {% for inv in invoices %}
+            {% set inv_total = inv.total_amount if inv.total_amount else inv.amount %}
+            {% set total_all_invoices.value = total_all_invoices.value + inv_total %}
+        {% endfor %}
+        <strong>GHS {{ "{:,.2f}".format(total_all_invoices.value) }}</strong>
+    </td>
+    <td style="color: #10b981;">
+        {% set total_all_paid = namespace(value=0) %}
+        {% for inv in invoices %}
+            {% set inv_payments = inv.payments if inv.payments else [] %}
+            {% set total_all_paid.value = total_all_paid.value + (inv_payments|sum(attribute='payment_amount') if inv_payments else 0) %}
+        {% endfor %}
+        <strong>GHS {{ "{:,.2f}".format(total_all_paid.value) }}</strong>
+    </td>
+    <td style="color: #dc3545;">
+        {% set total_all_balance = namespace(value=0) %}
+        {% for inv in invoices %}
+            {% set inv_total = inv.total_amount if inv.total_amount else inv.amount %}
+            {% set inv_payments = inv.payments if inv.payments else [] %}
+            {% set inv_paid = inv_payments|sum(attribute='payment_amount') if inv_payments else 0 %}
+            {% set total_all_balance.value = total_all_balance.value + (inv_total - inv_paid) %}
+        {% endfor %}
+        <strong>GHS {{ "{:,.2f}".format(total_all_balance.value) }}</strong>
+    </td>
+    <td colspan="4"></td>
+</tr>
+{% endif %}
+                {% else %}
+                <tr>
+                    <td colspan="16" style="text-align: center;">
+                        <div class="empty-state" style="padding: 2rem; color: #999;">
+                            <i class="fas fa-file-invoice-dollar" style="font-size: 2rem; color: #999; margin-bottom: 0.5rem;"></i>
+                            <p style="font-weight: 600;">No invoices found for this business.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 2rem; text-align: center;">
+        <a href="{{ url_for('create_business_invoice', id=business.id) }}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Generate New Invoice
+        </a>
+    </div>
+</div>
+        </div>
+    </form>
+    
+    <form id="deleteForm" method="POST" action="{{ url_for('delete_business', id=business.id) }}" style="display:none;"></form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Tab switching logic for the unified tabs
+    document.querySelectorAll('.tabs-wrapper .nav-tabs a').forEach(tabLink => {
+        tabLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.dataset.tab;
+            
+            // Remove active from all tabs and panes
+            document.querySelectorAll('.tabs-wrapper li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.tab-content .tab-pane').forEach(pane => pane.classList.remove('active'));
+            
+            // Add active to the clicked tab and corresponding pane
+            this.parentElement.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Toggle Edit Mode Logic
+    function toggleEditMode() {
+        const form = document.getElementById('businessForm');
+        const editBtn = document.getElementById('editBtn');
+        const editButtons = document.querySelectorAll('[id^="editButtons"]');
+        const inputs = document.querySelectorAll('.view-mode');
+        
+        form.classList.add('edit-mode');
+        inputs.forEach(input => {
+            if (input.tagName === 'SELECT') {
+                input.disabled = false;
+            } else {
+                input.readOnly = false;
+            }
+        });
+        
+        editBtn.style.display = 'none';
+        editButtons.forEach(btn => btn.style.display = 'flex');
+    }
+    
+    function cancelEdit() {
+        location.reload(); // Simple way to reset form and state
+    }
+    
+    function confirmDelete() {
+        if (confirm('Are you sure you want to delete this business ({{ business.account_no }})? This action cannot be undone and will also delete all associated invoices.')) {
+            document.getElementById('deleteForm').submit();
+        }
+    }
+
+    let allProductsEdit = [];
+const currentCategories = {
+    category1: '{{ business.category1 if business.category1 and business.category1 != "NONE" else "" }}',
+    category2: '{{ business.category2 if business.category2 and business.category2 != "NONE" else "" }}',
+    category3: '{{ business.category3 if business.category3 and business.category3 != "NONE" else "" }}',
+    category4: '{{ business.category4 if business.category4 and business.category4 != "NONE" else "" }}',
+    category5: '{{ business.category5 if business.category5 and business.category5 != "NONE" else "" }}',
+    category6: '{{ business.category6 if business.category6 and business.category6 != "NONE" else "" }}'
+};
+
+// Load products on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadProductCategoriesEdit();
+});
+
+function loadProductCategoriesEdit() {
+    fetch('/api/products')
+        .then(response => response.json())
+        .then(products => {
+            allProductsEdit = products;
+            
+            // Populate Category 1 with unique values
+            const category1Values = [...new Set(products.map(p => p.category1).filter(c => c))];
+            const category1Select = document.getElementById('category1_edit');
+            category1Select.innerHTML = '<option value="">N/A</option>';
+            category1Values.sort().forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                if (cat === currentCategories.category1) {
+                    option.selected = true;
+                }
+                category1Select.appendChild(option);
+            });
+            
+            // If there are existing category values, populate dependent dropdowns
+            if (currentCategories.category1) {
+                populateDependentCategoriesEdit(2, currentCategories.category2);
+                if (currentCategories.category2) {
+                    populateDependentCategoriesEdit(3, currentCategories.category3);
+                    if (currentCategories.category3) {
+                        populateDependentCategoriesEdit(4, currentCategories.category4);
+                        if (currentCategories.category4) {
+                            populateDependentCategoriesEdit(5, currentCategories.category5);
+                            if (currentCategories.category5) {
+                                populateDependentCategoriesEdit(6, currentCategories.category6);
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        .catch(error => console.error('Error loading products:', error));
+}
+
+function populateDependentCategoriesEdit(level, selectedValue = '') {
+    // Get selected values from previous categories
+    const selectedCategories = {};
+    for (let i = 1; i < level; i++) {
+        selectedCategories[`category${i}`] = document.getElementById(`category${i}_edit`).value || null;
+    }
+    
+    // Filter products that match all previous category selections
+    let matchingProducts = allProductsEdit.filter(product => {
+        for (let i = 1; i < level; i++) {
+            const selectedValue = selectedCategories[`category${i}`];
+            const productValue = product[`category${i}`];
+            
+            // Both null/empty = match
+            if ((!selectedValue || selectedValue === '') && (!productValue || productValue === '')) {
+                continue;
+            }
+            // One is null/empty, other is not = no match
+            if ((!selectedValue || selectedValue === '') !== (!productValue || productValue === '')) {
+                return false;
+            }
+            // Both have values but don't match = no match
+            if (selectedValue !== productValue) {
+                return false;
+            }
+        }
+        return true;
+    });
+    
+    // Get unique values for current level from matching products
+    const currentLevelValues = [...new Set(
+        matchingProducts
+            .map(p => p[`category${level}`])
+            .filter(c => c && c !== '')
+    )];
+    
+    // Populate the dropdown
+    const select = document.getElementById(`category${level}_edit`);
+    select.innerHTML = '<option value="">N/A</option>';
+    currentLevelValues.sort().forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        if (cat === selectedValue) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+    
+    // Clear all subsequent category selections if no value is provided
+    if (!selectedValue) {
+        for (let i = level + 1; i <= 6; i++) {
+            const nextSelect = document.getElementById(`category${i}_edit`);
+            nextSelect.innerHTML = '<option value="">N/A</option>';
+            nextSelect.value = '';
+        }
+    }
+}
+
+// Event listeners for cascading categories in edit mode
+document.getElementById('category1_edit').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategoriesEdit(2);
+    } else {
+        // Clear all subsequent categories if category1 is cleared
+        for (let i = 2; i <= 6; i++) {
+            const select = document.getElementById(`category${i}_edit`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category2_edit').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategoriesEdit(3);
+    } else {
+        for (let i = 3; i <= 6; i++) {
+            const select = document.getElementById(`category${i}_edit`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category3_edit').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategoriesEdit(4);
+    } else {
+        for (let i = 4; i <= 6; i++) {
+            const select = document.getElementById(`category${i}_edit`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category4_edit').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategoriesEdit(5);
+    } else {
+        for (let i = 5; i <= 6; i++) {
+            const select = document.getElementById(`category${i}_edit`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category5_edit').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategoriesEdit(6);
+    } else {
+        document.getElementById('category6_edit').innerHTML = '<option value="">N/A</option>';
+        document.getElementById('category6_edit').value = '';
+    }
+});
+
+</script>
+{% endblock %}

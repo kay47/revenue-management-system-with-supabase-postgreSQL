@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Audit Logs - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card-header h2, .card-header h5 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+    
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0;
+    }
+
+    .table th, .table td {
+        padding: 1rem 1.5rem;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+    }
+
+    .table thead tr {
+        background: #f8f9fa;
+        color: #667eea;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .table tbody tr:hover {
+        background: #f9fafb;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.375rem;
+    }
+    
+    .badge-info {
+        color: #0c5460;
+        background-color: #d1ecf1;
+    }
+    
+    /* Pagination Styles */
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 2rem 0;
+        gap: 0.5rem;
+    }
+
+    .pagination .page-item {
+        display: block;
+    }
+
+    .pagination .page-link {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        color: #667eea;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        transition: all 0.3s;
+        font-weight: 500;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #f8f9fa;
+        border-color: #667eea;
+        color: #5568d3;
+        transform: translateY(-2px);
+    }
+
+    .pagination .page-item.active .page-link {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+        color: white;
+        cursor: default;
+        font-weight: 600;
+    }
+
+    .pagination .page-item.active .page-link:hover {
+        transform: none;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+        opacity: 0.5;
+    }
+
+    .justify-content-center {
+        justify-content: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h2><i class="fas fa-scroll"></i> Audit Logs</h2>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">System Activity Logs</h5>
+    </div>
+    <div class="card-body">
+        {% if logs.items %}
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Entity Type</th>
+                        <th>Entity ID</th>
+                        <th>Details</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs.items %}
+                    <tr>
+                        <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>
+                            {% if log.user_id %}
+                                {{ log.user.username if log.user else 'User #' + log.user_id|string }}
+                            {% else %}
+                                <span class="text-muted">System</span>
+                            {% endif %}
+                        </td>
+                        <td><span class="badge badge-info">{{ log.action }}</span></td>
+                        <td>{{ log.entity_type or '-' }}</td>
+                        <td>{{ log.entity_id or '-' }}</td>
+                        <td><small>{{ log.details or '-' }}</small></td>
+                        <td><small class="text-muted">{{ log.ip_address }}</small></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if logs.pages > 1 %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{ 'disabled' if not logs.has_prev }}">
+                    <a class="page-link" href="{{ url_for('audit_logs', page=logs.prev_num) }}">Previous</a>
+                </li>
+                
+                {% for page_num in logs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                    {% if page_num %}
+                        <li class="page-item {{ 'active' if page_num == logs.page }}">
+                            <a class="page-link" href="{{ url_for('audit_logs', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                
+                <li class="page-item {{ 'disabled' if not logs.has_next }}">
+                    <a class="page-link" href="{{ url_for('audit_logs', page=logs.next_num) }}">Next</a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+        {% else %}
+        <p class="text-center text-muted">No audit logs found</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

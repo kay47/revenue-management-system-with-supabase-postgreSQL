@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ invoice_number }}</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 25px;
+        color: #000;
+    }
+
+    .header {
+        text-align: center;
+        font-weight: bold;
+        font-size: 23px;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+        letter-spacing: 1px;
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .sub-header {
+        text-align: center;
+        font-size: 15px;
+        margin-bottom: 12px;
+        font-weight: bold;
+    }
+
+    .invoice-number {
+        text-align: right;
+        font-size: 14px;
+        margin-top: -10px;
+        font-weight: bold;
+    }
+
+    .section-title {
+        font-weight: bold;
+        margin: 12px 0 5px;
+        text-transform: uppercase;
+        font-size: 13px;
+        text-decoration: underline;
+    }
+
+    .info-table, .summary-table {
+        width: 100%;
+        font-size: 14px;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    .info-table td {
+        padding: 3px 0;
+    }
+
+    .billing-box {
+        border: 1px solid #000;
+        padding: 8px;
+        font-size: 14px;
+        margin-top: 5px;
+        width: 60%;
+    }
+
+    table.rates {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    table.rates th, table.rates td {
+        border: 1px solid #000;
+        padding: 6px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .summary-table td {
+        padding: 5px 0;
+        font-size: 14px;
+    }
+
+    .amount-words {
+        font-style: italic;
+        margin: 10px 0;
+        font-size: 13px;
+    }
+
+    .momo-box {
+        border: 1px solid #000;
+        padding: 8px;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+    .footer-text {
+        margin-top: 10px;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .qr {
+        text-align: right;
+        margin-top: -90px;
+    }
+
+    .print-btn {
+        padding: 8px 15px;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    @media print {
+        .print-btn { display: none; }
+        body { margin: 10mm; }
+        .qr { margin-top: -70px; }
+    }
+</style>
+</head>
+
+<body>
+
+<button class="print-btn" onclick="window.print()">Print Invoice</button>
+
+<div class="logo">
+    <img src="{{ url_for('static', filename='img/ghana_coat_of_arms.png') }}" width="80">
+</div>
+
+<div class="header">REVENUE MANAGEMENT SYSTEM</div>
+<div class="sub-header">{{ assembly_name }}</div>
+
+<div class="invoice-number">{{ invoice_number }}</div>
+
+<div class="section-title">Assembly Address</div>
+<table class="info-table">
+<tr><td>{{ assembly_address }}</td></tr>
+<tr><td>{{ assembly_location }}</td></tr>
+<tr><td>{{ assembly_phone }}</td></tr>
+<tr><td>GhanaPostGPS: {{ assembly_gps }}</td></tr>
+</table>
+
+<div class="section-title">To:</div>
+<div class="billing-box">
+    {{ customer_name }} <br>
+    {{ customer_account }} <br>
+    {{ customer_address1 }} <br>
+    {{ customer_address2 }}
+</div>
+
+<table class="info-table">
+<tr><td><strong>Invoice Date:</strong> {{ invoice_date }}</td></tr>
+<tr><td><strong>Due Date:</strong> {{ due_date }}</td></tr>
+<tr><td><strong>Office Contact:</strong> {{ office_contact }}</td></tr>
+<tr><td><strong>Bank Name:</strong> {{ bank_name }}</td></tr>
+<tr><td><strong>Account No:</strong> {{ bank_account }}</td></tr>
+<tr><td><strong>Bank Branch:</strong> {{ bank_branch }}</td></tr>
+<tr><td><strong>Swift Code:</strong> {{ swift_code }}</td></tr>
+</table>
+
+<table class="rates">
+<tr>
+    <th>Invoice Type</th>
+    <th>Rateable Value</th>
+    <th>Rate Impost</th>
+    <th>Amount</th>
+</tr>
+
+<tr>
+    <td>{{ rate_type }}</td>
+    <td>{{ rateable_value }}</td>
+    <td>{{ rate_impost }}</td>
+    <td>GHS {{ rate_amount }}</td>
+</tr>
+</table>
+
+<table class="summary-table">
+<tr><td>Subtotal</td><td>{{ subtotal }}</td></tr>
+<tr><td>Arrears</td><td>{{ arrears }}</td></tr>
+<tr><td>Payment</td><td>{{ payment }}</td></tr>
+<tr><td>Penalty</td><td>{{ penalty }}</td></tr>
+<tr><td><strong>Total Outstanding</strong></td><td><strong>{{ total_outstanding }}</strong></td></tr>
+</table>
+
+<div class="amount-words">
+{{ amount_words }}
+</div>
+
+<div class="momo-box">
+<strong>MoMo Payment</strong><br><br>
+Dial <strong>*{{ momo_code }}#</strong><br>
+Merchant Code: <strong>{{ momo_merchant }}</strong><br>
+Include your account number in narration: <strong>{{ customer_account }}</strong><br>
+</div>
+
+<div class="qr">
+    <img src="{{ url_for('static', filename='qr/invoice_qr.png') }}" width="110">
+</div>
+
+<div class="footer-text">
+Payment must be made at the Assembly or authorized agent.  
+Legal action shall be taken against defaulters after 31st March.
+</div>
+
+</body>
+</html>

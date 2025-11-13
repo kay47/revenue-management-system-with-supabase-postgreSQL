@@ -1,0 +1,1346 @@
+{% extends "base.html" %}
+
+{% block title %}Pay Invoice{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* === CARD STYLES === */
+    .card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1.5rem;
+        border-bottom: 2px solid #f0f0f0;
+        background: #fff;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .card-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        color: #333;
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    /* === TAB NAVIGATION === */
+    .tabs-wrapper {
+        border-bottom: 2px solid #e0e0e0;
+        margin: 0;
+        background: #f8f9fa;
+    }
+
+    .nav-tabs {
+        border-bottom: none;
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-wrap: wrap;
+    }
+
+    .nav-tabs li {
+        margin: 0;
+    }
+
+    .nav-tabs li a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        color: #6c757d;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .nav-tabs li a:hover {
+        color: #667eea;
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    .nav-tabs li.active a {
+        color: #667eea;
+        border-bottom-color: #667eea;
+        background: #fff;
+        font-weight: 600;
+    }
+
+    .tab-content {
+        background: #fff;
+    }
+
+    .tab-pane {
+        display: none;
+    }
+
+    .tab-pane.active {
+        display: block;
+    }
+
+    /* === FORM STYLES === */
+    .form-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-group {
+        margin-bottom: 0;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+        font-size: 0.95rem;
+    }
+    
+    .form-group input[type="text"], 
+    .form-group input[type="number"], 
+    .form-group input[type="date"],
+    .form-group input[type="file"],
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fff;
+        box-sizing: border-box;
+    }
+    
+    .form-group input:focus, 
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input[readonly] {
+        background: #f5f5f5;
+        cursor: not-allowed;
+    }
+    
+    .required {
+        color: #dc3545;
+        margin-left: 3px;
+    }
+
+    /* === PAYMENT FIELDS === */
+    .payment-fields {
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        border: 2px solid #e0e7ff;
+        border-radius: 8px;
+        background: #f8faff;
+    }
+
+    .payment-fields h5 {
+        margin: 0 0 1.5rem 0;
+        color: #667eea;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* === BUTTONS === */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    /* === TABLE STYLES === */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .table thead th {
+        background: #f8f9fa;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background: #f8f9fa;
+    }
+
+    .table tfoot tr {
+        background: #f9fafb;
+        font-weight: bold;
+    }
+
+    .table tfoot td {
+        padding: 1rem;
+        border-top: 2px solid #dee2e6;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* === SECTION HEADERS === */
+    h4 {
+        margin: 2rem 0 1.5rem 0;
+        color: #667eea;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    h4:first-child {
+        margin-top: 0;
+    }
+
+    /* === UTILITY CLASSES === */
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .card-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .nav-tabs {
+            overflow-x: auto;
+        }
+
+        .nav-tabs li a {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* Spinner Animation */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* OTP Input Focus Animation */
+    #otpInput:focus {
+        outline: none;
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        50% {
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.2);
+        }
+    }
+    
+    /* Modal Close Button Hover */
+    #otpModal button[onclick="OTPManager.hideModal()"] {
+        transition: all 0.2s;
+    }
+    
+    #otpModal button[onclick="OTPManager.hideModal()"]:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Responsive Modal */
+    @media (max-width: 576px) {
+        #otpModal > div {
+            margin: 5% auto;
+            width: 95%;
+        }
+        
+        #otpInput {
+            font-size: 1.2rem;
+            letter-spacing: 0.3rem;
+        }
+    }
+    
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-credit-card"></i> PAY INVOICE #{{ invoice.invoice_no }}</h2>
+        <div>
+            <a href="{{ url_for('view_business_invoice', invoice_id=invoice.id) }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Invoice
+            </a>
+        </div>
+    </div>
+    
+    <div class="tabs-wrapper">
+        <ul class="nav nav-tabs">
+            <li>
+                <a href="#invoices" data-tab="invoices">
+                    <i class="fas fa-receipt"></i> Invoices
+                </a>
+            </li>
+            <li class="active">
+                <a href="#payment" data-tab="payment">
+                    <i class="fas fa-money-bill-wave"></i> Payment
+                </a>
+            </li>
+            <li>
+                <a href="#transactions" data-tab="transactions">
+                    <i class="fas fa-history"></i> Transactions
+                </a>
+            </li>
+            <li>
+                <a href="#adjustment" data-tab="adjustment">
+                    <i class="fas fa-balance-scale"></i> Adjustment
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tab-content">
+        <!-- INVOICES TAB -->
+        <div class="tab-pane" id="invoices">
+            <div class="card-body">
+                <p style="text-align: center; padding: 3rem; color: #666;">
+                    View full invoice details in the 
+                    <a href="{{ url_for('view_business_invoice', invoice_id=invoice.id) }}" 
+                       style="color: #667eea; font-weight: 600; text-decoration: none;">
+                        Invoice Details
+                    </a> page.
+                </p>
+            </div>
+        </div>
+        
+        <!-- PAYMENT TAB -->
+        <div class="tab-pane active" id="payment">
+            <div class="card-body">
+                <form method="POST" 
+                      action="{{ url_for('process_business_payment', invoice_id=invoice.id) }}" 
+                      enctype="multipart/form-data" 
+                      id="paymentForm">
+                    
+                    <h4><i class="fas fa-info-circle"></i> Invoice Summary</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Invoice No:</label>
+                            <input type="text" value="{{ invoice.invoice_no }}" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Invoice Total (GHS):</label>
+                            <input type="text" value="{{ '{:,.2f}'.format(invoice.total_amount if invoice.total_amount else invoice.amount) }}" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Amount Paid (GHS):</label>
+                            <input type="text" value="{{ '{:,.2f}'.format(total_paid) }}" readonly style="background: #e8f5e9; color: #2e7d32; font-weight: bold;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Outstanding Balance (GHS):</label>
+                            <input type="text" value="{{ '{:,.2f}'.format(outstanding_balance) }}" readonly style="background: #fff0f0; color: #dc3545; font-weight: bold;">
+                        </div>
+                    </div>
+                    
+                    <h4><i class="fas fa-cogs"></i> Payment Details</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Payment Mode: <span class="required">*</span></label>
+                            <select name="payment_mode" id="paymentMode" required>
+                                <option value="">-- SELECT OPTION --</option>
+                                <option value="Cash">Cash</option>
+                                <option value="MoMo">Mobile Money (MoMo)</option>
+                                <option value="Cheque">Cheque</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>GCR Number:<span class="required">*</span></label>
+                            <input type="text" name="gcr_number" id="gcrNumber"required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Valuation Number:</label>
+                            <input type="text" name="valuation_number" id="valuationNumber">
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden field to store outstanding balance for JavaScript -->
+                    <input type="hidden" id="outstandingBalance" value="{{ outstanding_balance }}">
+                    
+                    <!-- CASH PAYMENT FIELDS -->
+                    <div id="cashFields" class="payment-fields" style="display: none;">
+    <h5><i class="fas fa-coins"></i> Cash Payment</h5>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Payment Type: <span class="required">*</span></label>
+            <select name="payment_type" id="paymentType">
+                <option value="">-- SELECT OPTION --</option>
+                <option value="Full Amount">Full Amount (Pay Outstanding Balance)</option>
+                <option value="Part Payment">Part Payment</option>
+                <option value="Overpayment">Overpayment (Pay More Than Outstanding)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Payment Amount (GHS): <span class="required">*</span></label>
+            <input type="number" step="0.01" name="payment_amount" id="paymentAmount" placeholder="Amount will auto-fill">
+            <small style="display: block; margin-top: 0.25rem; color: #6c757d;">
+                Outstanding: GHS {{ '{:,.2f}'.format(outstanding_balance) }}
+            </small>
+        </div>
+
+                            <div class="form-group">
+                                <label>Paid By: <span class="required">*</span></label>
+                                <select name="paid_by" id="paidBy">
+                                    <option value="">-- SELECT OPTION --</option>
+                                    <option value="Registered Owner Or Caretaker">Registered Owner or Caretaker</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid" id="othersFields" style="display: none;">
+                            <div class="form-group">
+                                <label>Payer Name: <span class="required">*</span></label>
+                                <input type="text" name="payer_name" id="payerName">
+                            </div>
+                            <div class="form-group">
+                                <label>Payer Phone Number: <span class="required">*</span></label>
+                                <input type="text" name="payer_phone" id="payerPhone">
+                            </div>
+                        </div>
+                    </div> 
+
+                    <!-- MOBILE MONEY PAYMENT FIELDS -->
+                    <div id="mobileMoneyFields" class="payment-fields" style="display: none;">
+    <h5><i class="fas fa-mobile-alt"></i> Mobile Money Payment</h5>
+    <div class="form-grid">
+        <!-- ... sender mobile and transaction id fields ... -->
+        
+        <div class="form-group">
+            <label>Payment Type: <span class="required">*</span></label>
+            <select name="mobile_payment_type" id="mobilePaymentType">
+                <option value="">-- SELECT OPTION --</option>
+                <option value="Full Amount">Full Amount (Pay Outstanding Balance)</option>
+                <option value="Part Payment">Part Payment</option>
+                <option value="Overpayment">Overpayment (Pay More Than Outstanding)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Payment Amount (GHS): <span class="required">*</span></label>
+            <input type="number" step="0.01" name="mobile_payment_amount" id="mobilePaymentAmount" placeholder="Amount will auto-fill">
+            <small style="display: block; margin-top: 0.25rem; color: #6c757d;">
+                Outstanding: GHS {{ '{:,.2f}'.format(outstanding_balance) }}
+            </small>
+        </div>
+                            <div class="form-group">
+                                <label>Paid By: <span class="required">*</span></label>
+                                <select name="mobile_paid_by" id="mobilePaidBy">
+                                    <option value="">-- SELECT OPTION --</option>
+                                    <option value="Registered Owner Or Caretaker">Registered Owner or Caretaker</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Payment: <span class="required">*</span></label>
+                                <input type="date" name="mobile_date" id="mobileDate">
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid" id="mobileOthersFields" style="display: none;">
+                            <div class="form-group">
+                                <label>Payer Name: <span class="required">*</span></label>
+                                <input type="text" name="mobile_payer_name" id="mobilePayerName">
+                            </div>
+                            <div class="form-group">
+                                <label>Payer Phone Number: <span class="required">*</span></label>
+                                <input type="text" name="mobile_payer_phone" id="mobilePayerPhone">
+                            </div>
+                        </div>
+                    </div> 
+
+                    <!-- CHEQUE PAYMENT FIELDS -->
+                    <div id="chequeFields" class="payment-fields" style="display: none;">
+    <h5><i class="fas fa-money-check-alt"></i> Cheque Payment</h5>
+    <div class="form-grid">
+        <!-- ... cheque number, bank name, date fields ... -->
+        
+        <div class="form-group">
+            <label>Payment Type: <span class="required">*</span></label>
+            <select name="cheque_payment_type" id="chequePaymentType">
+                <option value="">-- SELECT OPTION --</option>
+                <option value="Full Amount">Full Amount (Pay Outstanding Balance)</option>
+                <option value="Part Payment">Part Payment</option>
+                <option value="Overpayment">Overpayment (Pay More Than Outstanding)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Payment Amount (GHS): <span class="required">*</span></label>
+            <input type="number" step="0.01" name="cheque_payment_amount" id="chequePaymentAmount" placeholder="Amount will auto-fill">
+            <small style="display: block; margin-top: 0.25rem; color: #6c757d;">
+                Outstanding: GHS {{ '{:,.2f}'.format(outstanding_balance) }}
+            </small>
+        </div>
+                            <div class="form-group">
+                                <label>Paid By: <span class="required">*</span></label>
+                                <select name="cheque_paid_by" id="chequePaidBy">
+                                    <option value="">-- SELECT OPTION --</option>
+                                    <option value="Registered Owner Or Caretaker">Registered Owner or Caretaker</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid" id="chequeOthersFields" style="display: none;">
+                            <div class="form-group">
+                                <label>Payer Name: <span class="required">*</span></label>
+                                <input type="text" name="cheque_payer_name" id="chequePayerName">
+                            </div>
+                            <div class="form-group">
+                                <label>Payer Phone Number: <span class="required">*</span></label>
+                                <input type="text" name="cheque_payer_phone" id="chequePayerPhone">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Cheque Photo (Optional):</label>
+                                <input type="file" name="cheque_photo" id="chequePhoto" accept="image/*">
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1rem;"> 
+                            <i class="fas fa-hand-holding-usd"></i> Process Payment 
+                        </button>
+                        !-- OTP Verification Modal -->
+<div id="otpModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); overflow: auto;">
+    <div style="background-color: #fff; margin: 10% auto; padding: 0; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-shield-alt"></i> Payment Verification
+            </h3>
+            <button onclick="OTPManager.hideModal()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Body -->
+        <div style="padding: 2rem;">
+            <!-- Info Display -->
+            <div style="background: #f8faff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #667eea;">
+                <p style="margin: 0 0 0.5rem 0; color: #666; font-size: 0.9rem;">
+                    <i class="fas fa-phone"></i> Sending OTP to:
+                </p>
+                <p style="margin: 0 0 1rem 0; font-weight: bold; color: #333; font-size: 1.1rem;" id="otpPhoneDisplay"></p>
+                
+                <p style="margin: 0 0 0.5rem 0; color: #666; font-size: 0.9rem;">
+                    <i class="fas fa-money-bill-wave"></i> Payment Amount:
+                </p>
+                <p style="margin: 0; font-weight: bold; color: #667eea; font-size: 1.2rem;" id="otpAmountDisplay"></p>
+            </div>
+            
+            <!-- Timer -->
+            <div id="otpTimer" style="display: none; text-align: center; padding: 0.75rem; background: #fff3cd; border-radius: 6px; margin-bottom: 1rem; font-size: 0.95rem; color: #856404;"></div>
+            
+            <!-- Loading State -->
+            <div id="otpLoading" style="display: none; text-align: center; padding: 1.5rem;">
+                <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p id="otpLoadingMessage" style="margin-top: 1rem; color: #666;">Loading...</p>
+            </div>
+            
+            <!-- Success Message -->
+            <div id="otpSuccess" style="display: none; padding: 1rem; background: #d1fae5; color: #065f46; border-radius: 6px; margin-bottom: 1rem; border-left: 4px solid #10b981;">
+                <i class="fas fa-check-circle"></i> <span></span>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="otpError" style="display: none; padding: 1rem; background: #fee2e2; color: #991b1b; border-radius: 6px; margin-bottom: 1rem; border-left: 4px solid #dc3545;">
+                <i class="fas fa-exclamation-circle"></i> <span></span>
+            </div>
+            
+            <!-- OTP Input -->
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">
+                    Enter 6-Digit OTP Code:
+                </label>
+                <input 
+                    type="text" 
+                    id="otpInput" 
+                    maxlength="6" 
+                    placeholder="000000"
+                    style="width: 100%; padding: 1rem; font-size: 1.5rem; text-align: center; border: 2px solid #dee2e6; border-radius: 8px; letter-spacing: 0.5rem; font-weight: bold; transition: all 0.3s;"
+                    onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 0 3px rgba(102, 126, 234, 0.1)'"
+                    onblur="this.style.borderColor='#dee2e6'; this.style.boxShadow='none'"
+                />
+            </div>
+            
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                <button 
+                    onclick="OTPManager.verifyOTP()"
+                    style="flex: 1; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+                >
+                    <i class="fas fa-check-circle"></i> Verify OTP
+                </button>
+                
+                <button 
+                    onclick="OTPManager.resendOTP()"
+                    style="flex: 1; padding: 1rem; background: #6c757d; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
+                    onmouseover="this.style.background='#5a6268'; this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.background='#6c757d'; this.style.transform='translateY(0)'"
+                >
+                    <i class="fas fa-redo"></i> Resend OTP
+                </button>
+            </div>
+            
+            <!-- Help Text -->
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 6px; font-size: 0.85rem; color: #666;">
+                <p style="margin: 0 0 0.5rem 0;">
+                    <i class="fas fa-info-circle" style="color: #667eea;"></i> 
+                    <strong>Didn't receive the code?</strong>
+                </p>
+                <ul style="margin: 0; padding-left: 1.5rem;">
+                    <li>Check your phone for SMS messages</li>
+                    <li>Wait a few moments for delivery</li>
+                    <li>Click "Resend OTP" to get a new code</li>
+                    <li>Ensure the phone number is correct</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- TRANSACTIONS TAB -->
+        <div class="tab-pane" id="transactions">
+            <div class="card-body">
+                <h3 style="margin-bottom: 1.5rem; color: #667eea;">Payment Transaction History</h3>
+                
+                {% if payments and payments|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Payment Mode</th>
+                                <th>Payment Type</th>
+                                <th>Paid By</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Recorded By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.payment_date.strftime('%Y-%m-%d %H:%M') if payment.payment_date else 'N/A' }}</td>
+                                <td>
+                                    {% if payment.payment_mode == 'Cash' %}
+                                        💵 Cash
+                                    {% elif payment.payment_mode in ['MoMo', 'Mobile Money Number'] %}
+                                        📱 Mobile Money
+                                    {% elif payment.payment_mode == 'Cheque' %}
+                                        🏦 Cheque
+                                    {% else %}
+                                        {{ payment.payment_mode }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ payment.payment_type or 'N/A' }}</td>
+                                <td>{{ payment.paid_by or 'N/A' }}</td>
+                                <td><strong>GHS {{ "{:,.2f}".format(payment.payment_amount) }}</strong></td>
+                                <td>
+                                    <span style="padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem; 
+                                        {% if payment.status == 'Completed' %}
+                                            background: #d1fae5; color: #065f46;
+                                        {% else %}
+                                            background: #fee2e2; color: #991b1b;
+                                        {% endif %}">
+                                        {{ payment.status }}
+                                    </span>
+                                </td>
+                                <td>{{ payment.created_by or 'System' }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr style="background: #f9fafb; font-weight: bold;">
+                                <td colspan="4" class="text-right">Total Paid:</td>
+                                <td colspan="3">GHS {{ "{:,.2f}".format(total_paid) }}</td>
+                            </tr>
+                            <tr style="background: #fff3cd; font-weight: bold;">
+                                <td colspan="4" class="text-right">Outstanding Balance:</td>
+                                <td colspan="3">GHS {{ "{:,.2f}".format(outstanding_balance) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 3rem; color: #666;">
+                    <p>No transactions recorded yet.</p>
+                    <p style="font-size: 0.9rem; margin-top: 1rem;">
+                        Payments made for this invoice will appear here.
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- ADJUSTMENT TAB -->
+        <div class="tab-pane" id="adjustment">
+            <div class="card-body">
+                <p style="text-align: center; padding: 3rem; color: #666;">
+                    <i class="fas fa-wrench" style="margin-right: 0.5rem;"></i> Adjustment feature coming soon...
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get outstanding balance from hidden field
+    const outstandingBalance = parseFloat(document.getElementById('outstandingBalance').value);
+    
+    // === TAB SWITCHING ===
+    document.querySelectorAll('.nav-tabs a').forEach(tabLink => {
+        tabLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const targetId = this.getAttribute('href').replace('#', '');
+            
+            // Remove active from all
+            document.querySelectorAll('.nav-tabs li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+                pane.style.display = 'none';
+            });
+            
+            // Add active to clicked
+            this.parentElement.classList.add('active');
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) {
+                targetPane.classList.add('active');
+                targetPane.style.display = 'block';
+            }
+        });
+    });
+    
+    // Initialize hidden panes
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        if (!pane.classList.contains('active')) {
+            pane.style.display = 'none';
+        }
+    });
+
+    // === PAYMENT MODE HANDLER ===
+    const paymentModeSelect = document.getElementById('paymentMode');
+    const allPaymentFields = document.querySelectorAll('.payment-fields');
+    
+    function togglePaymentFields(mode) {
+        allPaymentFields.forEach(field => field.style.display = 'none');
+        if (mode === 'Cash') {
+            document.getElementById('cashFields').style.display = 'block';
+        } else if (mode === 'MoMo') {
+            document.getElementById('mobileMoneyFields').style.display = 'block';
+        } else if (mode === 'Cheque') {
+            document.getElementById('chequeFields').style.display = 'block';
+        }
+    }
+
+    if (paymentModeSelect) {
+        paymentModeSelect.addEventListener('change', function() {
+            togglePaymentFields(this.value);
+        });
+    }
+
+    // === PAYMENT TYPE HANDLERS (AUTO-FILL OUTSTANDING BALANCE) ===
+    function setupPaymentTypeHandler(typeSelectId, amountInputId) {
+    const selectElement = document.getElementById(typeSelectId);
+    const amountInput = document.getElementById(amountInputId);
+    
+    if (selectElement && amountInput) {
+        selectElement.addEventListener('change', function() {
+            if (this.value === 'Full Amount') {
+                // Auto-fill with outstanding balance
+                amountInput.value = outstandingBalance.toFixed(2);
+                amountInput.readOnly = true;
+                amountInput.style.background = '#e8f5e9';
+                amountInput.style.fontWeight = 'bold';
+                amountInput.style.borderColor = '#4caf50';
+            } else if (this.value === 'Part Payment') {
+                // Clear and enable for part payment
+                amountInput.value = '';
+                amountInput.readOnly = false;
+                amountInput.style.background = '#fff';
+                amountInput.style.fontWeight = 'normal';
+                amountInput.style.borderColor = '#dee2e6';
+                amountInput.focus();
+            } else if (this.value === 'Overpayment') {
+                // 🆕 NEW: Enable input with visual indication for overpayment
+                amountInput.value = '';
+                amountInput.readOnly = false;
+                amountInput.style.background = '#fff9e6';  // Light yellow background
+                amountInput.style.fontWeight = 'normal';
+                amountInput.style.borderColor = '#ffc107';  // Yellow border
+                amountInput.placeholder = `Enter amount > ${outstandingBalance.toFixed(2)}`;
+                amountInput.focus();
+            } else {
+                // Reset if nothing selected
+                amountInput.value = '';
+                amountInput.readOnly = false;
+                amountInput.style.background = '#fff';
+                amountInput.style.fontWeight = 'normal';
+                amountInput.style.borderColor = '#dee2e6';
+            }
+        });
+    }
+}   
+
+    // Apply to all three payment modes
+    setupPaymentTypeHandler('paymentType', 'paymentAmount');
+    setupPaymentTypeHandler('mobilePaymentType', 'mobilePaymentAmount');
+    setupPaymentTypeHandler('chequePaymentType', 'chequePaymentAmount');
+
+    // === OTHERS PAYER HANDLERS ===
+    function setupOthersHandler(paidBySelectId, othersFieldsId) {
+        const selectElement = document.getElementById(paidBySelectId);
+        if (selectElement) {
+            selectElement.addEventListener('change', function() {
+                const othersFields = document.getElementById(othersFieldsId);
+                if (othersFields) {
+                    othersFields.style.display = this.value === 'Others' ? 'grid' : 'none';
+                }
+            });
+        }
+    }
+
+    setupOthersHandler('paidBy', 'othersFields');
+    setupOthersHandler('mobilePaidBy', 'mobileOthersFields');
+    setupOthersHandler('chequePaidBy', 'chequeOthersFields');
+
+    // === FORM VALIDATION ===
+    const form = document.getElementById('paymentForm');
+if (form) {
+    form.addEventListener('submit', function(e) {
+        console.log('🚀 Form submit event triggered');
+        
+        // ✅ VALIDATE GCR NUMBER FIRST
+        const gcrNumber = document.getElementById('gcrNumber').value.trim();
+        console.log('GCR Number:', gcrNumber);
+        
+        if (!gcrNumber) {
+            e.preventDefault();
+            alert('GCR Number is required for all payments');
+            document.getElementById('gcrNumber').focus();
+            document.getElementById('gcrNumber').style.borderColor = '#dc3545';
+            return false;
+        }
+        
+        const paymentMode = document.getElementById('paymentMode').value;
+        console.log('Payment Mode:', paymentMode);
+        
+        if (!paymentMode) {
+            e.preventDefault();
+            alert('Please select a payment mode');
+            return false;
+        }
+        
+        // Validate based on payment mode
+        let amountInput;
+        let paymentTypeInput;
+        let paidByInput;
+        
+        if (paymentMode === 'Cash') {
+            paymentTypeInput = document.getElementById('paymentType');
+            amountInput = document.getElementById('paymentAmount');
+            paidByInput = document.getElementById('paidBy');
+        } else if (paymentMode === 'MoMo') {
+            paymentTypeInput = document.getElementById('mobilePaymentType');
+            amountInput = document.getElementById('mobilePaymentAmount');
+            paidByInput = document.getElementById('mobilePaidBy');
+        } else if (paymentMode === 'Cheque') {
+            paymentTypeInput = document.getElementById('chequePaymentType');
+            amountInput = document.getElementById('chequePaymentAmount');
+            paidByInput = document.getElementById('chequePaidBy');
+        }
+        
+        console.log('Payment Type:', paymentTypeInput?.value);
+        console.log('Amount:', amountInput?.value);
+        console.log('Paid By:', paidByInput?.value);
+        
+        // Check payment type is selected
+        if (!paymentTypeInput || !paymentTypeInput.value) {
+            e.preventDefault();
+            alert('Please select a payment type (Full Amount, Part Payment, or Overpayment)');
+            return false;
+        }
+        
+        // Check paid by is selected
+        if (!paidByInput || !paidByInput.value) {
+            e.preventDefault();
+            alert('Please select who is paying (Registered Owner or Others)');
+            return false;
+        }
+        
+        // Validate amount
+        if (amountInput) {
+            const amount = parseFloat(amountInput.value);
+            const paymentType = paymentTypeInput.value;
+            console.log('Validating amount:', amount, 'vs outstanding:', outstandingBalance, 'Type:', paymentType);
+            
+            if (isNaN(amount) || amount <= 0) {
+                e.preventDefault();
+                alert('Please enter a valid payment amount greater than 0');
+                return false;
+            }
+            
+            // 🆕 MODIFIED: Only validate max for non-overpayment
+            if (paymentType !== 'Overpayment' && amount > outstandingBalance + 0.01) {
+                e.preventDefault();
+                alert(`Payment amount (GHS ${amount.toFixed(2)}) cannot exceed outstanding balance (GHS ${outstandingBalance.toFixed(2)}). Select "Overpayment" to pay more.`);
+                return false;
+            }
+            
+            // 🆕 NEW: Validate overpayment amount
+            if (paymentType === 'Overpayment' && amount <= outstandingBalance) {
+                e.preventDefault();
+                alert(`For overpayment, amount must be greater than outstanding balance (GHS ${outstandingBalance.toFixed(2)})`);
+                return false;
+            }
+            
+            // 🆕 NEW: Confirm overpayment
+            if (paymentType === 'Overpayment') {
+                const overpaymentAmount = amount - outstandingBalance;
+                const confirmOverpayment = confirm(
+                    `⚠️ OVERPAYMENT CONFIRMATION\n\n` +
+                    `Outstanding Balance: GHS ${outstandingBalance.toFixed(2)}\n` +
+                    `Payment Amount: GHS ${amount.toFixed(2)}\n` +
+                    `Overpayment: GHS ${overpaymentAmount.toFixed(2)}\n\n` +
+                    `The excess amount will be recorded as an overpayment.\n\n` +
+                    `Do you want to proceed?`
+                );
+                
+                if (!confirmOverpayment) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        }
+        
+        console.log('✅ Form validation passed - submitting...');
+        // Allow form to submit
+        return true;
+    });
+}
+    
+    // Reset GCR border color on input
+    const gcrInput = document.getElementById('gcrNumber');
+    if (gcrInput) {
+        gcrInput.addEventListener('input', function() {
+            this.style.borderColor = '#dee2e6';
+        });
+    }
+});
+
+// OTP Management Object
+const OTPManager = {
+    otpId: null,
+    currentPhone: null,
+    expiryTimer: null,
+    
+    // Show OTP modal
+    showModal: function(phone, amount, invoiceId, invoiceType) {
+        this.currentPhone = phone;
+        document.getElementById('otpPhoneDisplay').textContent = phone;
+        document.getElementById('otpAmountDisplay').textContent = amount;
+        document.getElementById('otpModal').style.display = 'block';
+        document.getElementById('otpInput').value = '';
+        document.getElementById('otpError').style.display = 'none';
+        document.getElementById('otpSuccess').style.display = 'none';
+        
+        // Send OTP
+        this.sendOTP(phone, invoiceId, invoiceType, amount);
+    },
+    
+    // Hide OTP modal
+    hideModal: function() {
+        document.getElementById('otpModal').style.display = 'none';
+        if (this.expiryTimer) {
+            clearInterval(this.expiryTimer);
+        }
+    },
+    
+    // Send OTP via API
+    sendOTP: async function(phone, invoiceId, invoiceType, amount) {
+        this.showLoading('Sending OTP...');
+        
+        try {
+            const response = await fetch('/api/send-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phone_number: phone,
+                    invoice_id: invoiceId,
+                    invoice_type: invoiceType,
+                    payment_amount: parseFloat(amount)
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.otpId = data.otp_id;
+                this.hideLoading();
+                this.showSuccess(`OTP sent to ${phone}. Code expires in ${data.expires_in_minutes} minutes.`);
+                this.startExpiryTimer(data.expires_in_minutes * 60);
+            } else {
+                this.hideLoading();
+                this.showError(data.message);
+            }
+        } catch (error) {
+            this.hideLoading();
+            this.showError('Failed to send OTP. Please check your connection.');
+            console.error('OTP send error:', error);
+        }
+    },
+    
+    // Verify OTP
+    verifyOTP: async function() {
+        const otpCode = document.getElementById('otpInput').value.trim();
+        
+        if (!otpCode) {
+            this.showError('Please enter the OTP code');
+            return;
+        }
+        
+        if (otpCode.length !== 6) {
+            this.showError('OTP must be 6 digits');
+            return;
+        }
+        
+        this.showLoading('Verifying OTP...');
+        
+        try {
+            const response = await fetch('/api/verify-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    otp_id: this.otpId,
+                    otp_code: otpCode
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.hideLoading();
+                this.showSuccess('✅ OTP verified successfully! Processing payment...');
+                
+                // Add OTP ID to form
+                const otpIdInput = document.createElement('input');
+                otpIdInput.type = 'hidden';
+                otpIdInput.name = 'otp_id';
+                otpIdInput.value = this.otpId;
+                document.getElementById('paymentForm').appendChild(otpIdInput);
+                
+                // Close modal and submit form
+                setTimeout(() => {
+                    this.hideModal();
+                    document.getElementById('paymentForm').submit();
+                }, 1500);
+            } else {
+                this.hideLoading();
+                this.showError(data.message);
+            }
+        } catch (error) {
+            this.hideLoading();
+            this.showError('Failed to verify OTP. Please try again.');
+            console.error('OTP verification error:', error);
+        }
+    },
+    
+    // Resend OTP
+    resendOTP: async function() {
+        if (!this.otpId) {
+            this.showError('No active OTP session');
+            return;
+        }
+        
+        this.showLoading('Resending OTP...');
+        
+        try {
+            const response = await fetch('/api/resend-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    otp_id: this.otpId
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.otpId = data.otp_id;
+                this.hideLoading();
+                this.showSuccess(`OTP resent to ${this.currentPhone}`);
+                this.startExpiryTimer(data.expires_in_minutes * 60);
+                document.getElementById('otpInput').value = '';
+            } else {
+                this.hideLoading();
+                this.showError(data.message);
+            }
+        } catch (error) {
+            this.hideLoading();
+            this.showError('Failed to resend OTP. Please try again.');
+            console.error('OTP resend error:', error);
+        }
+    },
+    
+    // Start expiry countdown timer
+    startExpiryTimer: function(seconds) {
+        if (this.expiryTimer) {
+            clearInterval(this.expiryTimer);
+        }
+        
+        const timerElement = document.getElementById('otpTimer');
+        timerElement.style.display = 'block';
+        
+        let remaining = seconds;
+        
+        this.expiryTimer = setInterval(() => {
+            remaining--;
+            
+            if (remaining <= 0) {
+                clearInterval(this.expiryTimer);
+                timerElement.innerHTML = '<span style="color: #dc3545;">⏰ OTP Expired</span>';
+                this.showError('OTP has expired. Please request a new one.');
+            } else {
+                const minutes = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerElement.innerHTML = `⏱️ Code expires in: <strong>${minutes}:${secs.toString().padStart(2, '0')}</strong>`;
+            }
+        }, 1000);
+    },
+    
+    // Show loading state
+    showLoading: function(message) {
+        document.getElementById('otpLoading').style.display = 'block';
+        document.getElementById('otpLoadingMessage').textContent = message;
+        document.getElementById('otpError').style.display = 'none';
+        document.getElementById('otpSuccess').style.display = 'none';
+    },
+    
+    // Hide loading state
+    hideLoading: function() {
+        document.getElementById('otpLoading').style.display = 'none';
+    },
+    
+    // Show error message
+    showError: function(message) {
+        const errorEl = document.getElementById('otpError');
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+        document.getElementById('otpSuccess').style.display = 'none';
+    },
+    
+    // Show success message
+    showSuccess: function(message) {
+        const successEl = document.getElementById('otpSuccess');
+        successEl.textContent = message;
+        successEl.style.display = 'block';
+        document.getElementById('otpError').style.display = 'none';
+    }
+};
+
+// Update form submission handler
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('paymentForm');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const paymentMode = document.getElementById('paymentMode').value;
+            
+            if (!paymentMode) {
+                alert('Please select a payment mode');
+                return false;
+            }
+            
+            // Get phone number based on payment mode
+            let phoneNumber = null;
+            let paymentAmount = null;
+            let paymentTypeInput = null;
+            let paidByInput = null;
+            
+            if (paymentMode === 'Cash') {
+                paymentTypeInput = document.getElementById('paymentType');
+                paymentAmount = document.getElementById('paymentAmount').value;
+                paidByInput = document.getElementById('paidBy');
+                
+                // Get phone from payer if "Others", otherwise use primary contact
+                if (paidByInput.value === 'Others') {
+                    phoneNumber = document.getElementById('payerPhone').value;
+                } else {
+                    // For property: use property.primary_contact
+                    // For business: use business.business_primary_contact
+                    phoneNumber = document.querySelector('[data-primary-contact]')?.getAttribute('data-primary-contact');
+                }
+            } else if (paymentMode === 'MoMo') {
+                paymentTypeInput = document.getElementById('mobilePaymentType');
+                paymentAmount = document.getElementById('mobilePaymentAmount').value;
+                paidByInput = document.getElementById('mobilePaidBy');
+                phoneNumber = document.getElementById('senderMobileNumber').value;
+            } else if (paymentMode === 'Cheque') {
+                paymentTypeInput = document.getElementById('chequePaymentType');
+                paymentAmount = document.getElementById('chequePaymentAmount').value;
+                paidByInput = document.getElementById('chequePaidBy');
+                
+                // Get phone from payer if "Others", otherwise use primary contact
+                if (paidByInput.value === 'Others') {
+                    phoneNumber = document.getElementById('chequePayerPhone').value;
+                } else {
+                    phoneNumber = document.querySelector('[data-primary-contact]')?.getAttribute('data-primary-contact');
+                }
+            }
+            
+            // Validate required fields
+            if (!paymentTypeInput || !paymentTypeInput.value) {
+                alert('Please select a payment type (Full Amount or Part Payment)');
+                return false;
+            }
+            
+            if (!paidByInput || !paidByInput.value) {
+                alert('Please select who is paying');
+                return false;
+            }
+            
+            if (!paymentAmount || parseFloat(paymentAmount) <= 0) {
+                alert('Please enter a valid payment amount');
+                return false;
+            }
+            
+            if (!phoneNumber) {
+                alert('Phone number is required for payment verification');
+                return false;
+            }
+            
+            // Get invoice details
+            const invoiceId = parseInt(window.location.pathname.split('/')[3]);
+            const invoiceType = window.location.pathname.includes('property') ? 'Property' : 'Business';
+            
+            // Show OTP modal
+            OTPManager.showModal(phoneNumber, paymentAmount, invoiceId, invoiceType);
+        });
+    }
+    
+    // OTP input: auto-verify when 6 digits entered
+    const otpInput = document.getElementById('otpInput');
+    if (otpInput) {
+        otpInput.addEventListener('input', function(e) {
+            // Remove non-numeric characters
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // Auto-verify when 6 digits entered
+            if (this.value.length === 6) {
+                OTPManager.verifyOTP();
+            }
+        });
+        
+        // Allow only numbers
+        otpInput.addEventListener('keypress', function(e) {
+            if (e.key && !/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,508 @@
+{% extends "base.html" %}
+
+{% block title %}Property Details{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Consolidated form and grid styles for consistency */
+    .form-grid-3 {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .view-mode {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: #f5f5f5; /* Read-only background */
+        cursor: default;
+        color: #333;
+    }
+    
+    /* Edit Mode Styles */
+    .edit-mode .view-mode:not([readonly]):not(:disabled) {
+        background-color: white !important;
+        cursor: text !important;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .required {
+        color: #dc3545;
+        margin-left: 5px;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+        background: #fff;
+    }
+    
+    .card-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        color: #333;
+    }
+
+    /* Unified Tab Styles (replacing the button-based tabs) */
+    .tabs-wrapper {
+        border-bottom: 2px solid #e0e0e0;
+        margin: 0;
+        background: #f8f9fa;
+        padding: 0 1.5rem;
+    }
+
+    .nav-tabs {
+        border-bottom: none;
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-tabs li a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        color: #6c757d;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .nav-tabs li.active a, .nav-tabs li a:hover {
+        color: #667eea;
+        border-bottom-color: #667eea;
+        background: #fff;
+    }
+
+    .tab-content {
+        padding: 1.5rem;
+    }
+
+    .tab-pane {
+        display: none;
+    }
+
+    .tab-pane.active {
+        display: block;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    /* Table styles from properties_list.html for Invoices tab */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .table th, .table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table th {
+        background: #f8f9fa;
+        color: #667eea;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .table tbody tr:hover {
+        background: #f9fafb;
+    }
+    
+    @media (max-width: 992px) {
+        .form-grid-3 {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .form-grid-3 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-building"></i> Property Account - {{ property.account_no }}</h2>
+        <div>
+            <button onclick="toggleEditMode()" class="btn btn-primary" id="editBtn">
+                <i class="fas fa-edit"></i> Edit Property
+            </button>
+            <button onclick="confirmDelete()" class="btn" style="background: #dc3545; color: white;">
+                <i class="fas fa-trash-alt"></i> Delete Property
+            </button>
+            <a href="{{ url_for('list_properties') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+    
+    <div class="tabs-wrapper">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#personal-info" data-tab="personal-info">
+                    <i class="fas fa-user-circle"></i> Personal Info
+                </a>
+            </li>
+            <li>
+                <a href="#location-info" data-tab="location-info">
+                    <i class="fas fa-map-marker-alt"></i> Location Info
+                </a>
+            </li>
+            <li>
+                <a href="#property-info" data-tab="property-info">
+                    <i class="fas fa-info-circle"></i> Property Info
+                </a>
+            </li>
+            <li>
+                <a href="#invoices" data-tab="invoices">
+                    <i class="fas fa-file-invoice"></i> Invoice(s)
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <form method="POST" action="{{ url_for('edit_property', id=property.id) }}" id="propertyForm">
+        <div class="tab-content">
+            <div class="tab-pane active" id="personal-info">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-id-card"></i> Owner Details</h4>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Owner Name: <span class="required">*</span></strong></label>
+                        <input type="text" name="owner_name" value="{{ property.owner_name }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Primary Contact: <span class="required">*</span></strong></label>
+                        <input type="text" name="primary_contact" value="{{ property.primary_contact }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>House No:</strong></label>
+                        <input type="text" name="house_no" value="{{ property.house_no or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Email:</strong></label>
+                        <input type="email" name="email" value="{{ property.email or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Account No:</strong></label>
+                        <input type="text" value="{{ property.account_no }}" class="view-mode" readonly style="background-color: #e9ecef;">
+                    </div>
+                </div>
+                
+                <div class="btn-group" id="editButtons-personal" style="display: none;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Update Personal Info</button>
+                    <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="location-info">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-compass"></i> Geographical Details</h4>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Electoral Area: <span class="required">*</span></strong></label>
+                        <select name="electoral_area" class="view-mode" disabled>
+                            <option value="">-- SELECT OPTION --</option>
+                            <option value="Dzorwulu" {% if property.electoral_area == 'Dzorwulu' %}selected{% endif %}>Dzorwulu</option>
+                            <option value="Roman Ridge" {% if property.electoral_area == 'Roman Ridge' %}selected{% endif %}>Roman Ridge</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Town: <span class="required">*</span></strong></label>
+                        <input type="text" name="town" value="{{ property.town or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Street Name:</strong></label>
+                        <input type="text" name="street_name" value="{{ property.street_name or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>GhanaPost GPS code:</strong></label>
+                        <input type="text" name="ghanapost_gps" value="{{ property.ghanapost_gps or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Division No: <span class="required">*</span></strong></label>
+                        <select name="division_no" class="view-mode" disabled>
+                            <option value="">-- SELECT OPTION --</option>
+                            <option value="1" {% if property.division_no == '1' %}selected{% endif %}>1</option>
+                            <option value="2" {% if property.division_no == '2' %}selected{% endif %}>2</option>
+                            <option value="11" {% if property.division_no == '11' %}selected{% endif %}>11</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Block No: <span class="required">*</span></strong></label>
+                        <input type="text" name="block_no" value="{{ property.block_no or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Parcel No: <span class="required">*</span></strong></label>
+                        <input type="text" name="parcel_no" value="{{ property.parcel_no or '' }}" class="view-mode" readonly>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="editButtons-location" style="display: none;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Update Location Info</button>
+                    <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="property-info">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-chart-line"></i> Valuation & Classification</h4>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label><strong>Category: <span class="required">*</span></strong></label>
+                        <select name="category" class="view-mode" disabled>
+                            <option value="">-- SELECT OPTION --</option>
+                            <option value="RESIDENTIAL" {% if property.category == 'RESIDENTIAL' %}selected{% endif %}>Residential</option>
+                            <option value="COMMERCIAL" {% if property.category == 'COMMERCIAL' %}selected{% endif %}>Commercial</option>
+                            <option value="INDUSTRIAL" {% if property.category == 'INDUSTRIAL' %}selected{% endif %}>Industrial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Property Class: <span class="required">*</span></strong></label>
+                        <input type="text" name="property_class" value="{{ property.property_class or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Zone: <span class="required">*</span></strong></label>
+                        <input type="text" name="zone" value="{{ property.zone or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Use Code: <span class="required">*</span></strong></label>
+                        <input type="text" name="use_code" value="{{ property.use_code or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Valuation Status: <span class="required">*</span></strong></label>
+                        <select name="valuation_status" class="view-mode" disabled>
+                            <option value="">-- SELECT OPTION --</option>
+                            <option value="Valued" {% if property.valuation_status == 'Valued' %}selected{% endif %}>Assessed</option>
+                            <option value="Pending" {% if property.valuation_status == 'Pending' %}selected{% endif %}>Unassessed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Rateable Value (GHS): <span class="required">*</span></strong></label>
+                        <input type="number" step="0.01" name="rateable_value" value="{{ property.rateable_value or '' }}" class="view-mode" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Rate Impost: <span class="required">*</span></strong></label>
+                        <input type="number" step="0.000001" name="rate_impost" value="{{ property.rate_impost or '' }}" class="view-mode" readonly>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="editButtons-property" style="display: none;">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Update Property Info</button>
+                    <button type="button" onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+            
+            <div class="tab-pane" id="invoices">
+                <h4 style="color: #667eea; margin-bottom: 1.5rem;"><i class="fas fa-list-alt"></i> Invoice History</h4>
+    
+            <div class="table-responsive">
+                <table class="table">
+                                <thead>
+                <tr>
+                    <th>Invoice No.</th>
+                    <th>Year</th>
+                    <th>Amount (GHS)</th>
+                    <th>Tax (GHS)</th>
+                    <th>Total (GHS)</th>
+                    <th>Amount Paid (GHS)</th>
+                    <th>Balance (GHS)</th>
+                    <th>Rateable Value</th>
+                    <th>Rate Impost</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if invoices %}
+                {% for invoice in invoices %}
+                {% set invoice_total = invoice.total_amount if invoice.total_amount else invoice.amount %}
+                {% set payments = invoice.payments if invoice.payments else [] %}
+                {% set total_paid = payments|sum(attribute='payment_amount') if payments else 0 %}
+                {% set balance = invoice_total - total_paid %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('view_property_invoice', invoice_id=invoice.id) }}" 
+                            style="color: #667eea; text-decoration: none; font-weight: 500;">
+                                {{ invoice.invoice_no }}
+                        </a>
+                    </td>
+                    <td>{{ invoice.year }}</td>
+                    <td>{{ "{:,.2f}".format(invoice.amount) }}</td>
+                    <td>{{ "{:,.2f}".format(invoice.tax_amount or 0) }}</td>
+                    <td>{{ "{:,.2f}".format(invoice_total) }}</td>
+                    <td>
+                        <strong style="color: #10b981;">{{ "{:,.2f}".format(total_paid) }}</strong>
+                    </td>
+                    <td>
+                        <strong style="color: {% if balance > 0 %}#dc3545{% else %}#10b981{% endif %};">
+                            {{ "{:,.2f}".format(balance) }}
+                        </strong>
+                    </td>
+                    <td>{{ property.rateable_value }}</td>
+                    <td>{{ property.rate_impost }}</td>
+                    <td>
+                        {% if invoice.status == 'Paid' %}
+                            <span class="badge" style="background: #10b981; color: white; padding: 0.4rem 0.8rem; border-radius: 4px;">Paid</span>
+                        {% elif invoice.status == 'Partially Paid' %}
+                            <span class="badge" style="background: #f59e0b; color: white; padding: 0.4rem 0.8rem; border-radius: 4px;">Partial</span>
+                        {% else %}
+                            <span class="badge" style="background: #dc3545; color: white; padding: 0.4rem 0.8rem; border-radius: 4px;">Unpaid</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('view_property_invoice', invoice_id=invoice.id) }}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                
+{% if invoices %}
+<tr style="background: #f0f4ff; font-weight: bold; border-top: 3px solid #667eea;">
+    <td colspan="2" class="text-right" style="padding: 1rem;"><strong>TOTALS:</strong></td>
+    <td style="color: #667eea;">
+        <strong>GHS {{ "{:,.2f}".format(invoices|sum(attribute='amount')) }}</strong>
+    </td>
+    <td style="color: #667eea;">
+        <strong>GHS {{ "{:,.2f}".format(invoices|map(attribute='tax_amount')|select|sum) }}</strong>
+    </td>
+    <td style="color: #667eea;">
+        {% set total_all_invoices = namespace(value=0) %}
+        {% for inv in invoices %}
+            {% set inv_total = inv.total_amount if inv.total_amount else inv.amount %}
+            {% set total_all_invoices.value = total_all_invoices.value + inv_total %}
+        {% endfor %}
+        <strong>GHS {{ "{:,.2f}".format(total_all_invoices.value) }}</strong>
+    </td>
+    <td style="color: #10b981;">
+        {% set total_all_paid = namespace(value=0) %}
+        {% for inv in invoices %}
+            {% set inv_payments = inv.payments if inv.payments else [] %}
+            {% set total_all_paid.value = total_all_paid.value + (inv_payments|sum(attribute='payment_amount') if inv_payments else 0) %}
+        {% endfor %}
+        <strong>GHS {{ "{:,.2f}".format(total_all_paid.value) }}</strong>
+    </td>
+    <td style="color: #dc3545;">
+        {% set total_all_balance = namespace(value=0) %}
+        {% for inv in invoices %}
+            {% set inv_total = inv.total_amount if inv.total_amount else inv.amount %}
+            {% set inv_payments = inv.payments if inv.payments else [] %}
+            {% set inv_paid = inv_payments|sum(attribute='payment_amount') if inv_payments else 0 %}
+            {% set total_all_balance.value = total_all_balance.value + (inv_total - inv_paid) %}
+        {% endfor %}
+        <strong>GHS {{ "{:,.2f}".format(total_all_balance.value) }}</strong>
+    </td>
+    <td colspan="4"></td>
+</tr>
+{% endif %}
+                {% else %}
+                <tr>
+                    <td colspan="9" style="text-align: center;">
+                        <div class="empty-state" style="padding: 2rem; color: #999;">
+                            <i class="fas fa-file-invoice-dollar" style="font-size: 2rem; color: #999; margin-bottom: 0.5rem;"></i>
+                            <p style="font-weight: 600;">No invoices found for this property.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 2rem; text-align: center;">
+        <a href="{{ url_for('create_invoice', id=property.id) }}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Generate New Invoice
+        </a>
+    </div>
+</div>
+        </div>
+    </form>
+    
+    <form id="deleteForm" method="POST" action="{{ url_for('delete_property', id=property.id) }}" style="display:none;"></form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Tab switching logic for the unified tabs
+    document.querySelectorAll('.tabs-wrapper .nav-tabs a').forEach(tabLink => {
+        tabLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.dataset.tab;
+            
+            // Remove active from all tabs and panes
+            document.querySelectorAll('.tabs-wrapper li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.tab-content .tab-pane').forEach(pane => pane.classList.remove('active'));
+            
+            // Add active to the clicked tab and corresponding pane
+            this.parentElement.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Toggle Edit Mode Logic
+    function toggleEditMode() {
+        const form = document.getElementById('propertyForm');
+        const editBtn = document.getElementById('editBtn');
+        const editButtons = document.querySelectorAll('[id^="editButtons"]');
+        const inputs = document.querySelectorAll('.view-mode');
+        
+        form.classList.add('edit-mode');
+        inputs.forEach(input => {
+            if (input.tagName === 'SELECT') {
+                input.disabled = false;
+            } else {
+                input.readOnly = false;
+            }
+        });
+        
+        editBtn.style.display = 'none';
+        editButtons.forEach(btn => btn.style.display = 'flex');
+    }
+    
+    function cancelEdit() {
+        location.reload(); // Simple way to reset form and state
+    }
+    
+    function confirmDelete() {
+        if (confirm('Are you sure you want to delete this property ({{ property.account_no }})? This action cannot be undone and will also delete all associated invoices.')) {
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>
+{% endblock %}

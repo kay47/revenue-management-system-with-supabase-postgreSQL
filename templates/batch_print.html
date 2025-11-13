@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Batch Invoice Printing{% endblock %}
+
+{% block extra_css %}
+<style>
+    .batch-print-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .form-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .form-section h3 {
+        color: #667eea;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .form-group select,
+    .form-group textarea,
+    .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .form-group select:focus,
+    .form-group textarea:focus,
+    .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group textarea {
+        min-height: 200px;
+        font-family: monospace;
+        resize: vertical;
+    }
+
+    .help-text {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .help-text i {
+        color: #667eea;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+    }
+
+    .info-box {
+        background: #f0f9ff;
+        border: 2px solid #3b82f6;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-box h4 {
+        color: #1e40af;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-box ul {
+        margin-left: 1.5rem;
+        color: #1e3a8a;
+    }
+
+    .info-box li {
+        margin-bottom: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="batch-print-container">
+    <div class="page-header">
+        <h1><i class="fas fa-print"></i> Batch Invoice Printing</h1>
+        <p>Print multiple invoices at once by entering account numbers</p>
+    </div>
+
+    <div class="info-box">
+        <h4><i class="fas fa-info-circle"></i> How to Use</h4>
+        <ul>
+            <li>Select the invoice type you want to print (Property, Business, or All)</li>
+            <li>Enter account numbers separated by commas or new lines</li>
+            <li>Optionally filter by year to print only specific year invoices</li>
+            <li>Click "Preview Invoices" to see which invoices will be printed</li>
+            <li>From the preview, you can generate a combined print-ready document</li>
+        </ul>
+    </div>
+
+    <form method="POST" action="{{ url_for('batch_print') }}">
+        <div class="form-section">
+            <h3><i class="fas fa-filter"></i> Print Configuration</h3>
+            
+            <div class="form-group">
+                <label for="invoice_type">
+                    Invoice Type <span style="color: #dc3545;">*</span>
+                </label>
+                <select name="invoice_type" id="invoice_type" required>
+                    <option value="">-- Select Invoice Type --</option>
+                    <option value="Property">Property Invoices Only</option>
+                    <option value="BOP">Business (BOP) Invoices Only</option>
+                    <option value="ALL">All Invoice Types</option>
+                </select>
+                <div class="help-text">
+                    <i class="fas fa-lightbulb"></i>
+                    Choose which type of invoices to print
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="year_filter">
+                    Year Filter (Optional)
+                </label>
+                <input type="number" 
+                       name="year_filter" 
+                       id="year_filter" 
+                       placeholder="e.g., 2024"
+                       min="2000" 
+                       max="{{ current_year + 1 }}">
+                <div class="help-text">
+                    <i class="fas fa-calendar-alt"></i>
+                    Leave empty to print all years, or specify a year to filter
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3><i class="fas fa-list-ol"></i> Account Numbers</h3>
+            
+            <div class="form-group">
+                <label for="account_numbers">
+                    Enter Account Numbers <span style="color: #dc3545;">*</span>
+                </label>
+                <textarea name="account_numbers" 
+                          id="account_numbers" 
+                          required
+                          placeholder="Enter account numbers separated by commas or new lines:&#10;&#10;AYWMA141001&#10;AYWMA141002, AYWMA141003&#10;BOP001, BOP002"></textarea>
+                <div class="help-text">
+                    <i class="fas fa-keyboard"></i>
+                    You can enter account numbers separated by commas (,) or new lines
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Preview Invoices
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-format account numbers on paste
+    const accountInput = document.getElementById('account_numbers');
+    
+    accountInput.addEventListener('paste', function(e) {
+        setTimeout(() => {
+            let text = accountInput.value;
+            // Replace multiple spaces/tabs with single comma
+            text = text.replace(/[\s\t]+/g, ', ');
+            // Remove multiple consecutive commas
+            text = text.replace(/,+/g, ',');
+            // Trim whitespace
+            text = text.trim();
+            accountInput.value = text;
+        }, 0);
+    });
+
+    // Character counter
+    accountInput.addEventListener('input', function() {
+        const text = accountInput.value;
+        const accounts = text.split(/[,\n]+/).filter(a => a.trim()).length;
+        
+        // Show count if any accounts entered
+        if (accounts > 0) {
+            let helpText = accountInput.parentElement.querySelector('.help-text');
+            if (!document.getElementById('account-count')) {
+                const countSpan = document.createElement('span');
+                countSpan.id = 'account-count';
+                countSpan.style.marginLeft = 'auto';
+                countSpan.style.fontWeight = 'bold';
+                countSpan.style.color = '#667eea';
+                helpText.appendChild(countSpan);
+            }
+            document.getElementById('account-count').textContent = `${accounts} account${accounts !== 1 ? 's' : ''}`;
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,594 @@
+{% extends "base.html" %}
+
+{% block title %}Bulk Upload Products{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 1fr;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-group input[type="file"],
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: #fff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group select {
+        cursor: pointer;
+    }
+    
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+        background: #fff;
+    }
+    
+    .card-header h5 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        color: #333;
+    }
+    
+    .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .alert-info {
+        background: #e6f7ff;
+        border: 1px solid #91d5ff;
+        color: #0050b3;
+    }
+
+    .alert-warning {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #856404;
+    }
+    
+    .alert i {
+        font-size: 1.25rem;
+    }
+    
+    .alert strong {
+        font-weight: 700;
+    }
+    
+    .list-instructions {
+        padding-left: 1.5rem;
+        margin-top: 0.5rem;
+        color: #555;
+    }
+    
+    .list-instructions li {
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-success {
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-success:hover {
+        background: #0ea775;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Update Mode Helper */
+    .update-mode-info {
+        display: none;
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        border-left: 4px solid;
+    }
+
+    .update-mode-info.active {
+        display: block;
+    }
+
+    .update-mode-info.skip {
+        background: #e3f2fd;
+        border-color: #2196f3;
+        color: #0d47a1;
+    }
+
+    .update-mode-info.update {
+        background: #fff3e0;
+        border-color: #ff9800;
+        color: #e65100;
+    }
+
+    .update-mode-info.create_only {
+        background: #ffebee;
+        border-color: #f44336;
+        color: #b71c1c;
+    }
+
+    /* Matching Criteria Box */
+    .matching-criteria {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        color: white;
+    }
+
+    .matching-criteria h6 {
+        margin: 0 0 0.75rem 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .matching-criteria ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.875rem;
+    }
+
+    .matching-criteria li {
+        padding: 0.25rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .matching-criteria li i {
+        color: #fbbf24;
+    }
+
+    /* Progress Bar Styles */
+    .upload-progress {
+        display: none;
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .upload-progress.active {
+        display: block;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        height: 30px;
+        background: #e9ecef;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        width: 0%;
+        transition: width 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+    }
+
+    .file-size-info {
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        color: #856404;
+        display: none;
+    }
+
+    .file-size-info.show {
+        display: block;
+    }
+
+    .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Badge Styles */
+    .field-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        background: #667eea;
+        color: white;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.25rem;
+    }
+
+    .field-badge.optional {
+        background: #94a3b8;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-content-header">
+    <h2><i class="fas fa-cubes"></i> Bulk Upload Products</h2>
+    <a href="{{ url_for('list_products') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Products
+    </a>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="m-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message | safe }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="row" style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+    <!-- Upload Form Section -->
+    <div style="flex: 2; min-width: 300px;">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-file-upload"></i> Upload CSV/Excel File</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                    <!-- Update Mode Selection -->
+                    <div class="form-group">
+                        <label for="update_mode">
+                            <i class="fas fa-cog"></i> Action for Existing Products
+                        </label>
+                        <select name="update_mode" id="update_mode" class="form-control" required>
+                            <option value="skip">Skip existing (don't modify)</option>
+                            <option value="update">Update existing products</option>
+                            <option value="create_only">Create new only (fail on duplicates)</option>
+                        </select>
+                        
+                        <!-- Dynamic info box based on selection -->
+                        <div class="update-mode-info skip active" id="info-skip">
+                            <i class="fas fa-info-circle"></i> <strong>Skip Mode:</strong> 
+                            Products with matching categories, amount, and rate_impost will be ignored. Only truly new products will be added.
+                        </div>
+                        <div class="update-mode-info update" id="info-update">
+                            <i class="fas fa-exclamation-triangle"></i> <strong>Update Mode:</strong> 
+                            Products with matching categories, amount, and rate_impost will have their product_name updated from the file.
+                        </div>
+                        <div class="update-mode-info create_only" id="info-create_only">
+                            <i class="fas fa-times-circle"></i> <strong>Strict Mode:</strong> 
+                            Upload will fail if any products with matching categories, amount, and rate_impost are found. Use this to ensure you're only adding new products.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Select File</label>
+                        <input type="file" id="file" name="file" 
+                               accept=".csv,.xlsx" required>
+                        <small class="text-muted" style="display: block; margin-top: 0.25rem;">
+                            Accepted formats: CSV, XLSX (Max: 1GB)
+                        </small>
+                        
+                        <!-- File Size Info -->
+                        <div class="file-size-info" id="fileSizeInfo"></div>
+                    </div>
+
+                    <!-- Matching Criteria Information Box -->
+                    <div class="matching-criteria">
+                        <h6><i class="fas fa-fingerprint"></i> Product Uniqueness Check</h6>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Categories 1-6 (all must match)</li>
+                            <li><i class="fas fa-check-circle"></i> Amount</li>
+                            <li><i class="fas fa-check-circle"></i> Rate Impost</li>
+                        </ul>
+                        <p style="margin: 0.75rem 0 0 0; font-size: 0.875rem; opacity: 0.9;">
+                            <i class="fas fa-info-circle"></i> Product name is <strong>NOT</strong> used for matching. Two products with the same categories, amount, and rate_impost are considered duplicates, even if they have different names.
+                        </p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Important:</strong> Make sure your file strictly matches the template format.
+                            <br>
+                            <span style="font-weight: 500;">Large files may take several minutes to process.</span>
+                        </div>
+                    </div>
+
+                    <!-- Upload Progress -->
+                    <div class="upload-progress" id="uploadProgress">
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <div class="spinner"></div>
+                            <strong id="progressStatus">Uploading file...</strong>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar">0%</div>
+                        </div>
+                        <div class="progress-info">
+                            <span id="progressText">Preparing upload...</span>
+                            <span id="progressSpeed"></span>
+                        </div>
+                        <p style="margin-top: 1rem; text-align: center; color: #666; font-size: 0.875rem;">
+                            <i class="fas fa-info-circle"></i> Please do not close this page or refresh your browser.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; text-align: center;">
+                        <button type="submit" class="btn btn-primary" id="submitBtn" style="padding: 1rem 3rem;">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload Products
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar Section -->
+    <div style="flex: 1; min-width: 250px;">
+        <!-- Instructions Card -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Instructions</h5>
+            </div>
+            <div class="card-body">
+                <ol class="list-instructions">
+                    <li>Download the template file</li>
+                    <li>Fill in the product details exactly as required</li>
+                    <li><strong>Choose update mode</strong> (skip/update/create only)</li>
+                    <li>Save as CSV or Excel (.xlsx)</li>
+                    <li>Upload the file (up to 1GB)</li>
+                    <li>Wait for processing to complete</li>
+                </ol>
+                
+                <a href="{{ url_for('download_product_template') }}" 
+                   class="btn btn-success w-100" style="margin-top: 1rem;">
+                    <i class="fas fa-download"></i> Download Template
+                </a>
+            </div>
+        </div>
+
+        <!-- Required Fields Card -->
+        <div class="card" style="margin-top: 1.5rem;">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-asterisk"></i> Required Fields</h5>
+            </div>
+            <div class="card-body">
+                <div style="margin-bottom: 0.75rem;">
+                    <span class="field-badge">product_name</span>
+                    <span class="field-badge">amount</span>
+                </div>
+                <hr style="margin: 1rem 0; border-color: #e0e0e0;">
+                <p style="font-size: 0.85rem; color: #666; margin: 0;">
+                    <i class="fas fa-info-circle" style="color: #667eea; margin-right: 0.5rem;"></i>
+                    <strong>Optional Fields:</strong>
+                </p>
+                <div style="margin-top: 0.5rem;">
+                    <span class="field-badge optional">category1</span>
+                    <span class="field-badge optional">category2</span>
+                    <span class="field-badge optional">category3</span>
+                    <span class="field-badge optional">category4</span>
+                    <span class="field-badge optional">category5</span>
+                    <span class="field-badge optional">category6</span>
+                    <span class="field-badge optional">rate_impost</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Card -->
+        <div class="card" style="margin-top: 1.5rem;">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="small" style="list-style: none; padding-left: 0; font-size: 0.85rem; color: #555;">
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Products are matched by <strong>ALL fields</strong> except product_name
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Matching checks: categories 1-6, amount, and rate_impost
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Amount should be numeric (e.g., 500.00)
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-arrow-right" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Update mode only changes product_name if all other fields match
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Update mode info toggle
+document.getElementById('update_mode').addEventListener('change', function() {
+    const mode = this.value;
+    
+    // Hide all info boxes
+    document.querySelectorAll('.update-mode-info').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Show selected mode info
+    document.getElementById('info-' + mode).classList.add('active');
+    
+    // Update submit button text based on mode
+    const submitBtn = document.getElementById('submitBtn');
+    const btnIcon = '<i class="fas fa-cloud-upload-alt"></i>';
+    
+    if (mode === 'update') {
+        submitBtn.innerHTML = btnIcon + ' Upload Products (Update Mode)';
+        submitBtn.style.background = '#ff9800';
+    } else if (mode === 'create_only') {
+        submitBtn.innerHTML = btnIcon + ' Upload Products (Strict Mode)';
+        submitBtn.style.background = '#f44336';
+    } else {
+        submitBtn.innerHTML = btnIcon + ' Upload Products';
+        submitBtn.style.background = '';
+    }
+});
+
+// File size validation and display
+document.getElementById('file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const fileSizeInfo = document.getElementById('fileSizeInfo');
+    
+    if (file) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        const sizeGB = (file.size / (1024 * 1024 * 1024)).toFixed(2);
+        
+        if (file.size > 1024 * 1024 * 1024) {
+            fileSizeInfo.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <strong>File too large:</strong> ${sizeGB} GB (Max: 1GB)`;
+            fileSizeInfo.style.background = '#f8d7da';
+            fileSizeInfo.style.borderColor = '#dc3545';
+            fileSizeInfo.style.color = '#721c24';
+            document.getElementById('submitBtn').disabled = true;
+        } else if (sizeMB > 100) {
+            fileSizeInfo.innerHTML = `<i class="fas fa-info-circle"></i> <strong>File size:</strong> ${sizeMB} MB - This may take several minutes to process`;
+            fileSizeInfo.style.background = '#fff3cd';
+            fileSizeInfo.style.borderColor = '#ffc107';
+            fileSizeInfo.style.color = '#856404';
+            document.getElementById('submitBtn').disabled = false;
+        } else {
+            fileSizeInfo.innerHTML = `<i class="fas fa-check-circle"></i> <strong>File size:</strong> ${sizeMB} MB`;
+            fileSizeInfo.style.background = '#d4edda';
+            fileSizeInfo.style.borderColor = '#28a745';
+            fileSizeInfo.style.color = '#155724';
+            document.getElementById('submitBtn').disabled = false;
+        }
+        
+        fileSizeInfo.classList.add('show');
+    } else {
+        fileSizeInfo.classList.remove('show');
+    }
+});
+
+// Upload progress tracking
+document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    const fileInput = document.getElementById('file');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        e.preventDefault();
+        alert('Please select a file to upload');
+        return;
+    }
+    
+    // Show progress bar
+    document.getElementById('uploadProgress').classList.add('active');
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').innerHTML = '<div class="spinner"></div> Uploading...';
+    
+    // Simulate progress
+    let progress = 0;
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const progressStatus = document.getElementById('progressStatus');
+    const progressSpeed = document.getElementById('progressSpeed');
+    
+    const startTime = Date.now();
+    const fileSize = file.size;
+    
+    const interval = setInterval(function() {
+        const increment = fileSize > 100 * 1024 * 1024 ? 2 : 5;
+        progress += increment;
+        
+        if (progress >= 95) {
+            progress = 95;
+            progressText.textContent = 'Processing data on server...';
+            progressStatus.textContent = 'Processing file...';
+            clearInterval(interval);
+        } else {
+            const elapsed = (Date.now() - startTime) / 1000;
+            const uploaded = (fileSize * progress / 100);
+            const speed = (uploaded / elapsed / 1024 / 1024).toFixed(2);
+            
+            progressText.textContent = `Uploaded: ${(uploaded / 1024 / 1024).toFixed(2)} MB of ${(fileSize / 1024 / 1024).toFixed(2)} MB`;
+            progressSpeed.textContent = `${speed} MB/s`;
+        }
+        
+        progressBar.style.width = progress + '%';
+        progressBar.textContent = Math.floor(progress) + '%';
+    }, 500);
+});
+</script>
+{% endblock %}

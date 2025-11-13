@@ -1,0 +1,439 @@
+{% extends "base.html" %}
+
+{% block title %}Property Creation{% endblock %}
+
+{% block extra_css %}
+<style>
+    .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        margin: 2rem 0;
+        padding: 0 1rem;
+        position: relative;
+    }
+    
+    .progress-steps::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 5%;
+        right: 5%;
+        height: 3px;
+        background: #e0e0e0;
+        z-index: 0;
+    }
+    
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        color: #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .step.active .step-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        transform: scale(1.1);
+    }
+    
+    .step.completed .step-number {
+        background: #10b981;
+        color: white;
+    }
+    
+    .step.completed .step-number::after {
+        content: '\f00c';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+    }
+    
+    .step.completed .step-number {
+        font-size: 0;
+    }
+    
+    .step-label {
+        font-size: 0.85rem;
+        color: #999;
+        font-weight: 500;
+        text-align: center;
+    }
+    
+    .step.active .step-label {
+        color: #667eea;
+        font-weight: 600;
+    }
+    
+    .step.completed .step-label {
+        color: #10b981;
+    }
+    
+    .form-section {
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .form-section.active {
+        display: block;
+    }
+    
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .form-group label {
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    
+    .required {
+        color: #dc2626;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-group input::placeholder {
+        color: #999;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #e0e0e0;
+    }
+    
+    h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.25rem;
+    }
+    
+    h3::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-home"></i> Property Creation</h2>
+        <p style="margin: 0.5rem 0 0 0; color: #666; font-size: 0.95rem;">Complete all steps to register a new property</p>
+    </div>
+    
+    <div class="progress-steps">
+        <div class="step active" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-label">Personal Info</div>
+        </div>
+        <div class="step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-label">Location Info</div>
+        </div>
+        <div class="step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-label">Property Info</div>
+        </div>
+    </div>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <!-- Step 1: Personal Info -->
+        <div class="form-section active" id="section-1">
+            <h3>Personal Information</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Primary Contact</label>
+                    <input type="text" name="primary_contact" placeholder="Enter primary contact number">
+                </div>
+
+                <div class="form-group">
+                    <label>Owner Name <span class="required">*</span></label>
+                    <input type="text" name="owner_name" required placeholder="Enter owner's full name">
+                </div>
+                <div class="form-group">
+                    <label>House Number</label>
+                    <input type="text" name="house_no" placeholder="Enter house number">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="owner@example.com">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Location Info -->
+        <div class="form-section" id="section-2">
+            <h3>Location Information</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Electoral Area <span class="required">*</span></label>
+                    <select name="electoral_area" required>
+                        <option value="">-- Select Electoral Area --</option>
+                        <option value="LEGON">LEGON</option>
+                        <option value="DZORWULU">DZORWULU</option>
+                        <option value="ABELENKPE">ABELENKPE</option>
+                        <option value="ROMAN RIDGE">ROMAN RIDGE</option>
+                        <option value="TESANO">TESANO</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Town <span class="required">*</span></label>
+                    <select name="town" required>
+                        <option value="">-- Select Town --</option>
+                        <option value="Accra">Accra</option>
+                        <option value="Tema">Tema</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Street Name</label>
+                    <input type="text" name="street_name" placeholder="Enter street name">
+                </div>
+                <div class="form-group">
+                    <label>Ghana Post GPS Code</label>
+                    <input type="text" name="ghanapost_gps" placeholder="e.g., GA-123-4567">
+                </div>
+                <div class="form-group">
+                    <label>Landmark</label>
+                    <input type="text" name="landmark" placeholder="Nearby landmark">
+                </div>
+                <div class="form-group">
+                    <label>Division Number <span class="required">*</span></label>
+                    <select name="division_no" required>
+                        <option value="">-- Select Division --</option>
+                        <option value="1">Division 1</option>
+                        <option value="2">Division 2</option>
+                        <option value="3">Division 3</option>
+                        <option value="4">Division 4</option>
+                        <option value="5">Division 5</option>
+                        <option value="6">Division 6</option>
+                        <option value="7">Division 7</option>
+                        <option value="8">Division 8</option>
+                        <option value="9">Division 9</option>
+                        <option value="10">Division 10</option>
+                        <option value="11">Division 11</option>
+                        <option value="12">Division 12</option>
+                        <option value="13">Division 13</option>
+                        <option value="14">Division 14</option>
+                        <option value="15">Division 15</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Block Number <span class="required">*</span></label>
+                    <input type="text" name="block_no" required placeholder="Enter block number">
+                </div>
+                <div class="form-group">
+                    <label>Parcel Number <span class="required">*</span></label>
+                    <input type="text" name="parcel_no" required placeholder="Enter parcel number">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3: Property Info -->
+        <div class="form-section" id="section-3">
+            <h3>Property Details</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Account Number <span class="required">*</span></label>
+                    <input type="text" name="account_no" required placeholder="Enter unique account number">
+                </div>
+                <div class="form-group">
+                    <label>Category <span class="required">*</span></label>
+                    <select name="category" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Residential">Residential</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Industrial">Industrial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Valuation Status <span class="required">*</span></label>
+                    <select name="valuation_status" required>
+                        <option value="">-- Select Status --</option>
+                        <option value="Assessed">Assessed</option>
+                        <option value="Unassessed">Unassessed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Property Class <span class="required">*</span></label>
+                    <select name="property_class" required>
+                        <option value="">-- Select Class --</option>
+                        <option value="Class 1">Class 1</option>
+                        <option value="Class 2">Class 2</option>
+                        <option value="Class 3">Class 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Zone <span class="required">*</span></label>
+                    <select name="zone" required>
+                        <option value="">-- Select Zone --</option>
+                        <option value="CIVIC AND CULTURE">CIVIC AND CULTURE</option>
+                        <option value="COMMERCIAL">COMMERCIAL</option>
+                        <option value="EDUCATIONAL">EDUCATIONAL</option>
+                        <option value="FARM AREAS">FARM AREAS</option>
+                        <option value="FIRST CLASS A">FIRST CLASS A</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Use Code <span class="required">*</span></label>
+                    <select name="use_code" required>
+                        <option value="">-- Select Use Code --</option>
+                        <option value="Residential">Residential</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Mixed">Mixed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Rateable Value (GHS) <span class="required">*</span></label>
+                    <input type="number" step="0.01" name="rateable_value" required placeholder="e.g., 370254.00">
+                </div>
+                <div class="form-group">
+                    <label>Rate Impost <span class="required">*</span></label>
+                    <input type="number" step="0.000001" name="rate_impost" value="0.001350" required placeholder="e.g., 0.001350">
+                </div>
+                <div class="form-group">
+                    <label>Property Photo</label>
+                    <input type="file" name="photo" accept="image/*" style="padding: 0.5rem;">
+                </div>
+                <div class="form-group">
+                    <label>Supporting Document 1</label>
+                    <input type="file" name="supporting_doc1" style="padding: 0.5rem;">
+                </div>
+                <div class="form-group">
+                    <label>Supporting Document 2</label>
+                    <input type="file" name="supporting_doc2" style="padding: 0.5rem;">
+                </div>
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
+                <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <button type="button" class="btn btn-primary" id="nextBtn">
+                Next <i class="fas fa-arrow-right"></i>
+            </button>
+            <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">
+                <i class="fas fa-check"></i> Submit Property
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let currentStep = 1;
+    
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    function showStep(step) {
+        document.querySelectorAll('.form-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        document.getElementById(`section-${step}`).classList.add('active');
+        
+        document.querySelectorAll('.step').forEach((stepEl, index) => {
+            stepEl.classList.remove('active', 'completed');
+            if (index + 1 < step) {
+                stepEl.classList.add('completed');
+            } else if (index + 1 === step) {
+                stepEl.classList.add('active');
+            }
+        });
+        
+        prevBtn.style.display = step === 1 ? 'none' : 'inline-flex';
+        
+        if (step === 3) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'inline-flex';
+        } else {
+            nextBtn.style.display = 'inline-flex';
+            submitBtn.style.display = 'none';
+        }
+    }
+    
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < 3) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+    
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    });
+    
+    document.querySelectorAll('.step').forEach((step, index) => {
+        step.style.cursor = 'pointer';
+        step.addEventListener('click', () => {
+            currentStep = index + 1;
+            showStep(currentStep);
+        });
+    });
+    
+    showStep(1);
+</script>
+{% endblock %}

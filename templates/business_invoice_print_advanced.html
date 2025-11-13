@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice #{{ invoice.invoice_no }} - Print</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        .print-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 10mm;
+            background: #fff;
+            position: relative;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .watermark img {
+            width: 500px;
+            height: auto;
+        }
+
+        /* Header Section */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .invoice-title {
+            flex: 1;
+        }
+
+        .invoice-title h1 {
+            font-size: 32pt;
+            color: #667eea;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .invoice-title .invoice-number {
+            font-size: 18pt;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .company-info {
+            text-align: right;
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .company-address {
+            text-align: right;
+            line-height: 1.8;
+        }
+
+        .company-address strong {
+            display: block;
+            font-size: 11pt;
+            margin-bottom: 5px;
+        }
+
+        .company-logo img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
+
+        /* Bill Info Section */
+        .bill-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 30px;
+        }
+
+        .bill-to, .bill-data {
+            flex: 1;
+        }
+
+        .bill-to h3, .bill-data h3 {
+            font-size: 12pt;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .bill-to address, .bill-data .info-line {
+            font-style: normal;
+            line-height: 1.8;
+        }
+
+        .info-line {
+            margin-bottom: 5px;
+        }
+
+        .info-line strong {
+            display: inline-block;
+            min-width: 120px;
+            color: #333;
+        }
+
+        /* Invoice Items Table */
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .invoice-table thead {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .invoice-table th {
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11pt;
+        }
+
+        .invoice-table th.text-center {
+            text-align: center;
+        }
+
+        .invoice-table tbody td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .invoice-table tbody td.text-center {
+            text-align: center;
+        }
+
+        .invoice-table tbody tr:last-child td {
+            border-bottom: 2px solid #667eea;
+        }
+
+        /* Summary Section */
+        .invoice-summary {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .summary-table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+
+        .summary-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-table td:first-child {
+            text-align: right;
+            font-weight: 500;
+            width: 60%;
+        }
+
+        .summary-table td:last-child {
+            text-align: left;
+            width: 40%;
+        }
+
+        .summary-table tr.arrears-row {
+            background: #fff3cd;
+        }
+
+        .summary-table tr.arrears-row td {
+            color: #856404;
+            font-weight: 600;
+        }
+
+        .summary-table tr.total-row {
+            background: #f8f9fa;
+            border-top: 2px solid #667eea;
+        }
+
+        .summary-table tr.total-row td {
+            font-weight: bold;
+            font-size: 13pt;
+            color: #dc3545;
+            padding: 15px;
+        }
+
+        /* Arrears Breakdown */
+        .arrears-breakdown {
+            background: #fffbf0;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+        }
+
+        .arrears-breakdown h4 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 12pt;
+        }
+
+        .arrears-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+        }
+
+        .arrears-table thead {
+            background: #fff3cd;
+        }
+
+        .arrears-table th {
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .arrears-table th.text-right {
+            text-align: right;
+        }
+
+        .arrears-table tbody td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #ffe69c;
+        }
+
+        .arrears-table tbody td.text-right {
+            text-align: right;
+        }
+
+        .arrears-table tfoot {
+            background: #fff3cd;
+            font-weight: bold;
+        }
+
+        .arrears-table tfoot td {
+            padding: 10px;
+        }
+
+        /* Alert Boxes */
+        .alert-warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .alert-warning p {
+            color: #856404;
+            margin: 0;
+            font-size: 10pt;
+        }
+
+        .alert-danger {
+            background: #fee;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-danger p {
+            color: #721c24;
+            margin: 0;
+            font-size: 10pt;
+        }
+
+        /* Amount in Words */
+        .amount-words {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            text-align: right;
+            font-style: italic;
+        }
+
+        /* Payment Instructions */
+        .payment-instructions {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .momo-instructions {
+            flex: 1;
+        }
+
+        .momo-instructions h4 {
+            text-decoration: underline;
+            margin-bottom: 10px;
+            font-size: 11pt;
+        }
+
+        .momo-instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .momo-instructions .momo-code {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .signatures {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+        }
+
+        .signature-box {
+            text-align: center;
+        }
+
+        .signature-box img {
+            width: 120px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .signature-box .signature-line {
+            border-top: 2px solid #333;
+            padding-top: 5px;
+            margin-top: 40px;
+            font-size: 9pt;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .invoice-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            font-size: 9pt;
+            color: #666;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-container {
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .invoice-header {
+                page-break-after: avoid;
+            }
+
+            .invoice-table {
+                page-break-inside: avoid;
+            }
+
+            .invoice-summary {
+                page-break-inside: avoid;
+            }
+
+            @page {
+                margin: 15mm;
+                size: A4 portrait;
+            }
+        }
+
+        /* Print Button */
+        .print-button-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .print-button {
+            background: #667eea;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14pt;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .print-button:hover {
+            background: #5568d3;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .status-paid {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-partial {
+            background: #fef3c7;
+            color: #78350f;
+        }
+
+        .status-unpaid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Button -->
+    <div class="print-button-container no-print">
+        <button class="print-button" onclick="window.print()">
+            <span>🖨️</span> Print / Save as PDF
+        </button>
+    </div>
+
+    <!-- Watermark 
+    <div class="watermark">
+        <img src="{{ url_for('static', filename='images/ghana_coat_of_arms.png') }}" alt="Watermark" onerror="this.style.display='none'">
+    </div>-->
+
+    <div class="print-container">
+        <!-- Invoice Header -->
+        <div class="invoice-header">
+            <div class="invoice-title">
+                <h1>INVOICE</h1>
+                <div class="invoice-number">#{{ invoice.invoice_no }}</div>
+            </div>
+            <div class="company-info">
+                <div class="company-address">
+                    <strong>AYAWASO WEST MUNICIPAL ASSEMBLY</strong>
+                    P O Box YK 1484, KANDA<br>
+                    DZORWULU<br>
+                    0302-961448<br>
+                    GhanaPostGPS: GA-160-8880
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Status -->
+        <!--{% if invoice.status == 'Paid' %}
+            <div class="status-badge status-paid">✓ PAID</div>
+        {% elif invoice.status == 'Partially Paid' %}
+            <div class="status-badge status-partial">◐ PARTIALLY PAID</div>
+        {% else %}
+            <div class="status-badge status-unpaid">○ UNPAID</div>
+        {% endif %}-->
+
+        <!-- Bill Info -->
+        <div class="bill-info">
+            <div class="bill-to">
+                <h3>Bill To:</h3>
+                <address>
+                    <strong>{{ business.business_name }}</strong><br>
+                    Account No: {{ business.account_no }}<br>
+                    {% if business.street_name %}{{ business.street_name }}<br>{% endif %}
+                    {{ business.electoral_area }}<br>
+                </address>
+            </div>
+            <div class="bill-data">
+                <!--<h3>Invoice Details:</h3>-->
+                <div class="info-line">
+                    <strong>Invoice Date:</strong>
+                    {% if invoice.invoice_date %}
+                        {{ invoice.invoice_date.strftime('%Y-%m-%d') if invoice.invoice_date is not string else invoice.invoice_date }}
+                    {% else %}
+                        {{ invoice.created_at.strftime('%Y-%m-%d') }}
+                    {% endif %}
+                </div>
+                <div class="info-line">
+                    <strong>Due Date:</strong>
+                    {% if invoice.due_date %}
+                        {{ invoice.due_date.strftime('%Y-%m-%d') if invoice.due_date is not string else invoice.due_date }}
+                    {% else %}
+                        {{ invoice.year }}-{{ '%02d' % ((invoice.created_at.month + 1) % 12 or 12) }}-{{ '%02d' % invoice.created_at.day }}
+                    {% endif %}
+                </div>
+                <!--<div class="info-line">
+                    <strong>Invoice Year:</strong> {{ invoice.year }}
+                </div>-->
+                <div class="info-line">
+                    <strong>Office Contact:</strong> 0302-961642
+                </div>
+                <p><strong>Bank Details:</strong></p>
+                <p>
+                    <strong>Bank:</strong> Fidelity Bank<br>
+                    <strong>Account No:</strong> 1070032630416<br>
+                    <strong>Branch:</strong> Dzorwulu<br>
+                    <strong>Swift Code:</strong> FBLIGHAC
+                </p>
+            </div>
+        </div>
+
+        <!-- Invoice Items Table -->
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Category 2</th>
+                    <th>Category 3</th>
+                    <th>Category 4</th>
+                    <th>Category 5</th>
+                    <th class="text-center">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>{{ 'BOP' }}</strong></td>
+                    <td>{{ business.category2 or 'N/A' }}</td>
+                    <td>{{ business.category3 or 'N/A' }}</td>
+                    <td>{{ business.category4 or 'N/A' }}</td>
+                    <td>{{ business.category5 or 'N/A' }}</td>
+                    <td class="text-center"><strong>GHS {{ "{:,.2f}".format(invoice.amount) }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Arrears Breakdown (if present) -->
+        <!--{% if total_arrears > 0 and arrears_breakdown and arrears_breakdown|length > 0 %}
+        <div class="arrears-breakdown">
+            <h4>📋 Outstanding Arrears Breakdown</h4>
+            <table class="arrears-table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Invoice No</th>
+                        <th class="text-right">Invoice Total</th>
+                        <th class="text-right">Amount Paid</th>
+                        <th class="text-right">Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for arrear in arrears_breakdown %}
+                    <tr>
+                        <td><strong>{{ arrear.year }}</strong></td>
+                        <td>{{ arrear.invoice_no }}</td>
+                        <td class="text-right">GHS {{ "{:,.2f}".format(arrear.total) }}</td>
+                        <td class="text-right">GHS {{ "{:,.2f}".format(arrear.paid) }}</td>
+                        <td class="text-right"><strong>GHS {{ "{:,.2f}".format(arrear.balance) }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right"><strong>Total Arrears:</strong></td>
+                        <td class="text-right"><strong>GHS {{ "{:,.2f}".format(total_arrears) }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {% endif %}-->
+
+        <!-- Invoice Summary -->
+        {% set invoice_total = invoice.total_amount if invoice.total_amount else invoice.amount %}
+        {% set current_invoice_balance = invoice_total - total_paid %}
+        {% set grand_total_outstanding = current_invoice_balance + total_arrears %}
+
+        <div class="invoice-summary">
+            <table class="summary-table">
+                <tbody>
+                    <tr>
+                        <td>Subtotal ({{ invoice.year }})</td>
+                        <td>GHS {{ "{:,.2f}".format(invoice.amount) }}</td>
+                    </tr>
+                    {% if invoice.tax_amount and invoice.tax_amount > 0 %}
+                    <tr>
+                        <td>Tax ({{ invoice.tax_rate }}%)</td>
+                        <td>GHS {{ "{:,.2f}".format(invoice.tax_amount) }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="arrears-row">
+                        <td><strong>Arrears (Previous Years)</strong></td>
+                        <td><strong>GHS {{ "{:,.2f}".format(total_arrears) }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Payment ({{ invoice.year }})</td>
+                        <td>GHS {{ "{:,.2f}".format(total_paid) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Penalty</td>
+                        <td>GHS 0.00</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>TOTAL OUTSTANDING</strong></td>
+                        <td><strong>GHS {{ "{:,.2f}".format(grand_total_outstanding) }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Amount in Words -->
+        <div class="amount-words">
+            <strong>Amount in words:</strong> {{ "{:,.2f}".format(grand_total_outstanding) }} Ghana Cedis only.
+        </div>
+
+        <!-- Arrears Warning -->
+        {% if total_arrears > 0 %}
+        <div class="alert-warning">
+            <p>
+                <strong>⚠️ Outstanding Arrears:</strong> This invoice includes 
+                <strong>GHS {{ "{:,.2f}".format(total_arrears) }}</strong> in unpaid arrears 
+                from {{ arrears_breakdown|length }} previous invoice(s). 
+                Please settle all outstanding amounts.
+            </p>
+        </div>
+        {% endif %}
+
+        <!-- Payment Instructions and Signatures -->
+        <div class="payment-instructions">
+            <div class="momo-instructions">
+                <h4>Mobile Money Payment Instructions</h4>
+                <p><strong>Momo Code:</strong> <span class="momo-code">2503</span></p>
+                <ol>
+                    <li>Dial <strong>*776*100#</strong> on MTN, Vodafone and Airtel/Tigo</li>
+                    <li>Enter merchant code: <strong>2503</strong></li>
+                    <li>Merchant details will be displayed</li>
+                    <li>Enter amount</li>
+                    <li>Enter narration - Include your Account Number: <strong>{{ business.account_no }}</strong></li>
+                    <li>Confirm payment with Momo PIN</li>
+                </ol>
+                <br>
+                
+            </div>
+            <div class="signatures">
+                <div class="signature-box">
+                    <img src="{{ url_for('static', filename='images/MFO_signature.jpg') }}" alt="MFO Signature" onerror="this.style.display='none'">
+                    <!--<div class="signature-line">Municipal Finance Officer</div>-->
+                </div>
+                <div class="signature-box">
+                    <img src="{{ url_for('static', filename='images/MCD_signature.jpg') }}" alt="MCD Signature" onerror="this.style.display='none'">
+                    <!--<div class="signature-line">Municipal Coordinating Director</div>-->
+                </div>
+            </div>
+            <!-- Watermark -->
+            <div class="watermark">
+                <img src="{{ url_for('static', filename='images/ghana_coat_of_arms.png') }}" alt="Watermark" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <!-- Important Notice -->
+        <div class="alert-danger">
+            <p>
+                <strong>⚠️ Important:</strong> Payment should be made at the Revenue Office or at the Assembly's Revenue Collector or the Bank or Mobile money details on this bill. Legal action shall be taken against defaulters after 31st March upon receipt of bill.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="invoice-footer">
+            <p>This is a computer-generated invoice and is valid without signature.</p>
+            <p>For inquiries, please contact: 0302-961642 | Email: info@awma.gov.gh</p>
+            <p>&copy; {{ invoice.year }} Ayawaso West Municipal Assembly. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-print on page load (optional - can be removed if not needed)
+        // window.onload = function() {
+        //     window.print();
+        // };
+
+        // Optional: Close window after printing
+        window.onafterprint = function() {
+            // window.close();
+        };
+    </script>
+</body>
+</html>

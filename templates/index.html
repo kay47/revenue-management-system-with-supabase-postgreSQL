@@ -1,0 +1,438 @@
+{% extends "base.html" %}
+
+{% block title %}Catalonia Revenue Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Metric Card Styles */
+    .metric-card {
+        padding: 2rem;
+        border-radius: 12px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .metric-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: all 0.5s ease;
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+    
+    .metric-card:hover::before {
+        top: -40%;
+        right: -40%;
+    }
+
+    .metric-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .metric-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .metric-title {
+        font-size: 0.95rem;
+        opacity: 0.95;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+    }
+
+    .metric-icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .metric-value {
+        font-size: 2.75rem;
+        font-weight: 700;
+        margin: 0.5rem 0;
+        line-height: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .metric-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.85rem;
+        opacity: 0.9;
+    }
+
+    /* Custom Gradients - More vibrant */
+    .gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .gradient-secondary {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    .gradient-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    .gradient-info {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    /* Table styles */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0;
+    }
+
+    .table thead tr {
+        background: #f8f9fa;
+        color: #667eea;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+    
+    .table th, .table td {
+        padding: 1rem 1.5rem;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+        background: #f9fafb;
+    }
+    
+    /* Chart Container */
+    .chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 350px;
+        padding: 2rem;
+    }
+
+    .chart-placeholder {
+        text-align: center;
+        color: #6c757d;
+    }
+
+    .chart-placeholder i {
+        font-size: 4rem;
+        color: #dee2e6;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    /* Stats ring for pie chart alternative */
+    .stats-ring {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stats-percentage {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #667eea;
+        margin: 1rem 0;
+    }
+
+    .stats-label {
+        font-size: 1.1rem;
+        color: #6c757d;
+        margin-bottom: 2rem;
+    }
+
+    .stats-breakdown {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .stats-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .stats-item:last-child {
+        border-bottom: none;
+    }
+
+    .stats-item-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .stats-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2 style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fas fa-chart-line"></i> Dashboard Overview
+        </h2>
+    </div>
+</div>
+
+<!-- Metric Cards -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    
+    <div class="metric-card gradient-primary">
+        <div class="metric-content">
+            <div class="metric-header">
+                <div>
+                    <div class="metric-title">Total Properties</div>
+                    <div class="metric-value">{{ total_properties }}</div>
+                </div>
+                <div class="metric-icon-circle">
+                    <i class="fas fa-building"></i>
+                </div>
+            </div>
+            <div class="metric-footer">
+                <span>Active accounts</span>
+                <a href="{{ url_for('list_properties') }}" style="color: white; text-decoration: none;">
+                    View all <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="metric-card gradient-secondary">
+        <div class="metric-content">
+            <div class="metric-header">
+                <div>
+                    <div class="metric-title">Total Businesses</div>
+                    <div class="metric-value">{{ total_businesses }}</div>
+                </div>
+                <div class="metric-icon-circle">
+                    <i class="fas fa-store"></i>
+                </div>
+            </div>
+            <div class="metric-footer">
+                <span>Registered businesses</span>
+                <a href="{{ url_for('list_businesses') }}" style="color: white; text-decoration: none;">
+                    View all <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    {% if current_user.role == 'admin' %}
+    <div class="metric-card gradient-success">
+        <div class="metric-content">
+            <div class="metric-header">
+                <div>
+                    <div class="metric-title">Total Revenue</div>
+                    <div class="metric-value">{{ format_currency(total_revenue) }}</div>
+                </div>
+                <div class="metric-icon-circle">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+            </div>
+            <div class="metric-footer">
+                <span>Year to date</span>
+                <a href="{{ url_for('list_payments') }}" style="color: white; text-decoration: none;">
+                    View payments <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="metric-card gradient-info">
+        <div class="metric-content">
+            <div class="metric-header">
+                <div>
+                    <div class="metric-title">Invoices Status</div>
+                    <div class="metric-value">{{ total_property_invoices + total_business_invoices }}</div>
+                </div>
+                <div class="metric-icon-circle">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+            </div>
+            <div class="metric-footer">
+                <span>{{ paid_property_invoices + paid_business_invoices }} paid</span>
+                <span>{{ (total_property_invoices + total_business_invoices) - (paid_property_invoices + paid_business_invoices) }} pending</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Content Row -->
+<div class="row">
+    
+    <!-- Collection Rate Stats -->
+    <div class="col-md-5">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0;">
+                    <i class="fas fa-chart-pie"></i> Collection Rate
+                </h5>
+            </div>
+            <div class="card-body chart-container">
+                <div class="stats-ring">
+                    {% set total_invoices = total_property_invoices + total_business_invoices %}
+                    {% set paid_invoices = paid_property_invoices + paid_business_invoices %}
+                    {% set collection_rate = ((paid_invoices / total_invoices * 100) if total_invoices > 0 else 0) | round(1) %}
+                    
+                    <div class="stats-percentage">{{ collection_rate }}%</div>
+                    <div class="stats-label">Collection Rate</div>
+                    
+                    <div class="stats-breakdown">
+                        <div class="stats-item">
+                            <div class="stats-item-label">
+                                <span class="stats-dot" style="background: #11998e;"></span>
+                                <span>Paid Invoices</span>
+                            </div>
+                            <strong>{{ paid_invoices }}</strong>
+                        </div>
+                        <div class="stats-item">
+                            <div class="stats-item-label">
+                                <span class="stats-dot" style="background: #f5576c;"></span>
+                                <span>Pending Invoices</span>
+                            </div>
+                            <strong>{{ total_invoices - paid_invoices }}</strong>
+                        </div>
+                        <div class="stats-item">
+                            <div class="stats-item-label">
+                                <span class="stats-dot" style="background: #667eea;"></span>
+                                <span>Total Invoices</span>
+                            </div>
+                            <strong>{{ total_invoices }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Payments -->
+    <div class="col-md-7">
+        {% if recent_payments %}
+        <div class="card">
+            <div class="card-header">
+                <h5 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0;">
+                    <i class="fas fa-clock"></i> Recent Payments
+                </h5>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Invoice No</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Mode</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in recent_payments %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('view_payment', payment_id=payment.id) }}" 
+                                   style="color: #667eea; text-decoration: none; font-weight: 500;">
+                                    {{ payment.invoice_no }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge" style="color: white; background: {{ '#667eea' if payment.invoice_type == 'Property' else '#764ba2' }}; padding: 0.35em 0.65em; border-radius: 0.375rem;">
+                                    {{ payment.invoice_type }}
+                                </span>
+                            </td>
+                            <td><strong>{{ format_currency(payment.payment_amount) }}</strong></td>
+                            <td>{{ payment.payment_mode }}</td>
+                            <td>{{ format_date(payment.payment_date) }}</td>
+                            <td>
+                                <a href="{{ url_for('view_payment', payment_id=payment.id) }}" 
+                                   class="btn btn-sm btn-info" 
+                                   style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card-footer text-center" style="padding: 1rem; border-top: 1px solid #f0f0f0;">
+                <a href="{{ url_for('list_payments') }}" 
+                   style="color: #667eea; text-decoration: none; font-weight: 600;">
+                    View All Payments <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="card h-100">
+            <div class="card-body text-center" style="padding: 3rem; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <i class="fas fa-inbox" style="font-size: 4rem; color: #dee2e6; margin-bottom: 1.5rem;"></i>
+                <h5 style="color: #6c757d; margin-bottom: 0.5rem;">No Recent Payments</h5>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">Payments will appear here once recorded.</p>
+                <a href="{{ url_for('list_properties') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Record Payment
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add animation on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.metric-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+</script>
+{% endblock %}

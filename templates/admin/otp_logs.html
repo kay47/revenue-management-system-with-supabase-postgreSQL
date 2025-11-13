@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}OTP Verification Logs{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .card-header {
+        padding: 1.5rem;
+        border-bottom: 2px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table thead th {
+        background: #f8f9fa;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .status-verified {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-expired {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .status-pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+    }
+
+    .pagination a,
+    .pagination span {
+        padding: 0.5rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #667eea;
+    }
+
+    .pagination .active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0.5rem 0;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-shield-alt"></i> OTP Verification Logs</h2>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="card-body">
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total OTPs Sent</div>
+                <div class="stat-value">{{ pagination.total }}</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                <div class="stat-label">Verified</div>
+                <div class="stat-value">
+                    {% set verified_count = namespace(count=0) %}
+                    {% for otp in pagination.items %}
+                        {% if otp.verified %}
+                            {% set verified_count.count = verified_count.count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ verified_count.count }}
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value">
+                    {% set pending_count = namespace(count=0) %}
+                    {% for otp in pagination.items %}
+                        {% if not otp.verified and not otp.is_expired() %}
+                            {% set pending_count.count = pending_count.count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ pending_count.count }}
+                </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                <div class="stat-label">Expired</div>
+                <div class="stat-value">
+                    {% set expired_count = namespace(count=0) %}
+                    {% for otp in pagination.items %}
+                        {% if otp.is_expired() %}
+                            {% set expired_count.count = expired_count.count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ expired_count.count }}
+                </div>
+            </div>
+        </div>
+
+        <!-- OTP Logs Table -->
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Phone Number</th>
+                        <th>Invoice</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Attempts</th>
+                        <th>Expires</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if pagination.items %}
+                        {% for otp in pagination.items %}
+                        <tr>
+                            <td>{{ otp.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td>
+                                <i class="fas fa-phone"></i> {{ otp.phone_number }}
+                            </td>
+                            <td>
+                                {% if otp.invoice_type == 'Property' %}
+                                    <i class="fas fa-building" style="color: #667eea;"></i> Property
+                                {% else %}
+                                    <i class="fas fa-briefcase" style="color: #764ba2;"></i> Business
+                                {% endif %}
+                                #{{ otp.invoice_id }}
+                            </td>
+                            <td><strong>GHS {{ "{:,.2f}".format(otp.payment_amount) }}</strong></td>
+                            <td>
+                                {% if otp.verified %}
+                                    <span class="status-badge status-verified">
+                                        <i class="fas fa-check-circle"></i> Verified
+                                    </span>
+                                {% elif otp.is_expired() %}
+                                    <span class="status-badge status-expired">
+                                        <i class="fas fa-times-circle"></i> Expired
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-pending">
+                                        <i class="fas fa-clock"></i> Pending
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>{{ otp.attempts }} / 3</td>
+                            <td>
+                                {% if otp.is_expired() %}
+                                    <span style="color: #dc3545;">Expired</span>
+                                {% else %}
+                                    {{ otp.expires_at.strftime('%H:%M:%S') }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 3rem; color: #666;">
+                                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                                No OTP logs found
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if pagination.pages > 1 %}
+        <div class="pagination">
+            {% if pagination.has_prev %}
+                <a href="{{ url_for('otp_logs', page=pagination.prev_num) }}">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            {% endif %}
+            
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <span class="active">{{ page_num }}</span>
+                    {% else %}
+                        <a href="{{ url_for('otp_logs', page=page_num) }}">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span>...</span>
+                {% endif %}
+            {% endfor %}
+            
+            {% if pagination.has_next %}
+                <a href="{{ url_for('otp_logs', page=pagination.next_num) }}">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+
+{% block title %}Create Adjustment - Invoice {{ invoice.invoice_no }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .adjustment-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .adjustment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: #fff;
+    }
+    
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+    
+    .info-box {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #667eea;
+    }
+    
+    .info-box h4 {
+        margin: 0 0 0.5rem 0;
+        color: #667eea;
+    }
+    
+    .adjustment-type-info {
+        background: #fff3cd;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 0.5rem;
+        border-left: 4px solid #ffc107;
+        display: none;
+    }
+    
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    
+    .history-table thead th {
+        background: #f8f9fa;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+    }
+    
+    .history-table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .badge-success {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .badge-danger {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    
+    .badge-warning {
+        background: #fef3c7;
+        color: #78350f;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="adjustment-card">
+    <div class="adjustment-header">
+        <h2>Create Adjustment for Invoice {{ invoice.invoice_no }}</h2>
+        <a href="{{ url_for('view_property_invoice', invoice_id=invoice.id) }}" class="btn btn-secondary">
+            ← Back to Invoice
+        </a>
+    </div>
+    
+    <!-- Current Invoice Info -->
+    <div class="info-box">
+        <h4>Current Invoice Details</h4>
+        <p><strong>Property Owner:</strong> {{ property.owner_name }}</p>
+        <p><strong>Account No:</strong> {{ property.account_no }}</p>
+        <p><strong>Invoice No:</strong> {{ invoice.invoice_no }}</p>
+        <p><strong>Current Amount:</strong> GHS {{ "{:,.2f}".format(invoice.total_amount if invoice.total_amount else invoice.amount) }}</p>
+        <p><strong>Year:</strong> {{ invoice.year }}</p>
+    </div>
+    
+    <!-- Adjustment Form -->
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="form-label" for="adjustment_type">Adjustment Type *</label>
+            <select name="adjustment_type" id="adjustment_type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="Credit">Credit (Reduce Amount)</option>
+                <option value="Penalty">Penalty (Increase Amount)</option>
+                <option value="Waiver">Waiver (Forgive Amount)</option>
+                <option value="Amount Adjustment">Amount Adjustment (Manual)</option>
+            </select>
+            
+            <div id="credit-info" class="adjustment-type-info">
+                <strong>Credit:</strong> Reduces the invoice amount. Use for overpayments, discounts, or corrections in favor of the property owner.
+            </div>
+            <div id="penalty-info" class="adjustment-type-info">
+                <strong>Penalty:</strong> Increases the invoice amount. Use for late payment fees or additional charges.
+            </div>
+            <div id="waiver-info" class="adjustment-type-info">
+                <strong>Waiver:</strong> Reduces the invoice amount as a goodwill gesture. Use for customer retention or dispute resolution.
+            </div>
+            <div id="manual-info" class="adjustment-type-info">
+                <strong>Manual Adjustment:</strong> Directly adjust the amount. Use positive values to increase, negative to decrease.
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="adjustment_amount">Adjustment Amount (GHS) *</label>
+            <input type="number" step="0.01" min="0.01" name="adjustment_amount" id="adjustment_amount" 
+                   class="form-control" placeholder="e.g., 50.00" required>
+            <small style="color: #666;">Enter the amount to adjust (always positive - direction is determined by type)</small>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="reason">Reason *</label>
+            <input type="text" name="reason" id="reason" class="form-control" 
+                   placeholder="e.g., Late payment penalty, Goodwill discount" required maxlength="100">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="description">Description *</label>
+            <textarea name="description" id="description" class="form-control" rows="4" 
+                      placeholder="Provide detailed explanation for this adjustment..." required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="supporting_document">Supporting Document (Optional)</label>
+            <input type="file" name="supporting_document" id="supporting_document" 
+                   class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+            <small style="color: #666;">Upload supporting document (PDF, JPG, PNG - Max 16MB)</small>
+        </div>
+        
+        <div style="background: #e3f2fd; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; border-left: 4px solid #2196f3;">
+            <p style="margin: 0; color: #1565c0;">
+                <strong>ℹ️ Note:</strong> Adjustments that change the invoice by more than 10% or exceed GHS 1,000 
+                will require admin approval before being applied.
+            </p>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                💾 Create Adjustment
+            </button>
+            <a href="{{ url_for('view_property_invoice', invoice_id=invoice.id) }}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Adjustment History -->
+{% if adjustments and adjustments|length > 0 %}
+<div class="adjustment-card">
+    <h3 style="margin-bottom: 1.5rem;">Adjustment History</h3>
+    <div style="overflow-x: auto;">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Original</th>
+                    <th>New Amount</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Created By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for adj in adjustments %}
+                <tr>
+                    <td>{{ adj.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <span class="badge badge-{% if adj.adjustment_type == 'Credit' or adj.adjustment_type == 'Waiver' %}success{% else %}danger{% endif %}">
+                            {{ adj.adjustment_type }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if adj.adjustment_amount > 0 %}
+                            <span style="color: #dc3545;">+{{ "{:,.2f}".format(adj.adjustment_amount) }}</span>
+                        {% else %}
+                            <span style="color: #28a745;">{{ "{:,.2f}".format(adj.adjustment_amount) }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ "{:,.2f}".format(adj.original_amount) }}</td>
+                    <td><strong>{{ "{:,.2f}".format(adj.new_amount) }}</strong></td>
+                    <td>
+                        <strong>{{ adj.reason }}</strong><br>
+                        <small>{{ adj.description[:50] }}...</small>
+                    </td>
+                    <td>
+                        {% if adj.status == 'Approved' %}
+                            <span class="badge badge-success">✓ Approved</span>
+                        {% elif adj.status == 'Rejected' %}
+                            <span class="badge badge-danger">✗ Rejected</span>
+                        {% else %}
+                            <span class="badge badge-warning">⏳ Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ adj.creator.username if adj.creator else 'System' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+// Show adjustment type information
+document.getElementById('adjustment_type').addEventListener('change', function() {
+    // Hide all info boxes
+    document.querySelectorAll('.adjustment-type-info').forEach(box => {
+        box.style.display = 'none';
+    });
+    
+    // Show relevant info box
+    const type = this.value;
+    if (type === 'Credit') {
+        document.getElementById('credit-info').style.display = 'block';
+    } else if (type === 'Penalty') {
+        document.getElementById('penalty-info').style.display = 'block';
+    } else if (type === 'Waiver') {
+        document.getElementById('waiver-info').style.display = 'block';
+    } else if (type === 'Amount Adjustment') {
+        document.getElementById('manual-info').style.display = 'block';
+    }
+});
+
+// Form validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const amount = parseFloat(document.getElementById('adjustment_amount').value);
+    const type = document.getElementById('adjustment_type').value;
+    const reason = document.getElementById('reason').value.trim();
+    const description = document.getElementById('description').value.trim();
+    
+    if (!type || !reason || !description) {
+        alert('Please fill in all required fields');
+        e.preventDefault();
+        return false;
+    }
+    
+    if (amount <= 0 || isNaN(amount)) {
+        alert('Adjustment amount must be greater than zero');
+        e.preventDefault();
+        return false;
+    }
+    
+    // Confirm large adjustments
+    const currentAmount = {{ invoice.total_amount if invoice.total_amount else invoice.amount }};
+    const percentChange = (amount / currentAmount) * 100;
+    
+    if (percentChange > 10 || amount > 1000) {
+        const confirmed = confirm(
+            `This adjustment represents ${percentChange.toFixed(1)}% of the invoice amount.\n` +
+            `It will require admin approval before being applied.\n\n` +
+            `Do you want to proceed?`
+        );
+        if (!confirmed) {
+            e.preventDefault();
+            return false;
+        }
+    }
+});
+</script>
+{% endblock %}

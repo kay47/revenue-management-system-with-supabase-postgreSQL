@@ -1,0 +1,15 @@
+Flask==2.3.0
+gunicorn==21.2.0
+Flask-SQLAlchemy==3.0.5
+Flask-Migrate==4.0.4
+Flask-Login==0.6.2
+Werkzeug==2.3.0
+pandas==2.2.3
+python-dotenv==1.0.0
+num2words==0.5.12
+requests==2.31.0
+
+# SMS Providers
+twilio==8.5.0
+africastalking==2.0.1
+vonage==3.5.1

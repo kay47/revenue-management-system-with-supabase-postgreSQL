@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Details{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Detail View Styles */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+    }
+    
+    .col-md-8, .col-md-4, .col-md-6 {
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+
+    .col-md-8 {
+        flex: 0 0 66.666667%;
+        max-width: 66.666667%;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .col-md-4 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+
+    .text-end {
+        text-align: right;
+    }
+    
+    .table-details {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-details th, .table-details td {
+        padding: 1rem 0;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+    }
+
+    .table-details tr:last-child th, .table-details tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table-details th {
+        font-weight: 600;
+        color: #667eea;
+        width: 40%;
+    }
+    
+    .table-details td {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Badge styling */
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.375rem;
+    }
+    
+    .badge-property {
+        color: #434190;
+        background-color: #e0e7ff;
+    }
+
+    .badge-business {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .badge-success {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+
+    .mt-3 {
+        margin-top: 1rem;
+    }
+
+    .mb-1 {
+        margin-bottom: 0.5rem;
+    }
+
+    .mb-0 {
+        margin-bottom: 0;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+
+    @media print {
+        .btn, .card-header h5 {
+            display: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .col-md-8, .col-md-4, .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row" style="margin-bottom: 2rem;">
+    <div class="col-md-6">
+        <h2><i class="fas fa-receipt"></i> Payment Details - #{{ payment.invoice_no }}</h2>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="{{ url_for('list_payments') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Payments
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Transaction Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table-details">
+                    <tr>
+                        <th>Invoice Number</th>
+                        <td><strong>{{ payment.invoice_no }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Invoice Type</th>
+                        <td>
+                            <span class="badge badge-{{ 'property' if payment.invoice_type == 'Property' else 'business' }}">
+                                {{ payment.invoice_type }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Payment Amount</th>
+                        <td><strong style="color: #28a745; font-size: 1.25rem;">{{ format_currency(payment.payment_amount) }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Payment Date</th>
+                        <td>{{ payment.payment_date.strftime('%Y-%m-%d %H:%M') if payment.payment_date else 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Mode</th>
+                        <td><span class="badge" style="background-color: #e0e7ff; color: #434190;">{{ payment.payment_mode }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Payment Type</th>
+                        <td>{{ payment.payment_type or 'N/A' }}</td>
+                    </tr>
+                    {% if payment.mobile_transaction_id %}
+                    <tr>
+                        <th>Mobile Transaction ID</th>
+                        <td>{{ payment.mobile_transaction_id }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.sender_mobile_number %}
+                    <tr>
+                        <th>Sender Mobile Number</th>
+                        <td>{{ payment.sender_mobile_number }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.cheque_number %}
+                    <tr>
+                        <th>Cheque Number</th>
+                        <td>{{ payment.cheque_number }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.bank_name %}
+                    <tr>
+                        <th>Bank Name</th>
+                        <td>{{ payment.bank_name }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.bank_branch %}
+                    <tr>
+                        <th>Bank Branch</th>
+                        <td>{{ payment.bank_branch }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th>Status</th>
+                        <td><span class="badge badge-success"><i class="fas fa-check-circle"></i> {{ payment.status }}</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-user-tag"></i> Payer Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table-details">
+                    <tr>
+                        <th>Paid By</th>
+                        <td>{{ payment.paid_by or 'N/A' }}</td>
+                    </tr>
+                    {% if payment.payer_name %}
+                    <tr>
+                        <th>Payer Name</th>
+                        <td>{{ payment.payer_name }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.payer_phone %}
+                    <tr>
+                        <th>Payer Phone</th>
+                        <td>{{ payment.payer_phone }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.cheque_name %}
+                    <tr>
+                        <th>Cheque Name</th>
+                        <td>{{ payment.cheque_name }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.gcr_number %}
+                    <tr>
+                        <th>GCR Number</th>
+                        <td>{{ payment.gcr_number }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.valuation_number %}
+                    <tr>
+                        <th>Valuation Number</th>
+                        <td>{{ payment.valuation_number }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th>Recorded By</th>
+                        <td>{{ payment.created_by or 'System' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Record Date</th>
+                        <td>{{ payment.created_at.strftime('%Y-%m-%d %H:%M') if payment.created_at else 'N/A' }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        {% if payment.notes %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-sticky-note"></i> Notes</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ payment.notes }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bolt"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                {% if payment.invoice_type == 'Property' and payment.property_invoice_id %}
+                <a href="{{ url_for('view_property_invoice', invoice_id=payment.property_invoice_id) }}" 
+                   class="btn btn-primary w-100 mb-3">
+                    <i class="fas fa-file-invoice"></i> View Invoice
+                </a>
+                {% elif payment.invoice_type == 'Business' and payment.business_invoice_id %}
+                <a href="{{ url_for('view_business_invoice', invoice_id=payment.business_invoice_id) }}" 
+                   class="btn btn-primary w-100 mb-3">
+                    <i class="fas fa-file-invoice"></i> View Invoice
+                </a>
+                {% endif %}
+                
+                <button onclick="window.print()" class="btn btn-secondary w-100">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-line"></i> Payment Summary</h5>
+            </div>
+            <div class="card-body" style="text-align: center;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; display: block; margin-bottom: 1rem;"></i>
+                <h3 class="mt-3 mb-1" style="color: #667eea;">{{ format_currency(payment.payment_amount) }}</h3>
+                <p class="text-muted">Total Payment Received</p>
+                
+                <hr style="margin: 1.5rem 0; border-color: #f0f0f0;">
+                
+                <div style="text-align: left; font-size: 0.9rem; color: #555;">
+                    <p><strong>Payment ID:</strong> #{{ payment.id }}</p>
+                    <p><strong>Invoice:</strong> {{ payment.invoice_no }}</p>
+                    <p><strong>Date:</strong> {{ payment.payment_date.strftime('%Y-%m-%d') if payment.payment_date else 'N/A' }}</p>
+                    <p><strong>Mode:</strong> {{ payment.payment_mode }}</p>
+                </div>
+            </div>
+        </div>
+
+        {% if payment.cheque_photo %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-image"></i> Cheque Image</h5>
+            </div>
+            <div class="card-body" style="text-align: center;">
+                <img src="{{ url_for('static', filename='uploads/' + payment.cheque_photo) }}" 
+                     alt="Cheque" 
+                     style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

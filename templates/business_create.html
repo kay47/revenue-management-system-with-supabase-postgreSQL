@@ -1,0 +1,610 @@
+{% extends "base.html" %}
+
+{% block title %}Business Occupant Creation{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Progress Step Styles */
+    .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        margin: 2rem 0;
+        padding: 0 1rem;
+        position: relative;
+    }
+    
+    .progress-steps::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 5%;
+        right: 5%;
+        height: 3px;
+        background: #e0e0e0;
+        z-index: 0;
+    }
+    
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        color: #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .step-label {
+        font-size: 0.85rem;
+        text-align: center;
+        color: #555;
+        font-weight: 500;
+    }
+    
+    .step.active .step-number {
+        background: #17a2b8;
+        color: white;
+        box-shadow: 0 0 0 5px rgba(23, 162, 184, 0.3);
+    }
+    
+    .step.completed .step-number {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .step.completed .step-number i {
+        display: block;
+    }
+    
+    .step-number i {
+        display: none;
+    }
+
+    /* Form Styles */
+    .form-section {
+        padding: 1.5rem;
+        display: none;
+    }
+    
+    .form-section.active {
+        display: block;
+    }
+    
+    .form-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    .form-group {
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-group input[type="text"], 
+    .form-group input[type="email"], 
+    .form-group input[type="tel"], 
+    .form-group input[type="number"], 
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: #fff;
+    }
+    
+    .form-group input:focus, .form-group select:focus {
+        outline: none;
+        border-color: #17a2b8;
+        box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1);
+    }
+    
+    .required {
+        color: #dc3545;
+        margin-left: 5px;
+    }
+    
+    .navigation-buttons {
+        padding: 1.5rem;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    
+    .navigation-buttons button {
+        padding: 0.8rem 2rem;
+        font-weight: 600;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-building"></i> Business Occupant Creation</h2>
+        <a href="{{ url_for('list_businesses') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+    
+    <div class="progress-steps">
+        <div class="step active" data-step="1">
+            <div class="step-number">1<i class="fas fa-check"></i></div>
+            <div class="step-label">Business Info</div>
+        </div>
+        <div class="step" data-step="2">
+            <div class="step-number">2<i class="fas fa-check"></i></div>
+            <div class="step-label">Business Owner Info</div>
+        </div>
+        <div class="step" data-step="3">
+            <div class="step-number">3<i class="fas fa-check"></i></div>
+            <div class="step-label">Location Info</div>
+        </div>
+        <div class="step" data-step="4">
+            <div class="step-number">4<i class="fas fa-check"></i></div>
+            <div class="step-label">Business Category Info</div>
+        </div>
+    </div>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="m-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message | safe }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <form method="POST">
+        <!-- Section 1: Business Info -->
+        <div class="form-section active" id="section-1">
+            <h3 style="margin-bottom: 1rem; color: #17a2b8;"><i class="fas fa-info-circle"></i> Business Info</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Business Name: <span class="required">*</span></label>
+                    <input type="text" name="business_name" required>
+                </div>
+                <div class="form-group">
+                    <label>Business Primary Contact: <span class="required">*</span></label>
+                    <input type="tel" name="business_primary_contact" required>
+                </div>
+                <div class="form-group">
+                    <label>Business Secondary Contact:</label>
+                    <input type="tel" name="business_secondary_contact">
+                </div>
+                <div class="form-group">
+                    <label>Business Website:</label>
+                    <input type="text" name="business_website" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label>Business E-mail:</label>
+                    <input type="email" name="business_email">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Business Owner Info -->
+        <div class="form-section" id="section-2">
+            <h3 style="margin-bottom: 1rem; color: #17a2b8;"><i class="fas fa-user-tie"></i> Business Owner Info</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Primary Contact: <span class="required">*</span></label>
+                    <input type="tel" name="owner_primary_contact" required>
+                </div>
+                <div class="form-group">
+                    <label>Owner Name: <span class="required">*</span></label>
+                    <input type="text" name="owner_name" required>
+                </div>
+                <div class="form-group">
+                    <label>House No:</label>
+                    <input type="text" name="house_no">
+                </div>
+                <div class="form-group">
+                    <label>E-mail:</label>
+                    <input type="email" name="owner_email">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Location Info -->
+        <div class="form-section" id="section-3">
+            <h3 style="margin-bottom: 1rem; color: #17a2b8;"><i class="fas fa-map-marked-alt"></i> Location Info</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Electoral Area: <span class="required">*</span></label>
+                    <select name="electoral_area" required>
+                        <option value="">SELECT OPTION</option>
+                        <option value="LEGON">LEGON</option>
+                        <option value="DZORWULU">DZORWULU</option>
+                        <option value="ROMAN RIDGE">ROMAN RIDGE</option>
+                        <option value="EAST LEGON">EAST LEGON</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Town: <span class="required">*</span></label>
+                    <select name="town" required>
+                        <option value="">SELECT OPTION</option>
+                        <option value="Accra">Accra</option>
+                        <option value="Tema">Tema</option>
+                        <option value="Kumasi">Kumasi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Street Name:</label>
+                    <input type="text" name="street_name">
+                </div>
+                <div class="form-group">
+                    <label>Landmark:</label>
+                    <input type="text" name="landmark">
+                </div>
+                <div class="form-group">
+                    <label>Ghanapost GPS code:</label>
+                    <input type="text" name="ghanapost_gps" placeholder="GA-123-4567">
+                </div>
+                <div class="form-group">
+                    <label>Division No: <span class="required">*</span></label>
+                    <select name="division_no" required>
+                        <option value="">SELECT OPTION</option>
+                        <option value="1">Division 1</option>
+                        <option value="2">Division 2</option>
+                        <option value="3">Division 3</option>
+                        <option value="4">Division 4</option>
+                        <option value="5">Division 5</option>
+                        <option value="6">Division 6</option>
+                        <option value="7">Division 7</option>
+                        <option value="8">Division 8</option>
+                        <option value="9">Division 9</option>
+                        <option value="10">Division 10</option>
+                        <option value="11">Division 11</option>
+                        <option value="12">Division 12</option>
+                        <option value="13">Division 13</option>
+                        <option value="14">Division 14</option>
+                        <option value="15">Division 15</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Business Category Info -->
+        <div class="form-section" id="section-4">
+            <h3 style="margin-bottom: 1rem; color: #17a2b8;"><i class="fas fa-tags"></i> Business Category Info</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Property Account No: <span class="required">*</span></label>
+                    <input type="text" name="property_account_no" required placeholder="e.g., AYWMA141001">
+                </div>
+                <div class="form-group">
+                    <label>Account No: <span class="required">*</span></label>
+                    <input type="text" name="account_no" required placeholder="e.g., BOP001">
+                </div>
+                <div class="form-group">
+                    <label>Display Category: <span class="required">*</span></label>
+                    <select name="display_category" id="display_category" required>
+                        <option value="">SELECT OPTION</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                        <option value="J">J</option>
+                        <option value="K">K</option>
+                        <option value="L">L</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="O">O</option>
+                        <option value="P">P</option>
+                        <option value="Q">Q</option>
+                        <option value="R">R</option>
+                        <option value="S">S</option>
+                        <option value="T">T</option>
+                        <option value="U">U</option>
+                        <option value="V">V</option>
+                        <option value="W">W</option>
+                        <option value="X">X</option>
+                        <option value="Y">Y</option>
+                        <option value="Z">Z</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category 1:</label>
+                    <select name="category1" id="category1">
+                        <option value="">N/A</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category 2:</label>
+                    <select name="category2" id="category2">
+                        <option value="">N/A</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category 3:</label>
+                    <select name="category3" id="category3">
+                        <option value="">N/A</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category 4:</label>
+                    <select name="category4" id="category4">
+                        <option value="">N/A</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category 5:</label>
+                    <select name="category5" id="category5">
+                        <option value="">N/A</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category 6:</label>
+                    <select name="category6" id="category6">
+                        <option value="">N/A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <button type="button" id="prevBtn" class="btn btn-secondary" style="display:none;">
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <div style="flex-grow: 1; text-align: right;">
+                <button type="button" id="nextBtn" class="btn btn-primary">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="display:none;">
+                    <i class="fas fa-save"></i> Finish
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentStep = 1;
+const formSections = document.querySelectorAll('.form-section');
+const steps = document.querySelectorAll('.step');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const submitBtn = document.getElementById('submitBtn');
+
+// Store all products data for reference
+let allProducts = [];
+
+// Load products and categories on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadProductCategories();
+    showStep(currentStep);
+});
+
+function loadProductCategories() {
+    // Load all products for cascading logic
+    fetch('/api/products')
+        .then(response => response.json())
+        .then(products => {
+            allProducts = products;
+            
+            // Populate Category 1 with unique values
+            const category1Values = [...new Set(products.map(p => p.category1).filter(c => c))];
+            const category1Select = document.getElementById('category1');
+            category1Select.innerHTML = '<option value="">N/A</option>';
+            category1Values.sort().forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                category1Select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error loading products:', error));
+}
+
+// Function to populate dependent category dropdowns
+function populateDependentCategories(level) {
+    // Get selected values from previous categories
+    const selectedCategories = {};
+    for (let i = 1; i < level; i++) {
+        selectedCategories[`category${i}`] = document.getElementById(`category${i}`).value || null;
+    }
+    
+    // Filter products that match all previous category selections
+    let matchingProducts = allProducts.filter(product => {
+        for (let i = 1; i < level; i++) {
+            const selectedValue = selectedCategories[`category${i}`];
+            const productValue = product[`category${i}`];
+            
+            // Both null/empty = match
+            if ((!selectedValue || selectedValue === '') && (!productValue || productValue === '')) {
+                continue;
+            }
+            // One is null/empty, other is not = no match
+            if ((!selectedValue || selectedValue === '') !== (!productValue || productValue === '')) {
+                return false;
+            }
+            // Both have values but don't match = no match
+            if (selectedValue !== productValue) {
+                return false;
+            }
+        }
+        return true;
+    });
+    
+    // Get unique values for current level from matching products
+    const currentLevelValues = [...new Set(
+        matchingProducts
+            .map(p => p[`category${level}`])
+            .filter(c => c && c !== '')
+    )];
+    
+    // Populate the dropdown
+    const select = document.getElementById(`category${level}`);
+    select.innerHTML = '<option value="">N/A</option>';
+    currentLevelValues.sort().forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        select.appendChild(option);
+    });
+    
+    // Clear all subsequent category selections
+    for (let i = level + 1; i <= 6; i++) {
+        const nextSelect = document.getElementById(`category${i}`);
+        nextSelect.innerHTML = '<option value="">N/A</option>';
+        nextSelect.value = '';
+    }
+}
+
+// Event listeners for cascading categories
+document.getElementById('category1').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategories(2);
+    } else {
+        // Clear all subsequent categories if category1 is cleared
+        for (let i = 2; i <= 6; i++) {
+            const select = document.getElementById(`category${i}`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category2').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategories(3);
+    } else {
+        for (let i = 3; i <= 6; i++) {
+            const select = document.getElementById(`category${i}`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category3').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategories(4);
+    } else {
+        for (let i = 4; i <= 6; i++) {
+            const select = document.getElementById(`category${i}`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category4').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategories(5);
+    } else {
+        for (let i = 5; i <= 6; i++) {
+            const select = document.getElementById(`category${i}`);
+            select.innerHTML = '<option value="">N/A</option>';
+            select.value = '';
+        }
+    }
+});
+
+document.getElementById('category5').addEventListener('change', function() {
+    if (this.value) {
+        populateDependentCategories(6);
+    } else {
+        document.getElementById('category6').innerHTML = '<option value="">N/A</option>';
+        document.getElementById('category6').value = '';
+    }
+});
+
+// Form navigation functions
+function showStep(step) {
+    formSections.forEach(section => section.classList.remove('active'));
+    document.getElementById(`section-${step}`).classList.add('active');
+    
+    steps.forEach((stepEl, index) => {
+        stepEl.classList.remove('active', 'completed');
+        if (index + 1 < step) {
+            stepEl.classList.add('completed');
+        } else if (index + 1 === step) {
+            stepEl.classList.add('active');
+        }
+    });
+    
+    prevBtn.style.display = step === 1 ? 'none' : 'inline-flex';
+    
+    if (step === formSections.length) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-flex';
+    } else {
+        nextBtn.style.display = 'inline-flex';
+        submitBtn.style.display = 'none';
+    }
+}
+
+nextBtn.addEventListener('click', () => {
+    const currentSection = document.getElementById(`section-${currentStep}`);
+    let isValid = true;
+    
+    currentSection.querySelectorAll('input[required], select[required]').forEach(input => {
+        if (!input.value) {
+            input.style.borderColor = '#dc3545';
+            isValid = false;
+        } else {
+            input.style.borderColor = '#dee2e6';
+        }
+    });
+
+    if (isValid && currentStep < formSections.length) {
+        currentStep++;
+        showStep(currentStep);
+    } else if (!isValid) {
+        alert('Please fill in all required fields before proceeding.');
+    }
+});
+
+prevBtn.addEventListener('click', () => {
+    if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+    }
+});
+
+// Allow clicking on step indicators
+steps.forEach((step, index) => {
+    step.style.cursor = 'pointer';
+    step.addEventListener('click', () => {
+        showStep(index + 1);
+        currentStep = index + 1;
+    });
+});
+</script>
+{% endblock %}
