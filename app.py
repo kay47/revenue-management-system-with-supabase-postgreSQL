@@ -16,10 +16,28 @@ from datetime import datetime
 import secrets
 import string
 from sqlalchemy import distinct, func, or_, extract
+import importlib
+from typing import TYPE_CHECKING
+
+# Try a runtime import of python-magic (module name: magic). If unavailable, fall back gracefully.
+# Using importlib avoids static import errors in environments where the package isn't installed.
 try:
-    import magic  # For file content validation
-except ImportError:
-    magic = None
+    magic_spec = importlib.util.find_spec('magic')
+except Exception:
+    magic_spec = None
+
+if magic_spec is not None:
+    try:
+        magic = importlib.import_module('magic')
+    except Exception:
+        magic = None
+else:
+    # Try common alternative package name as a fallback
+    try:
+        magic = importlib.import_module('filemagic')
+    except Exception:
+        magic = None
+
 import sys
 import flask
 from num2words import num2words
@@ -30,10 +48,26 @@ from dotenv import load_dotenv
 load_dotenv()
 # ... other imports ...
 # ==================== Configuration ====================
+# In app.py, update the Config class:
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(24)
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///revenue_management.db'
+    
+    # Get database URL from environment
+    database_url = os.environ.get('DATABASE_URL')
+    
+    # Fix for SQLAlchemy 1.4+ (Heroku/Supabase compatibility)
+    if database_url and database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    
+    SQLALCHEMY_DATABASE_URI = database_url or 'sqlite:///revenue_management.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_pre_ping': True,  # Verify connections before using them
+        'pool_recycle': 300,    # Recycle connections after 5 minutes
+        'pool_size': 10,        # Connection pool size
+        'max_overflow': 20      # Max overflow connections
+    }
+    
     UPLOAD_FOLDER = 'uploads'
     MAX_CONTENT_LENGTH = 1024 * 1024 * 1024  # 16MB
     PERMANENT_SESSION_LIFETIME = timedelta(hours=2)
@@ -5216,21 +5250,31 @@ def reset_sequences():
         return redirect(url_for('index'))
     
     try:
-        # For SQLite, we need to reset the sqlite_sequence table
-        if 'sqlite' in app.config['SQLALCHEMY_DATABASE_URI']:
-            # Reset property sequence
+        # Detect database type
+        db_uri = app.config['SQLALCHEMY_DATABASE_URI']
+        
+        if 'postgresql' in db_uri:
+            # PostgreSQL sequence reset
+            db.session.execute(db.text("SELECT setval('property_id_seq', (SELECT MAX(id) FROM property))"))
+            db.session.execute(db.text("SELECT setval('business_occupant_id_seq', (SELECT MAX(id) FROM business_occupant))"))
+            db.session.execute(db.text("SELECT setval('product_id_seq', (SELECT MAX(id) FROM product))"))
+            db.session.commit()
+            
+            flash('✅ PostgreSQL sequences reset successfully!', 'success')
+            log_action('Database sequences reset (PostgreSQL)')
+            
+        elif 'sqlite' in db_uri:
+            # SQLite sequence reset (existing code)
             max_property_id = db.session.query(db.func.max(Property.id)).scalar() or 0
             db.session.execute(
                 db.text(f"UPDATE sqlite_sequence SET seq = {max_property_id} WHERE name = 'property'")
             )
             
-            # Reset business sequence
             max_business_id = db.session.query(db.func.max(BusinessOccupant.id)).scalar() or 0
             db.session.execute(
                 db.text(f"UPDATE sqlite_sequence SET seq = {max_business_id} WHERE name = 'business_occupant'")
             )
             
-            # Reset product sequence
             max_product_id = db.session.query(db.func.max(Product.id)).scalar() or 0
             db.session.execute(
                 db.text(f"UPDATE sqlite_sequence SET seq = {max_product_id} WHERE name = 'product'")
@@ -5238,10 +5282,10 @@ def reset_sequences():
             
             db.session.commit()
             
-            flash('✅ Database sequences reset successfully!', 'success')
-            log_action('Database sequences reset')
+            flash('✅ SQLite sequences reset successfully!', 'success')
+            log_action('Database sequences reset (SQLite)')
         else:
-            flash('Sequence reset only supported for SQLite databases', 'warning')
+            flash('Sequence reset only supported for PostgreSQL and SQLite', 'warning')
     
     except Exception as e:
         db.session.rollback()
