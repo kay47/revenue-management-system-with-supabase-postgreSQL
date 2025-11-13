@@ -1,8 +1,22 @@
-# render.yaml
-   services:
-     - type: web
-       name: revenue-management
-       env: python
-       buildCommand: pip install -r requirements.txt
-       startCommand: gunicorn app:app
-       healthCheckPath: /health
+services:
+  - type: web
+    name: revenue-management-system
+    runtime: python
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: revenue-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SMS_PROVIDER
+        value: mock
+
+databases:
+  - name: revenue-db
+    databaseName: revenue_db
+    user: revenue_user
