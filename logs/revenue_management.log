@@ -18095,3 +18095,7 @@ jinja2.exceptions.TemplateRuntimeError: No filter named 'extract_total'.
 2025-11-13 06:02:57,478 INFO: Response d5621679d9ca289f: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:145]
 2025-11-13 11:48:06,065 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:183]
 2025-11-13 12:03:08,003 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:183]
+2025-11-13 12:42:23,063 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:183]
+2025-11-13 12:43:00,158 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:183]
+2025-11-13 12:45:00,946 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:183]
+2025-11-13 12:45:57,579 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:183]

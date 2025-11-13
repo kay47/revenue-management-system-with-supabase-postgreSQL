@@ -7125,6 +7125,27 @@ def create_admin():
         db.session.commit()
     
     print(f'Admin user "{username}" created successfully.')
+    
+@app.cli.command()
+def fix_user_timestamps():
+    """Fix users with NULL created_at timestamps"""
+    from datetime import datetime
+    
+    with app.app_context():
+        users_without_timestamp = User.query.filter(User.created_at.is_(None)).all()
+        
+        if not users_without_timestamp:
+            print('All users have timestamps!')
+            return
+        
+        print(f'Found {len(users_without_timestamp)} users without timestamps')
+        
+        for user in users_without_timestamp:
+            user.created_at = datetime.utcnow()
+            print(f'Fixed timestamp for user: {user.username}')
+        
+        db.session.commit()
+        print(f'✓ Fixed {len(users_without_timestamp)} users')    
     # The context ends here
 
 # ==================== Main ====================
