@@ -421,7 +421,7 @@
                     <th>Invoice Type</th>
                     <th>Business Type</th>
                     <th>Category</th>
-                    <th>Category</th>
+                    <!--<th>Category</th>-->
                     <th class="text-center">Amount</th>
                 </tr>
             </thead>
@@ -429,9 +429,9 @@
                 <tr>
                     <td><strong>BOP</strong></td>
                     <td>{{ business.category2 or 'N/A' }}</td>
-                    <td>{{ business.category4 or 'N/A' }}</td>
-                    <td>{{ business.category6 or 'N/A' }}</td>
-                    <td class="text-center"><strong>GHS {{ "{:,.2f}".format(invoice.amount) }}</strong></td>
+                    <td class="text-center">{{ business.display_category or 'N/A' }}</td>
+                    <!--<td>{{ business.category6 or 'N/A' }}</td>-->
+                    <td class="text-right"><strong>GHS {{ "{:,.2f}".format(invoice.amount) }}</strong></td>
                 </tr>
             </tbody>
         </table>

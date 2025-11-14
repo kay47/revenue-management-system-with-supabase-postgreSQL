@@ -89,7 +89,7 @@
         opacity: 0.9;
     }
 
-    /* Custom Gradients - More vibrant */
+    /* Custom Gradients */
     .gradient-primary {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
@@ -128,77 +128,52 @@
     .table tbody tr:hover {
         background: #f9fafb;
     }
-    
-    /* Chart Container */
-    .chart-container {
+
+    /* Filter Button Styles */
+    .filter-btn {
+        padding: 12px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        background: white;
+        color: #333;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 350px;
-        padding: 2rem;
-    }
-
-    .chart-placeholder {
-        text-align: center;
-        color: #6c757d;
-    }
-
-    .chart-placeholder i {
-        font-size: 4rem;
-        color: #dee2e6;
-        margin-bottom: 1rem;
-        display: block;
-    }
-
-    /* Stats ring for pie chart alternative */
-    .stats-ring {
-        display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
     }
 
-    .stats-percentage {
-        font-size: 3rem;
-        font-weight: 700;
-        color: #667eea;
-        margin: 1rem 0;
+    .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    .stats-label {
-        font-size: 1.1rem;
-        color: #6c757d;
-        margin-bottom: 2rem;
+    .filter-btn.active {
+        border: 2px solid #667eea;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     }
 
-    .stats-breakdown {
-        width: 100%;
-        margin-top: 1rem;
-    }
-
-    .stats-item {
+    /* Legend Item Styles */
+    .legend-item {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #f0f0f0;
+        padding: 12px;
+        background: #f9fafb;
+        border-radius: 8px;
+        transition: all 0.3s;
     }
 
-    .stats-item:last-child {
-        border-bottom: none;
+    .legend-item:hover {
+        background: #f3f4f6;
+        transform: translateX(4px);
     }
-
-    .stats-item-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .stats-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-    }
-
 </style>
 {% endblock %}
 
@@ -298,46 +273,45 @@
 <!-- Content Row -->
 <div class="row">
     
-    <!-- Collection Rate Stats -->
+    <!-- Distribution Analysis Chart -->
     <div class="col-md-5">
         <div class="card h-100">
             <div class="card-header">
                 <h5 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0;">
-                    <i class="fas fa-chart-pie"></i> Collection Rate
+                    <i class="fas fa-chart-pie"></i> Distribution Analysis
                 </h5>
             </div>
-            <div class="card-body chart-container">
-                <div class="stats-ring">
-                    {% set total_invoices = total_property_invoices + total_business_invoices %}
-                    {% set paid_invoices = paid_property_invoices + paid_business_invoices %}
-                    {% set collection_rate = ((paid_invoices / total_invoices * 100) if total_invoices > 0 else 0) | round(1) %}
-                    
-                    <div class="stats-percentage">{{ collection_rate }}%</div>
-                    <div class="stats-label">Collection Rate</div>
-                    
-                    <div class="stats-breakdown">
-                        <div class="stats-item">
-                            <div class="stats-item-label">
-                                <span class="stats-dot" style="background: #11998e;"></span>
-                                <span>Paid Invoices</span>
-                            </div>
-                            <strong>{{ paid_invoices }}</strong>
-                        </div>
-                        <div class="stats-item">
-                            <div class="stats-item-label">
-                                <span class="stats-dot" style="background: #f5576c;"></span>
-                                <span>Pending Invoices</span>
-                            </div>
-                            <strong>{{ total_invoices - paid_invoices }}</strong>
-                        </div>
-                        <div class="stats-item">
-                            <div class="stats-item-label">
-                                <span class="stats-dot" style="background: #667eea;"></span>
-                                <span>Total Invoices</span>
-                            </div>
-                            <strong>{{ total_invoices }}</strong>
-                        </div>
+            <div class="card-body">
+                <!-- Filter Buttons -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                    <button class="filter-btn active" onclick="changeFilter('entities')" data-filter="entities">
+                        <span style="font-size: 1.2rem;">🏢</span> Entities
+                    </button>
+                    <button class="filter-btn" onclick="changeFilter('payments')" data-filter="payments">
+                        <span style="font-size: 1.2rem;">💰</span> Payments
+                    </button>
+                    <button class="filter-btn" onclick="changeFilter('invoices')" data-filter="invoices">
+                        <span style="font-size: 1.2rem;">📄</span> Invoices
+                    </button>
+                    <button class="filter-btn" onclick="changeFilter('collection')" data-filter="collection">
+                        <span style="font-size: 1.2rem;">✓</span> Collection
+                    </button>
+                </div>
+
+                <!-- Chart -->
+                <div style="position: relative; height: 300px; margin-bottom: 24px;">
+                    <canvas id="pieChart"></canvas>
+                </div>
+
+                <!-- Legend -->
+                <div id="chartLegend" style="display: flex; flex-direction: column; gap: 12px;"></div>
+
+                <!-- Summary -->
+                <div style="margin-top: 24px; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; color: white; text-align: center;">
+                    <div id="summaryLabel" style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Total Count
                     </div>
+                    <div id="summaryValue" style="font-size: 2rem; font-weight: 700;">0</div>
                 </div>
             </div>
         </div>
@@ -346,7 +320,7 @@
     <!-- Recent Payments -->
     <div class="col-md-7">
         {% if recent_payments %}
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 <h5 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0;">
                     <i class="fas fa-clock"></i> Recent Payments
@@ -421,8 +395,156 @@
 
 {% block extra_js %}
 <script>
-    // Add animation on page load
+    // Chart data - Using your backend variables
+    const chartData = {
+        entities: {
+            labels: ['Properties', 'Businesses'],
+            data: [{{ total_properties }}, {{ total_businesses }}],
+            colors: ['#667eea', '#764ba2'],
+            format: 'number'
+        },
+        payments: {
+            labels: ['Property Payments', 'Business Payments'],
+            data: [{{ property_payments|default(0) }}, {{ business_payments|default(0) }}],
+            colors: ['#11998e', '#f5576c'],
+            format: 'currency'
+        },
+        invoices: {
+            labels: ['Property Invoices', 'Business Invoices'],
+            data: [{{ total_property_invoices }}, {{ total_business_invoices }}],
+            colors: ['#4facfe', '#f093fb'],
+            format: 'number'
+        },
+        collection: {
+            labels: ['Paid', 'Pending'],
+            data: [{{ paid_property_invoices + paid_business_invoices }}, {{ (total_property_invoices + total_business_invoices) - (paid_property_invoices + paid_business_invoices) }}],
+            colors: ['#38ef7d', '#f5576c'],
+            format: 'number'
+        }
+    };
+
+    let myChart = null;
+    let currentFilter = 'entities';
+
+    function formatValue(value, format) {
+        if (format === 'currency') {
+            return 'GH₵' + value.toLocaleString();
+        }
+        return value.toLocaleString();
+    }
+
+    function updateLegend(filter) {
+        const data = chartData[filter];
+        const total = data.data.reduce((sum, val) => sum + val, 0);
+        const legendHTML = data.labels.map((label, i) => {
+            const value = data.data[i];
+            const percent = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+            return `
+                <div class="legend-item" style="border-left: 4px solid ${data.colors[i]};">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: ${data.colors[i]};"></div>
+                        <span style="font-weight: 500; color: #333;">${label}</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 2px; color: ${data.colors[i]};">
+                            ${formatValue(value, data.format)}
+                        </div>
+                        <div style="font-size: 0.85rem; color: #666;">${percent}%</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        document.getElementById('chartLegend').innerHTML = legendHTML;
+        
+        // Update summary
+        const summaryLabel = filter === 'payments' ? 'Total Revenue' : 'Total Count';
+        document.getElementById('summaryLabel').textContent = summaryLabel;
+        document.getElementById('summaryValue').textContent = formatValue(total, data.format);
+    }
+
+    function changeFilter(filter) {
+        currentFilter = filter;
+        
+        // Update button states
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+        
+        // Update chart
+        const data = chartData[filter];
+        myChart.data.labels = data.labels;
+        myChart.data.datasets[0].data = data.data;
+        myChart.data.datasets[0].backgroundColor = data.colors;
+        myChart.data.datasets[0].borderColor = data.colors;
+        myChart.update('active');
+        
+        // Update legend
+        updateLegend(filter);
+    }
+
+    // Initialize chart on page load
     document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('pieChart');
+        if (ctx) {
+            const initialData = chartData[currentFilter];
+            
+            myChart = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: initialData.labels,
+                    datasets: [{
+                        data: initialData.data,
+                        backgroundColor: initialData.colors,
+                        borderColor: initialData.colors,
+                        borderWidth: 2,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'white',
+                            titleColor: '#333',
+                            bodyColor: '#666',
+                            borderColor: '#e5e7eb',
+                            borderWidth: 2,
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const data = chartData[currentFilter];
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                                    const percent = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return [
+                                        context.label,
+                                        formatValue(value, data.format) + ' (' + percent + '%)'
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%',
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 800
+                    }
+                }
+            });
+            
+            // Initialize legend
+            updateLegend(currentFilter);
+        }
+
+        // Animate metric cards
         const cards = document.querySelectorAll('.metric-card');
         cards.forEach((card, index) => {
             card.style.opacity = '0';

@@ -1801,8 +1801,18 @@ def index():
     
     total_revenue = db.session.query(db.func.sum(Payment.payment_amount)).scalar() or 0
     
+    # 🆕 ADD THESE TWO LINES - Calculate property and business payments separately
+    property_payments = db.session.query(db.func.sum(Payment.payment_amount)).filter(
+        Payment.invoice_type == 'Property'
+    ).scalar() or 0
+    
+    business_payments = db.session.query(db.func.sum(Payment.payment_amount)).filter(
+        Payment.invoice_type == 'Business'
+    ).scalar() or 0
+    
     recent_payments = Payment.query.order_by(Payment.payment_date.desc()).limit(10).all()
     
+    # 🆕 ADD property_payments and business_payments to the return statement
     return render_template('index.html',
                          total_properties=total_properties,
                          total_businesses=total_businesses,
@@ -1811,8 +1821,9 @@ def index():
                          paid_property_invoices=paid_property_invoices,
                          paid_business_invoices=paid_business_invoices,
                          total_revenue=total_revenue,
+                         property_payments=property_payments,      # 🆕 NEW LINE
+                         business_payments=business_payments,      # 🆕 NEW LINE
                          recent_payments=recent_payments)
-
 # ==================== Property Routes ====================
 @app.route('/property/create', methods=['GET', 'POST'])
 @login_required
