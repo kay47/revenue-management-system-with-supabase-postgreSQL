@@ -2598,8 +2598,9 @@ def view_property_invoice(invoice_id):
     total_all_invoices = 0.0
     total_all_payments = 0.0
     
-    # Track each invoice's balance
+    # Track each invoice's balance and overpayments
     invoice_balances = []
+    running_credit = 0.0  # Track cumulative credit
     
     for inv in all_invoices:
         inv_total = getattr(inv, 'total_amount', None) or inv.amount
@@ -2612,7 +2613,22 @@ def view_property_invoice(invoice_id):
         inv_paid = sum(p.payment_amount for p in inv_payments)
         total_all_payments += inv_paid
         
-        inv_balance = inv_total - inv_paid
+        # Calculate balance for this invoice
+        inv_balance_raw = inv_total - inv_paid
+        
+        # Check if this invoice has overpayment
+        if inv_balance_raw < 0:
+            # This invoice was overpaid - add to running credit
+            overpayment = abs(inv_balance_raw)
+            running_credit += overpayment
+            inv_balance = 0.0  # Invoice itself is fully paid
+        elif running_credit > 0 and inv_balance_raw > 0:
+            # Apply accumulated credit to this invoice's balance
+            credit_to_apply = min(running_credit, inv_balance_raw)
+            inv_balance = inv_balance_raw - credit_to_apply
+            running_credit -= credit_to_apply
+        else:
+            inv_balance = inv_balance_raw
         
         invoice_balances.append({
             'year': inv.year,
@@ -2620,68 +2636,66 @@ def view_property_invoice(invoice_id):
             'invoice_id': inv.id,
             'total': inv_total,
             'paid': inv_paid,
-            'balance_before_credit': inv_balance,
-            'is_current': inv.id == invoice_id
+            'balance_before_credit': inv_balance_raw,
+            'balance_after_auto_credit': inv_balance,
+            'is_current': inv.id == invoice_id,
+            'has_overpayment': inv_balance_raw < 0,
+            'overpayment_amount': abs(inv_balance_raw) if inv_balance_raw < 0 else 0.0
         })
     
     # ========================================================================
-    # STEP 2: Calculate available credit (overpayments)
+    # STEP 2: Calculate total available credit and identify arrears
     # ========================================================================
-    available_credit = max(0, total_all_payments - total_all_invoices)
-    
-    # ========================================================================
-    # STEP 3: Apply credit to outstanding balances (oldest first)
-    # ========================================================================
-    remaining_credit = available_credit
+    available_credit = running_credit  # Credit remaining after auto-application
     
     # Separate arrears from current invoice
     arrears_breakdown = []
     current_invoice_data = None
+    total_arrears_after_credit = 0.0
     
     for inv_data in invoice_balances:
-        if inv_data['balance_before_credit'] > 0:
-            # Apply credit to this balance
-            if remaining_credit > 0:
-                credit_applied = min(remaining_credit, inv_data['balance_before_credit'])
-                inv_data['credit_applied'] = credit_applied
-                inv_data['balance_after_credit'] = inv_data['balance_before_credit'] - credit_applied
-                remaining_credit -= credit_applied
-            else:
-                inv_data['credit_applied'] = 0.0
-                inv_data['balance_after_credit'] = inv_data['balance_before_credit']
-            
-            # Add to arrears if not current invoice
-            if not inv_data['is_current']:
-                arrears_breakdown.append(inv_data)
-            else:
-                current_invoice_data = inv_data
+        if inv_data['is_current']:
+            current_invoice_data = inv_data
         else:
-            inv_data['credit_applied'] = 0.0
-            inv_data['balance_after_credit'] = 0.0
-            
-            if inv_data['is_current']:
-                current_invoice_data = inv_data
+            # Only add to arrears if there's still a balance after auto-credit
+            if inv_data['balance_after_auto_credit'] > 0:
+                arrears_breakdown.append(inv_data)
+                total_arrears_after_credit += inv_data['balance_after_auto_credit']
     
     # ========================================================================
-    # STEP 4: Calculate final totals
+    # STEP 3: Calculate current invoice balances
     # ========================================================================
-    total_arrears_before_credit = sum(a['balance_before_credit'] for a in arrears_breakdown)
-    total_arrears_after_credit = sum(a['balance_after_credit'] for a in arrears_breakdown)
-    total_credit_to_arrears = sum(a['credit_applied'] for a in arrears_breakdown)
-    
-    # Current invoice balances
     if current_invoice_data:
-        outstanding_balance_after_credit = current_invoice_data['balance_after_credit']
-        credit_to_current = current_invoice_data['credit_applied']
+        outstanding_balance_after_credit = current_invoice_data['balance_after_auto_credit']
+        # Calculate credit applied to current (if any came from previous overpayments)
+        credit_to_current = current_invoice_data['balance_before_credit'] - current_invoice_data['balance_after_auto_credit']
+        if credit_to_current < 0:
+            credit_to_current = 0.0
     else:
         outstanding_balance_after_credit = outstanding_balance_before_credit
         credit_to_current = 0.0
     
-    # Grand total
+    # ========================================================================
+    # STEP 4: Calculate totals
+    # ========================================================================
+    total_arrears_before_credit = sum(
+        inv_data['balance_before_credit'] 
+        for inv_data in invoice_balances 
+        if not inv_data['is_current'] and inv_data['balance_before_credit'] > 0
+    )
+    
+    # Total credit applied to arrears
+    total_credit_to_arrears = total_arrears_before_credit - total_arrears_after_credit
+    
+    # Grand total outstanding
     grand_total_outstanding = outstanding_balance_after_credit + total_arrears_after_credit
     
-    # Total credit applied (arrears + current)
-    total_credit_applied = available_credit - remaining_credit
+    # Total credit applied
+    total_credit_applied = total_all_payments - total_all_invoices
+    if total_credit_applied < 0:
+        total_credit_applied = 0.0
+    
+    remaining_credit = available_credit
     
     # ========================================================================
     # STEP 5: Get adjustments
@@ -2695,18 +2709,33 @@ def view_property_invoice(invoice_id):
     # STEP 6: Log for debugging
     # ========================================================================
     app.logger.info(
-        f"📊 Invoice View - {invoice.invoice_no}:\n"
-        f"  Total Invoiced (all years): GHS {total_all_invoices:,.2f}\n"
-        f"  Total Paid (all years): GHS {total_all_payments:,.2f}\n"
-        f"  Available Credit: GHS {available_credit:,.2f}\n"
-        f"  Credit to Arrears: GHS {total_credit_to_arrears:,.2f}\n"
-        f"  Credit to Current: GHS {credit_to_current:,.2f}\n"
-        f"  Remaining Credit: GHS {remaining_credit:,.2f}\n"
-        f"  Current Outstanding (before credit): GHS {outstanding_balance_before_credit:,.2f}\n"
-        f"  Current Outstanding (after credit): GHS {outstanding_balance_after_credit:,.2f}\n"
+        f"📊 Invoice View - {invoice.invoice_no} (Year {invoice.year}):\n"
+        f"  Total Invoiced (all years ≤ {invoice.year}): GHS {total_all_invoices:,.2f}\n"
+        f"  Total Paid (all years ≤ {invoice.year}): GHS {total_all_payments:,.2f}\n"
+        f"  Overall Credit/Debt: GHS {total_all_payments - total_all_invoices:,.2f}\n"
+        f"  \n"
+        f"  === INVOICE BREAKDOWN ===\n" +
+        '\n'.join([
+            f"  {inv['year']}: Invoice={inv['total']:,.2f}, Paid={inv['paid']:,.2f}, "
+            f"Balance={inv['balance_before_credit']:,.2f}, "
+            f"After Auto-Credit={inv['balance_after_auto_credit']:,.2f}"
+            + (f" [OVERPAYMENT: {inv['overpayment_amount']:,.2f}]" if inv['has_overpayment'] else "")
+            for inv in invoice_balances
+        ]) +
+        f"\n  \n"
+        f"  === CURRENT INVOICE ({invoice.year}) ===\n"
+        f"  Outstanding (before credit): GHS {outstanding_balance_before_credit:,.2f}\n"
+        f"  Credit Applied: GHS {credit_to_current:,.2f}\n"
+        f"  Outstanding (after credit): GHS {outstanding_balance_after_credit:,.2f}\n"
+        f"  \n"
+        f"  === ARREARS ===\n"
         f"  Arrears (before credit): GHS {total_arrears_before_credit:,.2f}\n"
+        f"  Credit Applied to Arrears: GHS {total_credit_to_arrears:,.2f}\n"
         f"  Arrears (after credit): GHS {total_arrears_after_credit:,.2f}\n"
-        f"  Grand Total Outstanding: GHS {grand_total_outstanding:,.2f}"
+        f"  \n"
+        f"  === TOTALS ===\n"
+        f"  Grand Total Outstanding: GHS {grand_total_outstanding:,.2f}\n"
+        f"  Remaining Unused Credit: GHS {remaining_credit:,.2f}"
     )
     
     # ========================================================================
@@ -2728,7 +2757,7 @@ def view_property_invoice(invoice_id):
                          total_credit_to_arrears=total_credit_to_arrears,  # Credit applied to arrears
                          remaining_credit=remaining_credit,  # Credit still unused
                          total_credit_applied=total_credit_applied,  # Total credit used
-                         grand_total_outstanding=grand_total_outstanding)  # 🆕 NEW #  ADDED
+                         grand_total_outstanding=grand_total_outstanding)
 
 # Replace the existing view_business_invoice route in app.py with this updated version:
 
@@ -2748,7 +2777,7 @@ def view_business_invoice(invoice_id):
     invoice_total = getattr(invoice, 'total_amount', None) or invoice.amount
     outstanding_balance_before_credit = invoice_total - total_paid
     
-    # Calculate all invoices and payments
+    # Calculate all invoices and payments with auto-credit application
     all_invoices = BOPInvoice.query.filter(
         BOPInvoice.business_id == invoice.business_id,
         BOPInvoice.year <= invoice.year
@@ -2757,6 +2786,7 @@ def view_business_invoice(invoice_id):
     total_all_invoices = 0.0
     total_all_payments = 0.0
     invoice_balances = []
+    running_credit = 0.0
     
     for inv in all_invoices:
         inv_total = getattr(inv, 'total_amount', None) or inv.amount
@@ -2769,7 +2799,18 @@ def view_business_invoice(invoice_id):
         inv_paid = sum(p.payment_amount for p in inv_payments)
         total_all_payments += inv_paid
         
-        inv_balance = inv_total - inv_paid
+        inv_balance_raw = inv_total - inv_paid
+        
+        if inv_balance_raw < 0:
+            overpayment = abs(inv_balance_raw)
+            running_credit += overpayment
+            inv_balance = 0.0
+        elif running_credit > 0 and inv_balance_raw > 0:
+            credit_to_apply = min(running_credit, inv_balance_raw)
+            inv_balance = inv_balance_raw - credit_to_apply
+            running_credit -= credit_to_apply
+        else:
+            inv_balance = inv_balance_raw
         
         invoice_balances.append({
             'year': inv.year,
@@ -2777,54 +2818,49 @@ def view_business_invoice(invoice_id):
             'invoice_id': inv.id,
             'total': inv_total,
             'paid': inv_paid,
-            'balance_before_credit': inv_balance,
-            'is_current': inv.id == invoice_id
+            'balance_before_credit': inv_balance_raw,
+            'balance_after_auto_credit': inv_balance,
+            'is_current': inv.id == invoice_id,
+            'has_overpayment': inv_balance_raw < 0,
+            'overpayment_amount': abs(inv_balance_raw) if inv_balance_raw < 0 else 0.0
         })
     
-    # Calculate available credit
-    available_credit = max(0, total_all_payments - total_all_invoices)
-    
-    # Apply credit to balances
-    remaining_credit = available_credit
+    available_credit = running_credit
     arrears_breakdown = []
     current_invoice_data = None
+    total_arrears_after_credit = 0.0
     
     for inv_data in invoice_balances:
-        if inv_data['balance_before_credit'] > 0:
-            if remaining_credit > 0:
-                credit_applied = min(remaining_credit, inv_data['balance_before_credit'])
-                inv_data['credit_applied'] = credit_applied
-                inv_data['balance_after_credit'] = inv_data['balance_before_credit'] - credit_applied
-                remaining_credit -= credit_applied
-            else:
-                inv_data['credit_applied'] = 0.0
-                inv_data['balance_after_credit'] = inv_data['balance_before_credit']
-            
-            if not inv_data['is_current']:
-                arrears_breakdown.append(inv_data)
-            else:
-                current_invoice_data = inv_data
+        if inv_data['is_current']:
+            current_invoice_data = inv_data
         else:
-            inv_data['credit_applied'] = 0.0
-            inv_data['balance_after_credit'] = 0.0
-            
-            if inv_data['is_current']:
-                current_invoice_data = inv_data
-    
-    # Calculate totals
-    total_arrears_before_credit = sum(a['balance_before_credit'] for a in arrears_breakdown)
-    total_arrears_after_credit = sum(a['balance_after_credit'] for a in arrears_breakdown)
-    total_credit_to_arrears = sum(a['credit_applied'] for a in arrears_breakdown)
+            if inv_data['balance_after_auto_credit'] > 0:
+                arrears_breakdown.append(inv_data)
+                total_arrears_after_credit += inv_data['balance_after_auto_credit']
     
     if current_invoice_data:
-        outstanding_balance_after_credit = current_invoice_data['balance_after_credit']
-        credit_to_current = current_invoice_data['credit_applied']
+        outstanding_balance_after_credit = current_invoice_data['balance_after_auto_credit']
+        credit_to_current = current_invoice_data['balance_before_credit'] - current_invoice_data['balance_after_auto_credit']
+        if credit_to_current < 0:
+            credit_to_current = 0.0
     else:
         outstanding_balance_after_credit = outstanding_balance_before_credit
         credit_to_current = 0.0
     
+    total_arrears_before_credit = sum(
+        inv_data['balance_before_credit'] 
+        for inv_data in invoice_balances 
+        if not inv_data['is_current'] and inv_data['balance_before_credit'] > 0
+    )
+    
+    total_credit_to_arrears = total_arrears_before_credit - total_arrears_after_credit
     grand_total_outstanding = outstanding_balance_after_credit + total_arrears_after_credit
-    total_credit_applied = available_credit - remaining_credit
+    
+    total_credit_applied = total_all_payments - total_all_invoices
+    if total_credit_applied < 0:
+        total_credit_applied = 0.0
+    
+    remaining_credit = available_credit
     
     # Get product
     product = None
@@ -2837,9 +2873,8 @@ def view_business_invoice(invoice_id):
         invoice_type='Business'
     ).order_by(InvoiceAdjustment.created_at.desc()).all()
     
-    # Log for debugging
     app.logger.info(
-        f"📊 Business Invoice View - {invoice.invoice_no}:\n"
+        f"📊 Business Invoice View - {invoice.invoice_no} (Year {invoice.year}):\n"
         f"  Available Credit: GHS {available_credit:,.2f}\n"
         f"  Credit to Current: GHS {credit_to_current:,.2f}\n"
         f"  Outstanding (after credit): GHS {outstanding_balance_after_credit:,.2f}"
@@ -2862,7 +2897,7 @@ def view_business_invoice(invoice_id):
                          total_credit_to_arrears=total_credit_to_arrears,
                          remaining_credit=remaining_credit,
                          total_credit_applied=total_credit_applied,
-                         grand_total_outstanding=grand_total_outstanding)  # 🆕 NEW
+                         grand_total_outstanding=grand_total_outstanding)
     
     
 @app.route('/invoice/property/<int:invoice_id>/pay', methods=['GET'])
