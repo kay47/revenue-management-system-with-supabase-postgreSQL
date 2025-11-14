@@ -434,9 +434,37 @@
             </tbody>
         </table>
 
+        {# ============================================
+           CALCULATE COMPREHENSIVE FINANCIALS
+           ============================================ #}
         {% set invoice_total = invoice.total_amount if invoice.total_amount else invoice.amount %}
-        {% set current_invoice_balance = invoice_total - total_paid %}
-        {% set grand_total_outstanding = current_invoice_balance + total_arrears %}
+        {% set total_paid_current = total_paid %}
+        {% set outstanding_before_credit = invoice_total - total_paid_current %}
+        {% set available_credit_amount = available_credit if available_credit else 0 %}
+        
+        {# Apply credit to current invoice #}
+        {% set credit_applied_to_current = 0 %}
+        {% set outstanding_after_credit = outstanding_before_credit %}
+        
+        {% if available_credit_amount > 0 and outstanding_before_credit > 0 %}
+            {% if available_credit_amount >= outstanding_before_credit %}
+                {% set credit_applied_to_current = outstanding_before_credit %}
+                {% set outstanding_after_credit = 0 %}
+            {% else %}
+                {% set credit_applied_to_current = available_credit_amount %}
+                {% set outstanding_after_credit = outstanding_before_credit - available_credit_amount %}
+            {% endif %}
+        {% endif %}
+        
+        {# Calculate overpayment #}
+        {% set overpayment_on_current = 0 %}
+        {% if total_paid_current > invoice_total %}
+            {% set overpayment_on_current = total_paid_current - invoice_total %}
+        {% endif %}
+        
+        {# Grand total outstanding #}
+        {% set grand_total_outstanding = outstanding_after_credit + total_arrears %}
+        {% set is_fully_paid = grand_total_outstanding <= 0.01 %}
 
         <div class="invoice-summary">
             <table class="summary-table">
@@ -451,31 +479,78 @@
                         <td>GHS {{ "{:,.2f}".format(invoice.tax_amount) }}</td>
                     </tr>
                     {% endif %}
+                    {% if total_arrears > 0 %}
                     <tr class="arrears-row">
                         <td><strong>Arrears (Previous Years)</strong></td>
                         <td><strong>GHS {{ "{:,.2f}".format(total_arrears) }}</strong></td>
                     </tr>
+                    {% endif %}
                     <tr>
                         <td>Payment ({{ invoice.year }})</td>
-                        <td>GHS {{ "{:,.2f}".format(total_paid) }}</td>
+                        <td>GHS {{ "{:,.2f}".format(total_paid_current) }}</td>
                     </tr>
+                    {% if credit_applied_to_current > 0 %}
+                    <tr style="background: #e8f5e9;">
+                        <td><strong>💳 Credit Applied</strong></td>
+                        <td><strong style="color: #2e7d32;">- GHS {{ "{:,.2f}".format(credit_applied_to_current) }}</strong></td>
+                    </tr>
+                    {% endif %}
+                    {% if overpayment_on_current > 0 %}
+                    <tr style="background: #fff9e6;">
+                        <td><strong>💰 Overpayment</strong></td>
+                        <td><strong style="color: #856404;">GHS {{ "{:,.2f}".format(overpayment_on_current) }}</strong></td>
+                    </tr>
+                    {% endif %}
                     <tr>
                         <td>Penalty</td>
                         <td>GHS 0.00</td>
                     </tr>
                     <tr class="total-row">
                         <td><strong>TOTAL OUTSTANDING</strong></td>
-                        <td><strong>GHS {{ "{:,.2f}".format(grand_total_outstanding) }}</strong></td>
+                        <td>
+                            {% if is_fully_paid %}
+                                <strong style="color: #16a34a;">GHS 0.00 (PAID ✓)</strong>
+                            {% else %}
+                                <strong>GHS {{ "{:,.2f}".format(grand_total_outstanding) }}</strong>
+                            {% endif %}
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="amount-words">
-            {{ grand_total_outstanding | in_words }}
+            {% if is_fully_paid %}
+                Zero Ghana Cedis only (Fully Paid{% if credit_applied_to_current > 0 %} - Credit of GHS {{ "{:,.2f}".format(credit_applied_to_current) }} applied{% endif %}{% if overpayment_on_current > 0 %} - Overpayment: GHS {{ "{:,.2f}".format(overpayment_on_current) }} available as credit{% endif %})
+            {% else %}
+                {{ grand_total_outstanding | in_words }}{% if credit_applied_to_current > 0 %} (After GHS {{ "{:,.2f}".format(credit_applied_to_current) }} credit applied){% endif %}
+            {% endif %}
         </div>
 
-        {% if total_arrears > 0 %}
+        {# Credit Applied Notice #}
+        {% if credit_applied_to_current > 0 %}
+        <div style="background: #e8f5e9; padding: 10px; border-radius: 4px; margin-bottom: 12px; border-left: 4px solid #4caf50;">
+            <p style="color: #2e7d32; margin: 0; font-size: 9pt;">
+                <strong>💳 Credit Applied:</strong> A credit balance of 
+                <strong>GHS {{ "{:,.2f}".format(credit_applied_to_current) }}</strong> from previous overpayments 
+                has been applied to this invoice, reducing your outstanding balance.
+            </p>
+        </div>
+        {% endif %}
+
+        {# Overpayment Notice #}
+        {% if overpayment_on_current > 0 %}
+        <div class="alert-warning">
+            <p>
+                <strong>💰 Overpayment Recorded:</strong> This invoice has received 
+                <strong>GHS {{ "{:,.2f}".format(overpayment_on_current) }}</strong> more than the invoice amount. 
+                This excess will be available as credit for future invoices.
+            </p>
+        </div>
+        {% endif %}
+
+        {# Arrears Warning (only if no credit/overpayment notices) #}
+        {% if total_arrears > 0 and credit_applied_to_current == 0 and overpayment_on_current == 0 %}
         <div class="alert-warning">
             <p>
                 <strong>⚠️ Outstanding Arrears:</strong> This invoice includes 

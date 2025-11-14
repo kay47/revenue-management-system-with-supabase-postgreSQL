@@ -19993,3 +19993,1569 @@ jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endif'. Jinja wa
 2025-11-14 08:35:34,273 INFO: Response 1ffa1165b0a044ef: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
 2025-11-14 08:35:34,471 INFO: Request 13e96aa473444412: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
 2025-11-14 08:35:34,486 INFO: Response 13e96aa473444412: 304 in 0.015s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:05:33,798 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 17:05:57,249 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 17:10:24,252 INFO: Request 17586a08e21c8430: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:10:24,256 INFO: Response 17586a08e21c8430: 302 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:10:24,275 INFO: Request 9f0f0995ff35072b: GET /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:10:24,471 INFO: Response 9f0f0995ff35072b: 200 in 0.196s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:10:25,973 INFO: Request 2b83150708455f28: GET /static/images/undraw_team-up_qeem.svg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:10:26,398 INFO: Response 2b83150708455f28: 304 in 0.426s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:20:58,558 INFO: Request d47ebcbda6732f58: POST /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:21:06,034 INFO: AUDIT: User logged in - User: 1, Entity: None/None, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:21:13,503 INFO: Response d47ebcbda6732f58: 302 in 14.945s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:21:19,385 INFO: Request e9544c139c8a7ad9: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:24:10,917 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 17:24:23,177 INFO: Request 87eaf0fb35fcd093: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:24:23,179 INFO: Response 87eaf0fb35fcd093: 302 in 0.001s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:25:22,923 INFO: Request a003274078f64a24: POST /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:25:25,311 INFO: AUDIT: User logged in - User: 1, Entity: None/None, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:25:25,313 INFO: Response a003274078f64a24: 302 in 2.389s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:25:25,325 INFO: Request 072a321293887ebb: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:25:29,903 INFO: Response 072a321293887ebb: 200 in 4.577s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:25:32,172 INFO: Request bc1cc5a0ed331654: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:25:32,329 INFO: Response bc1cc5a0ed331654: 304 in 0.157s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:25:41,921 INFO: Request 6ee7c458a78c8efe: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:25:41,931 INFO: Response 6ee7c458a78c8efe: 304 in 0.010s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:26:08,412 INFO: Request e4ed66294acf5e79: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:26:23,943 INFO: Response e4ed66294acf5e79: 200 in 15.531s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:26:24,440 INFO: Request 9f20b6c366a653d6: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:26:24,442 INFO: Response 9f20b6c366a653d6: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:26:25,044 INFO: Request cd22c4a5189169ad: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:26:25,059 INFO: Response cd22c4a5189169ad: 304 in 0.013s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:28:25,372 INFO: Request 3ce71f46cca574aa: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:28:26,774 INFO: Response 3ce71f46cca574aa: 200 in 1.402s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:28,040 INFO: Request b19f55247a2e0bf8: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:33,734 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:29:33,738 INFO: Response b19f55247a2e0bf8: 302 in 5.699s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:33,751 INFO: Request bdb2a33b8263e2ca: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:37,598 INFO: Response bdb2a33b8263e2ca: 200 in 3.848s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:38,139 INFO: Request 018840549a25eb1d: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:38,152 INFO: Response 018840549a25eb1d: 304 in 0.013s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:38,553 INFO: Request 18a8d996510a8d60: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:38,586 INFO: Response 18a8d996510a8d60: 304 in 0.033s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:41,265 INFO: Request ed42d0f4f11f41d9: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:43,211 INFO: Response ed42d0f4f11f41d9: 200 in 1.946s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:43,721 INFO: Request 26b986c9446515e4: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:43,738 INFO: Response 26b986c9446515e4: 304 in 0.017s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:44,122 INFO: Request 3866c8f5aab7f1a1: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:44,177 INFO: Response 3866c8f5aab7f1a1: 304 in 0.055s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:45,431 INFO: Request fc6823f543ccebd4: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:49,681 INFO: Response fc6823f543ccebd4: 200 in 4.250s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:50,133 INFO: Request da9a30d68ab211d1: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:50,205 INFO: Response da9a30d68ab211d1: 304 in 0.071s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:29:50,801 INFO: Request 40f8dc3fee831039: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:29:50,821 INFO: Response 40f8dc3fee831039: 304 in 0.020s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:30:31,131 INFO: Request 34abfbcc433b550d: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:30:33,235 INFO: Response 34abfbcc433b550d: 200 in 2.104s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:30:33,810 INFO: Request 0feba953fd9b76bf: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:30:33,866 INFO: Response 0feba953fd9b76bf: 304 in 0.054s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:30:34,294 INFO: Request f866e244769a9697: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:30:34,297 INFO: Response f866e244769a9697: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:30:40,375 INFO: Request 774f596971942074: GET /batch-print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:30:41,674 INFO: Response 774f596971942074: 200 in 1.299s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:30:42,497 INFO: Request 71f1f020a44b3c6c: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:30:42,499 INFO: Response 71f1f020a44b3c6c: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:30:42,889 INFO: Request f65ea310896a52e6: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:30:43,004 INFO: Response f65ea310896a52e6: 304 in 0.115s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:31:33,311 INFO: Request 9d48e05365bf6c53: POST /batch-print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:31:35,053 INFO: AUDIT: Batch print initiated - User: 1, Entity: None/None, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:31:35,053 INFO: Response 9d48e05365bf6c53: 302 in 1.743s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:31:35,073 INFO: Request 4b0d04deaeecfaad: GET /batch-print/preview from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:31:42,800 INFO: Response 4b0d04deaeecfaad: 200 in 7.727s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:31:44,444 INFO: Request 0c903513f69e3f4d: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:31:44,452 INFO: Response 0c903513f69e3f4d: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:31:44,834 INFO: Request 41613a365bec71c8: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:31:44,855 INFO: Response 41613a365bec71c8: 304 in 0.022s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:32:06,315 INFO: Request 6f8539b77cc4b41c: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:32:10,158 INFO: Response 6f8539b77cc4b41c: 200 in 3.843s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:32:10,545 INFO: Request 54790daeef6668b0: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:32:10,565 INFO: Response 54790daeef6668b0: 304 in 0.021s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:32:14,842 INFO: Request 5a643229dcc1ee68: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:32:14,845 INFO: Response 5a643229dcc1ee68: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:32:26,314 INFO: Request c033f2e2333b2dac: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:32:28,215 INFO: Response c033f2e2333b2dac: 200 in 1.901s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:32:32,012 INFO: Request 43f778a0a8c88e7e: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:32:32,016 INFO: Response 43f778a0a8c88e7e: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:32:33,361 INFO: Request af90a0348690451f: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:32:33,368 INFO: Response af90a0348690451f: 304 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:32:58,798 INFO: Request 9dfde093a4b86d59: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:33:05,441 INFO: Response 9dfde093a4b86d59: 200 in 6.644s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:33:05,914 INFO: Request 18ee947c78dda0c9: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:33:05,958 INFO: Response 18ee947c78dda0c9: 304 in 0.044s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:33:06,300 INFO: Request 693723b83a17d8e0: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:33:06,325 INFO: Response 693723b83a17d8e0: 304 in 0.026s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:34:42,280 INFO: Request c1d9750a3d0b3af5: GET /batch-print/execute from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:35:29,212 INFO: Request dc79fe7d8b19198f: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:35:36,599 INFO: Response dc79fe7d8b19198f: 200 in 7.387s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:35:51,942 INFO: AUDIT: Batch print executed - User: 1, Entity: None/None, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:36:10,454 INFO: Response c1d9750a3d0b3af5: 200 in 88.174s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:36:11,074 INFO: Request 50c70351474aa81b: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:36:11,091 INFO: Request 2b582405f7709e12: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:36:11,093 INFO: Response 50c70351474aa81b: 304 in 0.018s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:36:11,251 INFO: Response 2b582405f7709e12: 304 in 0.161s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:36:11,509 INFO: Request 681bdb79e9ddac92: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:36:11,571 INFO: Response 681bdb79e9ddac92: 304 in 0.062s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:36:11,707 INFO: Request c6da0f45ee39a1ba: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:36:11,713 INFO: Response c6da0f45ee39a1ba: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:36:43,282 INFO: Request a0e54050eed49a99: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:36:44,817 INFO: Response a0e54050eed49a99: 200 in 1.536s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:03,534 INFO: Request 0e5b9af09928f5c7: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:06,182 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:37:06,182 INFO: Response 0e5b9af09928f5c7: 302 in 2.648s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:06,199 INFO: Request c662241c3023acd3: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:09,041 INFO: Request dd4ba153570331de: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:09,974 INFO: Response c662241c3023acd3: 200 in 3.774s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:10,351 INFO: Request 30041a8a3584c1c3: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:10,355 INFO: Response 30041a8a3584c1c3: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:11,036 INFO: Request 509be8bb6bcaf5cf: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:11,042 INFO: Response 509be8bb6bcaf5cf: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:12,104 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:37:12,104 INFO: Response dd4ba153570331de: 302 in 3.063s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:12,113 INFO: Request 86d7df2f66b49af1: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:15,990 INFO: Response 86d7df2f66b49af1: 200 in 3.877s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:16,597 INFO: Request 34c712ab6ce90c3c: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:16,600 INFO: Response 34c712ab6ce90c3c: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:16,976 INFO: Request 7167c2d93b4ba965: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:16,978 INFO: Response 7167c2d93b4ba965: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:30,590 INFO: Request 1f778a4bb5bc4222: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:32,942 INFO: Response 1f778a4bb5bc4222: 200 in 2.352s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:33,426 INFO: Request abd30a69e2e4070b: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:33,459 INFO: Response abd30a69e2e4070b: 304 in 0.033s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:33,739 INFO: Request 141b6e4caa242acc: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:34,418 INFO: Response 141b6e4caa242acc: 304 in 0.679s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:38,986 INFO: Request 13a0b0d4e4d1b729: GET /property/737 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:42,646 INFO: Response 13a0b0d4e4d1b729: 200 in 3.660s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:53,094 INFO: Request 4b68c2840e4b4ebf: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:53,105 INFO: Response 4b68c2840e4b4ebf: 304 in 0.010s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:37:53,595 INFO: Request b55021a11c0e7bba: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:37:53,719 INFO: Response b55021a11c0e7bba: 304 in 0.124s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:38:47,832 INFO: Request 10ba521c5939b2d2: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:38:50,216 INFO: Response 10ba521c5939b2d2: 200 in 2.384s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:38:52,269 INFO: Request b3e62f4f62f60efd: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:38:52,272 INFO: Response b3e62f4f62f60efd: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:38:56,011 INFO: Request 83598fd13560bc8c: GET /property/743 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:38:56,467 INFO: Request 4bec767aa336f7bd: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:38:56,467 INFO: Response 4bec767aa336f7bd: 304 in 0.000s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:38:59,665 INFO: Response 83598fd13560bc8c: 200 in 3.653s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:00,080 INFO: Request 524adde9852e3894: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:00,082 INFO: Response 524adde9852e3894: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:00,337 INFO: Request 81f9bc839654e8b8: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:00,352 INFO: Response 81f9bc839654e8b8: 304 in 0.015s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:26,091 INFO: Request b50ce26c7a5d7e49: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:27,783 INFO: Request d49cc7fae6875fa1: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:27,928 INFO: Response b50ce26c7a5d7e49: 200 in 1.836s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:30,960 INFO: Response d49cc7fae6875fa1: 200 in 3.177s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:31,439 INFO: Request 3c700b0c1d07c1d3: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:31,443 INFO: Response 3c700b0c1d07c1d3: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:31,701 INFO: Request 78241a895f5e0ecb: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:31,716 INFO: Response 78241a895f5e0ecb: 304 in 0.015s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:41,509 INFO: Request d19c20ee440b81cc: GET /property/742 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:45,081 INFO: Response d19c20ee440b81cc: 200 in 3.572s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:39:45,411 INFO: Request 49e18736b3918e90: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:39:45,415 INFO: Response 49e18736b3918e90: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:40:09,078 INFO: Request 0d16e121c7b5cdc6: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:40:09,080 INFO: Response 0d16e121c7b5cdc6: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:42:16,077 INFO: Request 7d6370182dde26d9: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:42:21,876 INFO: Response 7d6370182dde26d9: 200 in 5.799s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:48:28,428 INFO: Request 38f02bd9bcd06ec9: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:48:32,490 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 17:48:32,490 INFO: Response 38f02bd9bcd06ec9: 302 in 4.062s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:48:32,508 INFO: Request 1aa44ce6e39c0f32: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:48:37,960 INFO: Response 1aa44ce6e39c0f32: 200 in 5.452s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:48:38,440 INFO: Request 726c5d18318a8d9f: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:48:45,350 INFO: Response 726c5d18318a8d9f: 304 in 6.909s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 17:48:57,644 INFO: Request c48a0193c9e7ef53: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 17:48:57,801 INFO: Response c48a0193c9e7ef53: 304 in 0.157s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 18:28:26,739 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 18:30:15,589 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 18:35:11,259 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 19:25:25,787 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 19:25:41,241 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 19:27:37,507 INFO: Request 292a6eb1fedc9d96: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:27:37,544 INFO: Response 292a6eb1fedc9d96: 302 in 0.036s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:27:37,557 INFO: Request f82ce80f56884a7a: GET /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:27:38,309 INFO: Response f82ce80f56884a7a: 200 in 0.752s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:27:38,406 INFO: Request d5ca3d8c429c5010: GET /static/images/undraw_team-up_qeem.svg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:27:38,763 INFO: Response d5ca3d8c429c5010: 200 in 0.357s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:27:38,779 INFO: Request d43a680ab7b75528: GET /favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:27:41,846 INFO: Response d43a680ab7b75528: 404 in 3.067s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:28:13,609 INFO: Request 12b631c93d0dd7a9: POST /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:28:18,085 INFO: AUDIT: User logged in - User: 1, Entity: None/None, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:28:18,086 INFO: Response 12b631c93d0dd7a9: 302 in 4.477s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:28:18,097 INFO: Request bf5f7bc3e9f72abb: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:28:22,539 INFO: Response bf5f7bc3e9f72abb: 200 in 4.442s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:28:23,677 INFO: Request 07ff3a4d4480b683: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:28:24,904 INFO: Response 07ff3a4d4480b683: 200 in 1.227s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:28:25,187 INFO: Request 1d8982a1bdb8b752: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:28:25,301 INFO: Response 1d8982a1bdb8b752: 200 in 0.114s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:28:26,030 INFO: Request 62feb527245eb7ed: GET /static/favicon.svg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:28:26,077 INFO: Response 62feb527245eb7ed: 200 in 0.047s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:32:00,763 INFO: Request c64846239667e9e2: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:32:04,693 INFO: Response c64846239667e9e2: 200 in 3.929s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:32:22,258 INFO: Request 9d9496f378e299c5: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:32:24,785 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:32:24,785 INFO: Response 9d9496f378e299c5: 302 in 2.527s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:32:24,785 INFO: Request 65c6f02c569d535c: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:32:28,950 INFO: Response 65c6f02c569d535c: 200 in 4.166s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:32:29,369 INFO: Request 3ec531a8734ddead: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:32:29,375 INFO: Response 3ec531a8734ddead: 304 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:32:29,595 INFO: Request 3a93edaaf50d997b: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:32:29,608 INFO: Response 3a93edaaf50d997b: 304 in 0.014s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:33:59,597 INFO: Request ff22bfd14c4860dc: GET /businesses from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:02,270 INFO: Response ff22bfd14c4860dc: 200 in 2.673s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:02,668 INFO: Request c26d9534fb395d34: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:02,670 INFO: Response c26d9534fb395d34: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:02,963 INFO: Request d00a67e8b670872d: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:02,967 INFO: Response d00a67e8b670872d: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:04,963 INFO: Request 05fbfc274bc553f0: GET /business/27 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:08,826 INFO: Response 05fbfc274bc553f0: 200 in 3.862s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:09,214 INFO: Request 4d042e960f21bb2e: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:09,217 INFO: Response 4d042e960f21bb2e: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:09,432 INFO: Request a879355336372746: GET /api/products from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:09,465 INFO: Request e266ec72fe7bfc09: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:09,467 INFO: Response e266ec72fe7bfc09: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:12,548 INFO: Response a879355336372746: 200 in 3.115s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:14,448 INFO: Request 6faa58adb5db8939: GET /invoice/business/27 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:18,757 INFO: 📊 Business Invoice View - INVNBOP-00027-2025 (Year 2025):
+  Available Credit: GHS 0.00
+  Credit to Current: GHS 0.00
+  Outstanding (after credit): GHS 3,500.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2886]
+2025-11-14 19:34:19,895 INFO: Response 6faa58adb5db8939: 200 in 5.447s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:20,294 INFO: Request d9fdb67dee54f25d: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:20,298 INFO: Request 7bc8473723beec03: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:20,302 INFO: Request 5cfb829822b070a5: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:20,308 INFO: Request 3dda6487e291581e: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:20,309 INFO: Request c9d34aee1a4e819d: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:20,311 INFO: Response 3dda6487e291581e: 200 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:20,312 INFO: Response c9d34aee1a4e819d: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:20,333 INFO: Response d9fdb67dee54f25d: 200 in 0.039s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:20,333 INFO: Response 5cfb829822b070a5: 200 in 0.031s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:20,334 INFO: Response 7bc8473723beec03: 200 in 0.036s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:20,675 INFO: Request 1cffb7513394f2f9: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:20,679 INFO: Response 1cffb7513394f2f9: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:29,424 INFO: Request 3038ab3ed04dab13: GET /invoice/business/27/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:34,726 INFO: Response 3038ab3ed04dab13: 200 in 5.302s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:35,098 INFO: Request 61a9736734698576: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:35,102 INFO: Request 37c226353ec53f32: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:35,104 INFO: Response 61a9736734698576: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:35,106 INFO: Request 493818e9726cf557: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:35,107 INFO: Response 37c226353ec53f32: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:35,110 INFO: Request 5843c042f6d221c3: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:34:35,116 INFO: Response 493818e9726cf557: 304 in 0.010s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:34:35,118 INFO: Response 5843c042f6d221c3: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:35:47,332 INFO: Request a97dc7d87af2bff4: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:35:52,690 INFO: Response a97dc7d87af2bff4: 200 in 5.358s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:35:59,137 INFO: Request 76b23b869bacf880: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:35:59,139 INFO: Response 76b23b869bacf880: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:35:59,232 INFO: Request 2e3f3ed8d069e870: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:35:59,336 INFO: Response 2e3f3ed8d069e870: 304 in 0.105s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:37:25,070 INFO: Request 680368d1b11c2b29: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:37:30,583 INFO: Response 680368d1b11c2b29: 200 in 5.513s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:37:30,948 INFO: Request 7393063072fe2429: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:37:30,953 INFO: Response 7393063072fe2429: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:37:31,037 INFO: Request f8b829410b531b2e: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:37:31,037 INFO: Response f8b829410b531b2e: 304 in 0.000s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:37:48,802 INFO: Request a0df079879e142ae: GET /invoice/property/740 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:37:57,396 INFO: 📊 Invoice View - INVNBPR-00744-2025 (Year 2025):
+  Total Invoiced (all years ≤ 2025): GHS 6,274.29
+  Total Paid (all years ≤ 2025): GHS 5,254.86
+  Overall Credit/Debt: GHS -1,019.43
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2022: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2023: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=0.00
+  2024: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=1,019.43
+  2025: Invoice=1,254.86, Paid=1,254.86, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2025) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 2,509.72
+  Credit Applied to Arrears: GHS 1,490.28
+  Arrears (after credit): GHS 1,019.43
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 1,019.43
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:38:00,845 INFO: Response a0df079879e142ae: 200 in 12.043s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:38:02,548 INFO: Request d88f1a5dd6c79ff7: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:38:02,551 INFO: Request 6050702274e45e6b: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:38:02,552 INFO: Request 6a355eb721f7bb34: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:38:02,553 INFO: Response d88f1a5dd6c79ff7: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:38:02,555 INFO: Response 6050702274e45e6b: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:38:02,558 INFO: Response 6a355eb721f7bb34: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:38:02,624 INFO: Request bb258c3b3a264f05: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:38:02,634 INFO: Response bb258c3b3a264f05: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:38:02,637 INFO: Request 92256884a9b3eb19: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:38:02,641 INFO: Response 92256884a9b3eb19: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:38:02,799 INFO: Request e6571bf53fd06c5e: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:38:02,803 INFO: Response e6571bf53fd06c5e: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:40:04,128 INFO: Request 9680a0b4b074de11: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:40:06,051 INFO: Response 9680a0b4b074de11: 200 in 1.923s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:44:44,083 INFO: Request 00c971b4e0397141: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:44:48,562 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:44:48,562 INFO: Response 00c971b4e0397141: 302 in 4.479s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:44:48,585 INFO: Request e9de18c9f9207008: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:44:52,661 INFO: Response e9de18c9f9207008: 200 in 4.076s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:44:53,049 INFO: Request 61d47b4969c89354: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:44:53,053 INFO: Response 61d47b4969c89354: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:44:53,153 INFO: Request 49681229a9cbf29b: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:44:53,155 INFO: Response 49681229a9cbf29b: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:11,481 INFO: Request c2bf862ea79c62a9: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:13,792 INFO: Response c2bf862ea79c62a9: 200 in 2.312s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:14,182 INFO: Request c69946f7dc8a400e: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:14,186 INFO: Response c69946f7dc8a400e: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:14,297 INFO: Request eb31c6272bfb0907: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:14,364 INFO: Response eb31c6272bfb0907: 304 in 0.068s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:16,560 INFO: Request 0b2d4eb51258a12a: GET /property/743 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:20,293 INFO: Response 0b2d4eb51258a12a: 200 in 3.734s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:20,686 INFO: Request 3f4dbe482a93003b: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:20,690 INFO: Response 3f4dbe482a93003b: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:20,769 INFO: Request c89394973fa953fa: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:20,809 INFO: Response c89394973fa953fa: 304 in 0.040s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:25,746 INFO: Request d41accc7a432f139: GET /invoice/property/1395 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:28,423 INFO: 📊 Invoice View - INVNBPR-00743-2021 (Year 2021):
+  Total Invoiced (all years ≤ 2021): GHS 568.61
+  Total Paid (all years ≤ 2021): GHS 0.00
+  Overall Credit/Debt: GHS -568.61
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=0.00, Balance=568.61, After Auto-Credit=568.61
+  
+  === CURRENT INVOICE (2021) ===
+  Outstanding (before credit): GHS 568.61
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 568.61
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 568.61
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:45:29,128 INFO: Response d41accc7a432f139: 200 in 3.382s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:29,550 INFO: Request c16d268b460b6e15: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:29,562 INFO: Response c16d268b460b6e15: 304 in 0.012s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:29,566 INFO: Request 61cdee98b5471ee8: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:29,579 INFO: Request ed1b2f09e0de2a4d: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:29,583 INFO: Response 61cdee98b5471ee8: 304 in 0.018s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:29,587 INFO: Request 4411a37f67a7eef5: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:29,595 INFO: Response ed1b2f09e0de2a4d: 304 in 0.016s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:29,599 INFO: Request fc1aebcca2755ee9: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:29,616 INFO: Response fc1aebcca2755ee9: 304 in 0.017s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:29,601 INFO: Response 4411a37f67a7eef5: 304 in 0.014s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:29,829 INFO: Request f4e6fdb18ebfcf6f: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:29,832 INFO: Response f4e6fdb18ebfcf6f: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:33,502 INFO: Request 28893bb86e757152: GET /invoice/property/1395/pay from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:35,967 INFO: Response 28893bb86e757152: 200 in 2.465s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:36,357 INFO: Request cd741d933ef6c92f: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:36,361 INFO: Response cd741d933ef6c92f: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:36,519 INFO: Request 56cd377ee273e5bb: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:36,532 INFO: Response 56cd377ee273e5bb: 304 in 0.012s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:45:53,994 INFO: Request f77ba06d56812ba5: POST /api/send-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:45:55,724 INFO: 📤 Sending OTP via MOCK to +233543851425 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:1618]
+2025-11-14 19:45:58,615 INFO: AUDIT: OTP sent successfully - User: 1, Entity: Property/1395, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:45:59,641 INFO: Response f77ba06d56812ba5: 200 in 5.648s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:15,654 INFO: Request 353ff9bccad5d095: POST /api/verify-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:21,533 INFO: AUDIT: OTP verified successfully - User: 1, Entity: Property/1395, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:46:22,499 INFO: Response 353ff9bccad5d095: 200 in 6.845s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:24,365 INFO: Request 110f838cc12384f0: POST /invoice/property/1395/process-payment from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:29,417 INFO: AUDIT: Payment processed - User: 1, Entity: Property/1395, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:46:30,408 INFO: Response 110f838cc12384f0: 302 in 6.044s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:30,726 INFO: Request 0c2b1edfc2c17915: GET /invoice/property/1395 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:33,376 INFO: 📊 Invoice View - INVNBPR-00743-2021 (Year 2021):
+  Total Invoiced (all years ≤ 2021): GHS 568.61
+  Total Paid (all years ≤ 2021): GHS 568.61
+  Overall Credit/Debt: GHS 0.00
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2021) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 0.00
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:46:34,038 INFO: Response 0c2b1edfc2c17915: 200 in 3.312s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:34,632 INFO: Request 94e80601f60ccb7b: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:34,640 INFO: Response 94e80601f60ccb7b: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:34,642 INFO: Request 7a0a0eb6669c2901: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:34,662 INFO: Response 7a0a0eb6669c2901: 304 in 0.020s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:34,690 INFO: Request ff2fcf1099b2b83e: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:34,728 INFO: Response ff2fcf1099b2b83e: 304 in 0.038s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:34,746 INFO: Request 1f4d92c24316a5fd: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:34,773 INFO: Request ac4127dded2511f4: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:34,775 INFO: Response 1f4d92c24316a5fd: 304 in 0.029s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:34,795 INFO: Response ac4127dded2511f4: 304 in 0.022s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:35,140 INFO: Request e1762024a1cde34f: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:35,144 INFO: Response e1762024a1cde34f: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:43,535 INFO: Request 3ec8c204ef21895b: GET /property/743 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:47,065 INFO: Response 3ec8c204ef21895b: 200 in 3.530s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:47,452 INFO: Request 389aceb1c9c3ba49: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:47,457 INFO: Response 389aceb1c9c3ba49: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:46:47,639 INFO: Request f9fe2679ce8da76e: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:46:47,652 INFO: Response f9fe2679ce8da76e: 304 in 0.013s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:01,543 INFO: Request 97f053c049351aad: GET /invoice/property/1231 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:05,596 INFO: 📊 Invoice View - INVNBPR-00743-2022 (Year 2022):
+  Total Invoiced (all years ≤ 2022): GHS 1,137.21
+  Total Paid (all years ≤ 2022): GHS 568.61
+  Overall Credit/Debt: GHS -568.61
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=0.00, Balance=568.61, After Auto-Credit=568.61
+  
+  === CURRENT INVOICE (2022) ===
+  Outstanding (before credit): GHS 568.61
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 568.61
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 568.61
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:47:06,302 INFO: Response 97f053c049351aad: 200 in 4.759s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:06,701 INFO: Request 76aec5588cf723da: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:06,710 INFO: Request 330e62c757afa2ca: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:06,716 INFO: Request 4664d7ff42f835b3: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:06,722 INFO: Request 8550fb0eb4be575d: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:06,722 INFO: Request 71305516c9053bb3: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:06,794 INFO: Response 76aec5588cf723da: 304 in 0.092s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:06,800 INFO: Response 4664d7ff42f835b3: 304 in 0.084s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:06,801 INFO: Response 330e62c757afa2ca: 304 in 0.091s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:06,802 INFO: Response 8550fb0eb4be575d: 304 in 0.082s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:06,804 INFO: Response 71305516c9053bb3: 304 in 0.082s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:06,909 INFO: Request 4efcf7a98e422b20: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:06,925 INFO: Response 4efcf7a98e422b20: 304 in 0.017s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:11,249 INFO: Request acb64134983d1fd3: GET /invoice/property/1231/pay from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:13,631 INFO: Response acb64134983d1fd3: 200 in 2.383s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:14,004 INFO: Request 01599ab92a90e86a: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:14,008 INFO: Response 01599ab92a90e86a: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:14,102 INFO: Request 508f63057ce7c32f: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:14,169 INFO: Response 508f63057ce7c32f: 304 in 0.067s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:47:47,857 INFO: Request 593bdd0b4e96a4cc: POST /api/send-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:47:49,770 INFO: 📤 Sending OTP via MOCK to +233543851425 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:1618]
+2025-11-14 19:47:52,590 INFO: AUDIT: OTP sent successfully - User: 1, Entity: Property/1231, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:47:53,624 INFO: Response 593bdd0b4e96a4cc: 200 in 5.767s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:11,946 INFO: Request 87214c306879bbcd: POST /api/verify-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:17,598 INFO: AUDIT: OTP verified successfully - User: 1, Entity: Property/1231, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:48:18,596 INFO: Response 87214c306879bbcd: 200 in 6.650s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:21,149 INFO: Request 0208cb702c96dedc: POST /invoice/property/1231/process-payment from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:26,045 INFO: AUDIT: Payment processed - User: 1, Entity: Property/1231, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:48:27,044 INFO: Response 0208cb702c96dedc: 302 in 5.896s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:27,366 INFO: Request ea494ad466ec1e52: GET /invoice/property/1231 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:30,332 INFO: 📊 Invoice View - INVNBPR-00743-2022 (Year 2022):
+  Total Invoiced (all years ≤ 2022): GHS 1,137.21
+  Total Paid (all years ≤ 2022): GHS 1,137.21
+  Overall Credit/Debt: GHS 0.00
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2022) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 0.00
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:48:31,010 INFO: Response ea494ad466ec1e52: 200 in 3.645s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:31,436 INFO: Request 1356096a5a70a4b0: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:31,439 INFO: Request bca31a3925ec14e9: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:31,440 INFO: Response 1356096a5a70a4b0: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:31,448 INFO: Response bca31a3925ec14e9: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:31,456 INFO: Request 011965a482a2786f: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:31,463 INFO: Response 011965a482a2786f: 304 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:31,492 INFO: Request a674f1523f093d8e: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:31,499 INFO: Response a674f1523f093d8e: 304 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:31,510 INFO: Request 3569767327f7719c: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:31,523 INFO: Response 3569767327f7719c: 304 in 0.014s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:31,723 INFO: Request bea4f6062d94fcef: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:31,732 INFO: Response bea4f6062d94fcef: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:35,321 INFO: Request 0a35710f151603a7: GET /property/743 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:39,034 INFO: Response 0a35710f151603a7: 200 in 3.712s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:39,432 INFO: Request 980800b526f85aa4: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:39,991 INFO: Response 980800b526f85aa4: 304 in 0.559s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:48:40,205 INFO: Request fe65d054ece8f63a: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:48:40,228 INFO: Response fe65d054ece8f63a: 304 in 0.023s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:09,858 INFO: Request bbe342f284312520: GET /invoice/property/1067 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:15,976 INFO: 📊 Invoice View - INVNBPR-00743-2023 (Year 2023):
+  Total Invoiced (all years ≤ 2023): GHS 1,705.82
+  Total Paid (all years ≤ 2023): GHS 1,137.21
+  Overall Credit/Debt: GHS -568.61
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2023: Invoice=568.61, Paid=0.00, Balance=568.61, After Auto-Credit=568.61
+  
+  === CURRENT INVOICE (2023) ===
+  Outstanding (before credit): GHS 568.61
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 568.61
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 568.61
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:50:16,710 INFO: Response bbe342f284312520: 200 in 6.852s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:17,520 INFO: Request 8df10067a1af7ae7: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:17,528 INFO: Response 8df10067a1af7ae7: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:17,528 INFO: Request 24cc5fa1eede74a7: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:17,530 INFO: Request 826871a8da9c469f: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:17,534 INFO: Request 402e2a4f49763aad: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:17,546 INFO: Response 24cc5fa1eede74a7: 304 in 0.018s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:17,550 INFO: Request abbe4c8c30cbc358: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:17,552 INFO: Response 826871a8da9c469f: 304 in 0.022s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:17,552 INFO: Response 402e2a4f49763aad: 304 in 0.018s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:17,560 INFO: Response abbe4c8c30cbc358: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:17,733 INFO: Request eccb67cf7971d919: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:17,783 INFO: Response eccb67cf7971d919: 304 in 0.050s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:25,260 INFO: Request 8161be40ed373bf2: GET /invoice/property/1067/pay from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:27,887 INFO: Response 8161be40ed373bf2: 200 in 2.627s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:28,267 INFO: Request fa767e5dde363e1f: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:28,273 INFO: Response fa767e5dde363e1f: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:28,346 INFO: Request 0690623c8aeaac43: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:28,415 INFO: Response 0690623c8aeaac43: 304 in 0.069s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:50:57,650 INFO: Request 6aedf18a868ed982: POST /api/send-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:50:59,524 INFO: 📤 Sending OTP via MOCK to +233543851425 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:1618]
+2025-11-14 19:51:02,318 INFO: AUDIT: OTP sent successfully - User: 1, Entity: Property/1067, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:51:03,357 INFO: Response 6aedf18a868ed982: 200 in 5.707s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:13,260 INFO: Request b9660870ae5632be: POST /api/verify-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:19,269 INFO: AUDIT: OTP verified successfully - User: 1, Entity: Property/1067, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:51:20,293 INFO: Response b9660870ae5632be: 200 in 7.033s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:22,158 INFO: Request 3fb187b8fae0dca5: POST /invoice/property/1067/process-payment from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:33,829 INFO: AUDIT: Payment processed - User: 1, Entity: Property/1067, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:51:34,881 INFO: Response 3fb187b8fae0dca5: 302 in 12.722s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:35,238 INFO: Request 370cd4fe126846a1: GET /invoice/property/1067 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:38,855 INFO: 📊 Invoice View - INVNBPR-00743-2023 (Year 2023):
+  Total Invoiced (all years ≤ 2023): GHS 1,705.82
+  Total Paid (all years ≤ 2023): GHS 1,705.82
+  Overall Credit/Debt: GHS 0.00
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2023: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2023) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 0.00
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:51:39,548 INFO: Response 370cd4fe126846a1: 200 in 4.310s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:40,025 INFO: Request dfbf5795a0fafb05: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:40,028 INFO: Request 0769d3acdf7f26ac: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:40,041 INFO: Response dfbf5795a0fafb05: 304 in 0.016s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:40,054 INFO: Request 1c7d6626cb0d4d5f: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:40,054 INFO: Response 0769d3acdf7f26ac: 304 in 0.026s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:40,058 INFO: Response 1c7d6626cb0d4d5f: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:40,070 INFO: Request dd2ae99ccc257519: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:40,074 INFO: Request 176bb67a50b6de9b: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:40,076 INFO: Response dd2ae99ccc257519: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:40,088 INFO: Response 176bb67a50b6de9b: 304 in 0.014s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:40,175 INFO: Request fca4730b92460283: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:40,254 INFO: Response fca4730b92460283: 304 in 0.079s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:48,971 INFO: Request 5f5861b08e8b67e2: GET /property/743 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:52,921 INFO: Response 5f5861b08e8b67e2: 200 in 3.950s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:53,322 INFO: Request 9f06939110951ca8: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:53,332 INFO: Response 9f06939110951ca8: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:53,409 INFO: Request 6daac213ac9b6457: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:51:53,524 INFO: Response 6daac213ac9b6457: 304 in 0.115s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:51:56,884 INFO: Request 1ffa1feb7f090e3e: GET /invoice/property/903 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:01,173 INFO: 📊 Invoice View - INVNBPR-00743-2024 (Year 2024):
+  Total Invoiced (all years ≤ 2024): GHS 2,274.43
+  Total Paid (all years ≤ 2024): GHS 1,705.82
+  Overall Credit/Debt: GHS -568.61
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2023: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2024: Invoice=568.61, Paid=0.00, Balance=568.61, After Auto-Credit=568.61
+  
+  === CURRENT INVOICE (2024) ===
+  Outstanding (before credit): GHS 568.61
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 568.61
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 568.61
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:52:01,898 INFO: Response 1ffa1feb7f090e3e: 200 in 5.014s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:02,317 INFO: Request 85efc39495a2270c: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:02,321 INFO: Response 85efc39495a2270c: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:02,331 INFO: Request f43ab6e7aeb5c696: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:02,337 INFO: Request 271e0f649120aa6e: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:02,339 INFO: Response f43ab6e7aeb5c696: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:02,342 INFO: Request ce7bfac64f95db9a: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:02,367 INFO: Response 271e0f649120aa6e: 304 in 0.030s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:02,371 INFO: Request 41e9ecb51760a6fa: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:02,373 INFO: Response ce7bfac64f95db9a: 304 in 0.032s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:02,395 INFO: Response 41e9ecb51760a6fa: 304 in 0.022s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:02,544 INFO: Request 0a9188f45f89a635: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:02,564 INFO: Response 0a9188f45f89a635: 304 in 0.019s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:06,102 INFO: Request 7a79663dcc1b79b8: GET /invoice/property/903/pay from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:08,626 INFO: Response 7a79663dcc1b79b8: 200 in 2.523s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:09,000 INFO: Request dbe887e0d46bf961: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:09,002 INFO: Response dbe887e0d46bf961: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:09,165 INFO: Request e4d53b3febcacab0: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:09,171 INFO: Response e4d53b3febcacab0: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:25,907 INFO: Request 7b10d6997b1aa035: POST /api/send-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:27,691 INFO: 📤 Sending OTP via MOCK to +233543851425 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:1618]
+2025-11-14 19:52:30,508 INFO: AUDIT: OTP sent successfully - User: 1, Entity: Property/903, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:52:31,629 INFO: Response 7b10d6997b1aa035: 200 in 5.722s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:42,131 INFO: Request 5506469a9757987d: POST /api/verify-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:48,021 INFO: AUDIT: OTP verified successfully - User: 1, Entity: Property/903, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:52:49,071 INFO: Response 5506469a9757987d: 200 in 6.940s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:51,330 INFO: Request 6b381825247173cb: POST /invoice/property/903/process-payment from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:52:56,637 INFO: AUDIT: Payment processed - User: 1, Entity: Property/903, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:52:57,637 INFO: Response 6b381825247173cb: 302 in 6.307s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:52:57,993 INFO: Request 7136b4ac0d9dc6fb: GET /invoice/property/903 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:05,239 INFO: 📊 Invoice View - INVNBPR-00743-2024 (Year 2024):
+  Total Invoiced (all years ≤ 2024): GHS 2,274.43
+  Total Paid (all years ≤ 2024): GHS 2,274.43
+  Overall Credit/Debt: GHS 0.00
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2023: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2024: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2024) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 0.00
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:53:06,024 INFO: Response 7136b4ac0d9dc6fb: 200 in 8.030s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:06,641 INFO: Request 0e6f194e6f9d1f83: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:06,644 INFO: Request a9cec3ae3a416af1: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:06,647 INFO: Response 0e6f194e6f9d1f83: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:06,650 INFO: Response a9cec3ae3a416af1: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:06,659 INFO: Request 51b49668d5f9e7e2: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:06,661 INFO: Request 5f6ef8edd3c384f5: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:06,664 INFO: Request 657096c48083bfbd: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:06,692 INFO: Response 51b49668d5f9e7e2: 304 in 0.034s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:06,706 INFO: Response 5f6ef8edd3c384f5: 304 in 0.046s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:06,709 INFO: Response 657096c48083bfbd: 304 in 0.046s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:07,028 INFO: Request befb00bdb43e6349: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:07,030 INFO: Response befb00bdb43e6349: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:25,960 INFO: Request 329e86e2eace253f: GET /property/743 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:29,684 INFO: Response 329e86e2eace253f: 200 in 3.723s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:30,089 INFO: Request 3fe670d756634ab5: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:30,093 INFO: Response 3fe670d756634ab5: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:30,232 INFO: Request 77a640cd53cfacec: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:30,290 INFO: Response 77a640cd53cfacec: 304 in 0.058s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:33,765 INFO: Request c18b680bd49324ee: GET /invoice/property/739 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:37,794 INFO: 📊 Invoice View - INVNBPR-00743-2025 (Year 2025):
+  Total Invoiced (all years ≤ 2025): GHS 2,843.04
+  Total Paid (all years ≤ 2025): GHS 2,274.43
+  Overall Credit/Debt: GHS -568.61
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2023: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2024: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2025: Invoice=568.61, Paid=0.00, Balance=568.61, After Auto-Credit=568.61
+  
+  === CURRENT INVOICE (2025) ===
+  Outstanding (before credit): GHS 568.61
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 568.61
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 568.61
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:53:38,484 INFO: Response c18b680bd49324ee: 200 in 4.720s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:38,889 INFO: Request 4254cee9c492a100: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:38,892 INFO: Response 4254cee9c492a100: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:38,898 INFO: Request 19c4ce79310b1773: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:38,898 INFO: Request ed0d45e423ae6117: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:38,902 INFO: Request 0062efe469021c2b: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:38,906 INFO: Request 8ce95adb6db01f6c: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:38,909 INFO: Response 19c4ce79310b1773: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:38,918 INFO: Response ed0d45e423ae6117: 304 in 0.020s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:38,922 INFO: Response 0062efe469021c2b: 304 in 0.021s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:38,922 INFO: Response 8ce95adb6db01f6c: 304 in 0.016s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:39,094 INFO: Request 0660d983c2f4c2b0: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:39,140 INFO: Response 0660d983c2f4c2b0: 304 in 0.046s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:44,234 INFO: Request d3e72e09f791675c: GET /invoice/property/739/pay from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:46,652 INFO: Response d3e72e09f791675c: 200 in 2.418s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:47,043 INFO: Request ca96813f74fd3338: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:47,052 INFO: Response ca96813f74fd3338: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:53:47,193 INFO: Request ed3e9c36cb9c014e: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:53:47,333 INFO: Response ed3e9c36cb9c014e: 304 in 0.140s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:07,515 INFO: Request f357b2346e738d72: POST /api/send-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:09,238 INFO: 📤 Sending OTP via MOCK to +233543851425 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:1618]
+2025-11-14 19:54:11,979 INFO: AUDIT: OTP sent successfully - User: 1, Entity: Property/739, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:54:12,964 INFO: Response f357b2346e738d72: 200 in 5.449s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:25,286 INFO: Request 60f087ae0935f97c: POST /api/verify-otp from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:31,040 INFO: AUDIT: OTP verified successfully - User: 1, Entity: Property/739, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:54:32,011 INFO: Response 60f087ae0935f97c: 200 in 6.725s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:33,880 INFO: Request 456b7ebd79fca38e: POST /invoice/property/739/process-payment from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:39,046 INFO: AUDIT: Payment processed - User: 1, Entity: Property/739, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 19:54:40,034 INFO: Response 456b7ebd79fca38e: 302 in 6.154s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:40,349 INFO: Request a5b0ba611b798ee2: GET /invoice/property/739 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:44,307 INFO: 📊 Invoice View - INVNBPR-00743-2025 (Year 2025):
+  Total Invoiced (all years ≤ 2025): GHS 2,843.04
+  Total Paid (all years ≤ 2025): GHS 2,843.04
+  Overall Credit/Debt: GHS 0.00
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2022: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2023: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2024: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  2025: Invoice=568.61, Paid=568.61, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2025) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 0.00
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 19:54:44,958 INFO: Response a5b0ba611b798ee2: 200 in 4.609s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:45,393 INFO: Request a16620e91ea77b7a: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:45,394 INFO: Request 56fe14a3b9fd75d9: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:45,398 INFO: Request 04a141cdcbf7de92: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:45,402 INFO: Request f948a5ef0eb5d54b: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:45,416 INFO: Response a16620e91ea77b7a: 304 in 0.022s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:45,418 INFO: Response 56fe14a3b9fd75d9: 304 in 0.026s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:45,418 INFO: Request 85424fdd19eb9105: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:45,420 INFO: Response 04a141cdcbf7de92: 304 in 0.023s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:45,428 INFO: Response f948a5ef0eb5d54b: 304 in 0.026s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:45,433 INFO: Response 85424fdd19eb9105: 304 in 0.015s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:54:45,536 INFO: Request 03651b987aad1461: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:54:45,629 INFO: Response 03651b987aad1461: 304 in 0.091s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:55:04,562 INFO: Request 663fb5c571dee045: GET /invoice/property/739/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:55:09,772 INFO: Response 663fb5c571dee045: 200 in 5.210s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:55:10,244 INFO: Request 68e0ee4670c7c6b9: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:55:10,248 INFO: Response 68e0ee4670c7c6b9: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:55:10,251 INFO: Request ed1b6959fbd8b18e: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:55:10,257 INFO: Request 72ac22ef94f069d6: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:55:10,417 INFO: Response ed1b6959fbd8b18e: 304 in 0.166s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:55:10,421 INFO: Request 554dbb615a7644fe: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:55:10,454 INFO: Response 72ac22ef94f069d6: 304 in 0.197s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:55:10,457 INFO: Response 554dbb615a7644fe: 304 in 0.036s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 19:57:29,174 INFO: Request fed968bcafda1f71: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 19:57:32,398 INFO: Response fed968bcafda1f71: 200 in 3.223s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:04:02,660 INFO: Request 624f0715b2590f11: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:04:18,090 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 20:04:18,092 INFO: Response 624f0715b2590f11: 302 in 15.431s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:04:18,100 INFO: Request 11d74691c71c963a: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:04:26,058 INFO: Response 11d74691c71c963a: 200 in 7.958s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:04:27,250 INFO: Request 497d855307c691cf: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:04:27,256 INFO: Response 497d855307c691cf: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:04:38,560 INFO: Request 1ce87ca98fdb5404: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:04:38,567 INFO: Response 1ce87ca98fdb5404: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:06:28,158 INFO: Request 880bb93fdb8211db: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:06:29,543 INFO: Response 880bb93fdb8211db: 200 in 1.386s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:06:46,775 INFO: Request 96d272645500db6f: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:06:50,737 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 20:06:50,738 INFO: Response 96d272645500db6f: 302 in 3.963s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:06:50,746 INFO: Request b97935e85a187e7e: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:06:55,702 INFO: Response b97935e85a187e7e: 200 in 4.956s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:06:56,094 INFO: Request 55df6947e85ab5ae: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:06:56,097 INFO: Response 55df6947e85ab5ae: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:06:58,195 INFO: Request ca03f7837f7b6266: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:06:58,196 INFO: Response ca03f7837f7b6266: 304 in 0.001s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 20:08:57,199 INFO: Request ef24050bc606c5e4: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 20:09:52,314 INFO: Response ef24050bc606c5e4: 200 in 55.115s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:07,467 INFO: Request b49627d37eabad63: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:11,644 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 21:01:11,644 INFO: Response b49627d37eabad63: 302 in 4.177s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:11,667 INFO: Request 8a1a1ee4663d6e5d: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:15,918 INFO: Response 8a1a1ee4663d6e5d: 200 in 4.251s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:16,286 INFO: Request a69b6cfd4cc1d529: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:17,442 INFO: Response a69b6cfd4cc1d529: 304 in 1.156s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:17,599 INFO: Request 630017dfb003a364: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:17,634 INFO: Response 630017dfb003a364: 304 in 0.036s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:22,814 INFO: Request cf4f899bed3f6f73: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:24,887 INFO: Response cf4f899bed3f6f73: 200 in 2.073s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:25,298 INFO: Request c75528ae8a816ed9: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:25,301 INFO: Response c75528ae8a816ed9: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:25,478 INFO: Request 317d15131040b2b9: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:25,485 INFO: Response 317d15131040b2b9: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:26,916 INFO: Request 071aa5a7141dd645: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:30,840 INFO: Response 071aa5a7141dd645: 200 in 3.924s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:31,237 INFO: Request f12da05652a520ed: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:31,246 INFO: Response f12da05652a520ed: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:31,316 INFO: Request bd6b44e0eb02dace: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:31,318 INFO: Response bd6b44e0eb02dace: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:33,860 INFO: Request db7ab1de1925035e: GET /invoice/property/740 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:38,009 INFO: 📊 Invoice View - INVNBPR-00744-2025 (Year 2025):
+  Total Invoiced (all years ≤ 2025): GHS 6,274.29
+  Total Paid (all years ≤ 2025): GHS 5,254.86
+  Overall Credit/Debt: GHS -1,019.43
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2022: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2023: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=0.00
+  2024: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=1,019.43
+  2025: Invoice=1,254.86, Paid=1,254.86, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2025) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 2,509.72
+  Credit Applied to Arrears: GHS 1,490.28
+  Arrears (after credit): GHS 1,019.43
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 1,019.43
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 21:01:38,692 INFO: Response db7ab1de1925035e: 200 in 4.832s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:39,096 INFO: Request 44090066207a451e: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:39,100 INFO: Request 9452cfe543564077: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:39,103 INFO: Response 44090066207a451e: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:39,113 INFO: Response 9452cfe543564077: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:39,114 INFO: Request 858c6802cbeef9f8: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:39,116 INFO: Request 2cf4635afec1b4e0: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:39,118 INFO: Request 321c30a2776be600: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:39,133 INFO: Response 858c6802cbeef9f8: 304 in 0.018s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:39,133 INFO: Response 2cf4635afec1b4e0: 304 in 0.017s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:39,135 INFO: Response 321c30a2776be600: 304 in 0.016s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:39,281 INFO: Request 51d44a90828d05ca: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:39,283 INFO: Response 51d44a90828d05ca: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:41,960 INFO: Request 82143fc555ccca16: GET /invoice/property/740/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:46,204 INFO: Response 82143fc555ccca16: 200 in 4.244s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:46,597 INFO: Request b5472fd0e36eb1a8: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:46,599 INFO: Request b8b1a479da323646: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:46,601 INFO: Response b5472fd0e36eb1a8: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:46,604 INFO: Response b8b1a479da323646: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:46,739 INFO: Request 8a6a44c1b3139435: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:46,749 INFO: Request 7750ed939c40f1e4: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:01:46,751 INFO: Response 8a6a44c1b3139435: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:01:46,757 INFO: Response 7750ed939c40f1e4: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:02:05,749 INFO: Request 8b85da335c27ac9e: GET /invoice/property/740/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:02:09,951 INFO: Response 8b85da335c27ac9e: 200 in 4.203s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:02:10,468 INFO: Request e48ae512e780923d: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:02:10,569 INFO: Response e48ae512e780923d: 304 in 0.101s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:02:10,579 INFO: Request 079fc3deb27e5299: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:02:10,588 INFO: Request d23194aacbe5aaaa: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:02:10,594 INFO: Request 94b367aac9c69c93: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:02:10,595 INFO: Response 079fc3deb27e5299: 304 in 0.015s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:02:10,596 INFO: Response d23194aacbe5aaaa: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:02:10,597 INFO: Response 94b367aac9c69c93: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:06,156 INFO: Request aa0ea528cd6a5527: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:07,766 INFO: Response aa0ea528cd6a5527: 200 in 1.610s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:12,693 INFO: Request bfe598edb8d9eb7d: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:16,973 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 21:04:16,974 INFO: Response bfe598edb8d9eb7d: 302 in 4.281s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:16,992 INFO: Request 301fe8c82bfdff0c: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:25,271 INFO: Response 301fe8c82bfdff0c: 200 in 8.279s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:25,667 INFO: Request 318f51ebc9a849bb: GET /invoice/business/27/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:26,253 INFO: Request b55c4b0b298a1be5: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:26,263 INFO: Response b55c4b0b298a1be5: 304 in 0.010s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:26,572 INFO: Request cbcff7d5f78f7ffa: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:26,626 INFO: Response cbcff7d5f78f7ffa: 304 in 0.054s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:32,300 INFO: Request 2adc3b76eaa516bd: GET /invoice/property/740/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:34,509 INFO: Response 318f51ebc9a849bb: 200 in 8.841s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:35,014 INFO: Request d4827a47def4d3a0: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:35,022 INFO: Response d4827a47def4d3a0: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:35,035 INFO: Request 9c6c94cc8b49f54e: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:35,044 INFO: Request 13087587f9d68a9f: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:35,046 INFO: Response 9c6c94cc8b49f54e: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:35,056 INFO: Request 2f5323bae70b2918: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:35,057 INFO: Response 13087587f9d68a9f: 304 in 0.013s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:35,073 INFO: Response 2f5323bae70b2918: 304 in 0.018s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:37,908 INFO: Response 2adc3b76eaa516bd: 200 in 5.608s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:38,456 INFO: Request c84b54818228e62c: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:38,456 INFO: Request 88dab29b8d59ca43: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:38,458 INFO: Response c84b54818228e62c: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:38,462 INFO: Response 88dab29b8d59ca43: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:38,470 INFO: Request 653b8fce250e6092: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:38,476 INFO: Request ec50548536d89440: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:04:38,493 INFO: Response 653b8fce250e6092: 304 in 0.023s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:04:38,506 INFO: Response ec50548536d89440: 304 in 0.030s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:06:27,143 INFO: Request 9c42d73ad7004092: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:06:28,660 INFO: Response 9c42d73ad7004092: 200 in 1.516s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:09:01,787 INFO: Request 9c14b76c0706a38d: GET /invoice/business/27/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:09:07,966 INFO: Response 9c14b76c0706a38d: 200 in 6.179s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:09:08,313 INFO: Request 66f6e95b1fc60efc: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:09:08,317 INFO: Response 66f6e95b1fc60efc: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:09:08,473 INFO: Request 3899f5b756cdc8b7: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:09:08,475 INFO: Request 6a8355b5b6be10a7: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:09:08,477 INFO: Response 3899f5b756cdc8b7: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:09:08,478 INFO: Request ed7113e4d03d5bfe: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:09:08,479 INFO: Response 6a8355b5b6be10a7: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:09:08,491 INFO: Response ed7113e4d03d5bfe: 304 in 0.013s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:13:16,853 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 21:13:54,501 INFO: Request fafe27bd97eba2cf: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:13:54,503 INFO: Response fafe27bd97eba2cf: 302 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:13:54,521 INFO: Request 2b7125e2491509c1: GET /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:13:56,050 INFO: Response 2b7125e2491509c1: 200 in 1.529s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:13:56,125 INFO: Request 1bd5c929a0e2b2e1: GET /static/images/undraw_team-up_qeem.svg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:13:56,487 INFO: Response 1bd5c929a0e2b2e1: 304 in 0.361s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:13:56,530 INFO: Request e55bca7925e731a6: GET /invoice/business/27/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:13:56,538 INFO: Response e55bca7925e731a6: 302 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:13:56,601 INFO: Request c520d16e9a7ef1e1: GET /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:13:56,602 INFO: Response c520d16e9a7ef1e1: 200 in 0.001s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:13:56,681 INFO: Request b9d293753a88f669: GET /static/images/undraw_team-up_qeem.svg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:13:56,888 INFO: Response b9d293753a88f669: 304 in 0.209s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:01,190 INFO: Request 2b2e9da29c633549: POST /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:03,564 INFO: AUDIT: User logged in - User: 1, Entity: None/None, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 21:14:03,564 INFO: Response 2b2e9da29c633549: 302 in 2.374s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:03,584 INFO: Request b82408b6546d3176: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:09,716 INFO: Response b82408b6546d3176: 200 in 6.133s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:10,172 INFO: Request 969f9aa40a3455fd: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:10,174 INFO: Response 969f9aa40a3455fd: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:10,407 INFO: Request d42fc24361d55dcb: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:10,409 INFO: Response d42fc24361d55dcb: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:49,348 INFO: Request 7de65c4276b250a2: GET /businesses from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:51,836 INFO: Response 7de65c4276b250a2: 200 in 2.488s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:52,244 INFO: Request ba3f9f24608c6293: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:52,249 INFO: Response ba3f9f24608c6293: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:52,518 INFO: Request 3e0817be29a91994: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:52,538 INFO: Response 3e0817be29a91994: 304 in 0.020s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:54,370 INFO: Request 14616a79ef03bd63: GET /business/27 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:58,421 INFO: Response 14616a79ef03bd63: 200 in 4.051s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:58,801 INFO: Request 57a6292339ca26c1: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:58,801 INFO: Response 57a6292339ca26c1: 304 in 0.000s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:14:58,855 INFO: Request 67db30243a34132f: GET /api/products from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:59,007 INFO: Request d2d403aab73d2c01: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:14:59,018 INFO: Response d2d403aab73d2c01: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:01,654 INFO: Response 67db30243a34132f: 200 in 2.800s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:03,728 INFO: Request a67c351adbaf7f8e: GET /invoice/business/27 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:08,411 INFO: 📊 Business Invoice View - INVNBOP-00027-2025 (Year 2025):
+  Available Credit: GHS 0.00
+  Credit to Current: GHS 0.00
+  Outstanding (after credit): GHS 3,500.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2886]
+2025-11-14 21:15:09,430 INFO: Response a67c351adbaf7f8e: 200 in 5.702s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:09,812 INFO: Request 741784f88b830fd9: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:09,821 INFO: Response 741784f88b830fd9: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:09,837 INFO: Request 0e000504cdfb46aa: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:09,849 INFO: Request 5181d14ab71d79de: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:09,855 INFO: Request 848f5a27c85ef43e: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:09,867 INFO: Response 0e000504cdfb46aa: 304 in 0.030s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:09,871 INFO: Request a5d227dddeb916b6: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:09,883 INFO: Response 5181d14ab71d79de: 304 in 0.035s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:09,887 INFO: Response 848f5a27c85ef43e: 304 in 0.032s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:09,889 INFO: Response a5d227dddeb916b6: 304 in 0.016s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:10,299 INFO: Request 5066917c0d7c03f7: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:10,313 INFO: Response 5066917c0d7c03f7: 304 in 0.014s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:17,432 INFO: Request 2203c02b5845ddc0: GET /invoice/business/27/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:21,839 INFO: Response 2203c02b5845ddc0: 200 in 4.407s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:22,227 INFO: Request 80868542fa5e9762: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:22,231 INFO: Request a4e99cc7cc0901e9: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:22,233 INFO: Response 80868542fa5e9762: 304 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:22,234 INFO: Request 54535f368903082c: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:22,236 INFO: Request 0aef4ad553656e5d: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:15:22,239 INFO: Response a4e99cc7cc0901e9: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:22,242 INFO: Response 54535f368903082c: 304 in 0.008s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:15:22,243 INFO: Response 0aef4ad553656e5d: 304 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:17:24,141 INFO: Request 5e18ec5ba3f02137: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:17:25,658 INFO: Response 5e18ec5ba3f02137: 200 in 1.516s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:17:33,055 INFO: Request 0808a16f2084d310: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:17:35,490 INFO: AUDIT: Screen unlocked - User: 1, Entity: User/1, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 21:17:35,490 INFO: Response 0808a16f2084d310: 302 in 2.435s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:17:35,505 INFO: Request 572ad6d14541baf6: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:17:39,958 INFO: Response 572ad6d14541baf6: 200 in 4.452s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:17:40,424 INFO: Request 286c7ba77af91520: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:17:40,429 INFO: Response 286c7ba77af91520: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:17:40,664 INFO: Request 943db2474513ddbb: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:17:40,667 INFO: Response 943db2474513ddbb: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:19:40,871 INFO: Request 7360cd72c5049b34: GET /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:19:43,866 INFO: Response 7360cd72c5049b34: 200 in 2.995s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:23:39,335 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 21:24:31,472 INFO: Revenue Management System startup [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:187]
+2025-11-14 21:25:49,567 INFO: Request d482549c43e6b5b2: POST /lock-screen from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:25:49,570 INFO: Response d482549c43e6b5b2: 302 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:25:49,581 INFO: Request c0597092ce89e6b1: GET /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:25:49,588 INFO: Response c0597092ce89e6b1: 200 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:25:49,685 INFO: Request f099bc4d00c5c031: GET /static/images/undraw_team-up_qeem.svg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:25:49,984 INFO: Response f099bc4d00c5c031: 304 in 0.305s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:25:51,248 INFO: Request 11bc94373f0a9de3: POST /login from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:25:54,074 INFO: AUDIT: User logged in - User: 1, Entity: None/None, IP: 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:787]
+2025-11-14 21:25:54,075 INFO: Response 11bc94373f0a9de3: 302 in 2.827s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:25:54,085 INFO: Request 029648637469e120: GET / from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:25:59,723 INFO: Response 029648637469e120: 200 in 5.638s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:00,174 INFO: Request 7bb5dc2e9c84b28c: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:00,180 INFO: Response 7bb5dc2e9c84b28c: 304 in 0.006s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:00,416 INFO: Request 57c47749074adf09: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:00,426 INFO: Response 57c47749074adf09: 304 in 0.017s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:03,273 INFO: Request e8ee91ffd9dc0fe1: GET /invoice/business/27/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:09,594 INFO: 📄 Business Invoice Print - INVNBOP-00027-2025 (Year 2025):
+  Total Outstanding: GHS 12,500.00
+  Available Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:3355]
+2025-11-14 21:26:10,118 INFO: Response e8ee91ffd9dc0fe1: 200 in 6.846s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:10,510 INFO: Request 4515589813781930: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:10,591 INFO: Response 4515589813781930: 304 in 0.081s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:10,597 INFO: Request 3fbdbecbad207421: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:10,607 INFO: Request 05fa34c6aa7193a0: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:10,612 INFO: Request 9abee59cdec887c4: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:10,619 INFO: Response 3fbdbecbad207421: 304 in 0.022s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:10,621 INFO: Response 05fa34c6aa7193a0: 304 in 0.014s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:10,624 INFO: Response 9abee59cdec887c4: 304 in 0.012s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:38,513 INFO: Request 71dd59c55b1a4357: GET /properties from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:41,046 INFO: Response 71dd59c55b1a4357: 200 in 2.533s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:41,488 INFO: Request 71495ece5a2c82d8: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:41,493 INFO: Response 71495ece5a2c82d8: 304 in 0.005s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:41,590 INFO: Request 426cf888932b1524: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:41,649 INFO: Response 426cf888932b1524: 304 in 0.044s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:48,666 INFO: Request c52586b758928c5f: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:53,406 INFO: Response c52586b758928c5f: 200 in 4.741s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:53,970 INFO: Request 97a09eba5d25e6c2: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:53,978 INFO: Response 97a09eba5d25e6c2: 304 in 0.007s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:54,167 INFO: Request 0b60a6a6c3575183: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:26:54,183 INFO: Response 0b60a6a6c3575183: 304 in 0.017s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:26:56,509 INFO: Request 20432a20356d6c66: GET /invoice/property/740 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:03,211 INFO: 📊 Invoice View - INVNBPR-00744-2025 (Year 2025):
+  Total Invoiced (all years ≤ 2025): GHS 6,274.29
+  Total Paid (all years ≤ 2025): GHS 5,254.86
+  Overall Credit/Debt: GHS -1,019.43
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2022: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2023: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=0.00
+  2024: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=1,019.43
+  2025: Invoice=1,254.86, Paid=1,254.86, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2025) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 2,509.72
+  Credit Applied to Arrears: GHS 1,490.28
+  Arrears (after credit): GHS 1,019.43
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 1,019.43
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 21:27:04,163 INFO: Response 20432a20356d6c66: 200 in 7.654s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:04,662 INFO: Request 19486765d149af55: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:04,665 INFO: Request 1762bc4d10800ec6: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:04,666 INFO: Response 19486765d149af55: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:04,677 INFO: Request 0d57c5291f5c232d: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:04,681 INFO: Response 1762bc4d10800ec6: 304 in 0.016s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:04,688 INFO: Request d11810b7c6dc0c5e: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:04,696 INFO: Response 0d57c5291f5c232d: 304 in 0.016s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:04,713 INFO: Request a332f1c3ffd97a66: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:04,729 INFO: Response d11810b7c6dc0c5e: 304 in 0.041s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:04,751 INFO: Response a332f1c3ffd97a66: 304 in 0.038s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:04,965 INFO: Request 5d329e988d98ecb0: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:04,967 INFO: Response 5d329e988d98ecb0: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:09,127 INFO: Request 993ca39fa749769f: GET /invoice/property/740/print from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:14,044 INFO: 📄 Property Invoice Print - INVNBPR-00744-2025 (Year 2025):
+  Total Outstanding: GHS 1,019.43
+  Available Credit: GHS 0.00
+  Arrears (after credit): GHS 1,019.43 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:3218]
+2025-11-14 21:27:14,619 INFO: Response 993ca39fa749769f: 200 in 5.492s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:15,040 INFO: Request 4d05796adf8e373c: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:15,153 INFO: Request e0f71a06ad6ad340: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:15,157 INFO: Request 1ade66209a4b55cf: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:15,160 INFO: Request d3b7249a712970ae: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:27:15,211 INFO: Response 4d05796adf8e373c: 304 in 0.172s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:15,215 INFO: Response e0f71a06ad6ad340: 304 in 0.062s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:15,217 INFO: Response 1ade66209a4b55cf: 304 in 0.060s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:27:15,221 INFO: Response d3b7249a712970ae: 304 in 0.061s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:28:01,039 INFO: Request 56e4ccabc16e759f: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:28:05,471 INFO: Response 56e4ccabc16e759f: 200 in 4.432s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:28:05,879 INFO: Request 1d7ec2d9c3f51a74: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:28:05,882 INFO: Response 1d7ec2d9c3f51a74: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:28:05,950 INFO: Request 9026f1f607487042: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:28:05,954 INFO: Response 9026f1f607487042: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:29:53,775 INFO: Request 18b8508e658ed153: GET /invoice/property/1068 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:04,849 ERROR: Unhandled exception in request 18b8508e658ed153: (psycopg2.OperationalError) could not translate host name "aws-0-us-west-2.pooler.supabase.com" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8) [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:166]
+Traceback (most recent call last):
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 714, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 865, in get_connection
+    self.__connect()
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: could not translate host name "aws-0-us-west-2.pooler.supabase.com" to address: No such host is known. 
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\utils.py", line 284, in decorated_view
+    elif not current_user.is_authenticated:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\werkzeug\local.py", line 311, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\werkzeug\local.py", line 515, in _get_current_object
+    return get_name(local())  # type: ignore
+                    ^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\utils.py", line 25, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+                                      ^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\utils.py", line 372, in _get_user
+    current_app.login_manager._load_user()
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\login_manager.py", line 364, in _load_user
+    user = self._user_callback(user_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py", line 208, in load_user
+    return User.query.get(int(user_id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in get
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\query.py", line 1126, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\query.py", line 1135, in _get_impl
+    return self.session._get_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 3873, in _get_impl
+    return db_load_fn(
+           ^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\loading.py", line 695, in load_on_pk_identity
+    session.execute(
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 3277, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 2440, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 714, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 865, in get_connection
+    self.__connect()
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) could not translate host name "aws-0-us-west-2.pooler.supabase.com" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-11-14 21:30:15,707 INFO: Request 7d5381d76d3e14dd: GET /invoice/property/1068 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:26,762 ERROR: Unhandled exception in request 7d5381d76d3e14dd: (psycopg2.OperationalError) could not translate host name "aws-0-us-west-2.pooler.supabase.com" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8) [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:166]
+Traceback (most recent call last):
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 714, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 836, in get_connection
+    self.__connect()
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: could not translate host name "aws-0-us-west-2.pooler.supabase.com" to address: No such host is known. 
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\utils.py", line 284, in decorated_view
+    elif not current_user.is_authenticated:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\werkzeug\local.py", line 311, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\werkzeug\local.py", line 515, in _get_current_object
+    return get_name(local())  # type: ignore
+                    ^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\utils.py", line 25, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+                                      ^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\utils.py", line 372, in _get_user
+    current_app.login_manager._load_user()
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask_login\login_manager.py", line 364, in _load_user
+    user = self._user_callback(user_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py", line 208, in load_user
+    return User.query.get(int(user_id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in get
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\query.py", line 1126, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\query.py", line 1135, in _get_impl
+    return self.session._get_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 3873, in _get_impl
+    return db_load_fn(
+           ^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\loading.py", line 695, in load_on_pk_identity
+    session.execute(
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\orm\session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 3277, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 2440, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 714, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 836, in get_connection
+    self.__connect()
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kwame\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) could not translate host name "aws-0-us-west-2.pooler.supabase.com" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-11-14 21:30:33,525 INFO: Request fa0cdcbdd22106a1: GET /invoice/property/1068 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:39,719 INFO: 📊 Invoice View - INVNBPR-00744-2023 (Year 2023):
+  Total Invoiced (all years ≤ 2023): GHS 3,764.57
+  Total Paid (all years ≤ 2023): GHS 4,000.00
+  Overall Credit/Debt: GHS 235.43
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2022: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2023: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2023) ===
+  Outstanding (before credit): GHS 1,254.86
+  Credit Applied: GHS 1,254.86
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 0.00
+  Credit Applied to Arrears: GHS 0.00
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 0.00
+  Remaining Unused Credit: GHS 235.43 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 21:30:40,402 INFO: Response fa0cdcbdd22106a1: 200 in 6.877s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:30:40,820 INFO: Request e18a280d825d10d5: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:40,822 INFO: Request 1cd2dcc43f24c7e6: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:40,824 INFO: Request 6db9b2df5a19558a: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:40,830 INFO: Response e18a280d825d10d5: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:30:40,833 INFO: Response 1cd2dcc43f24c7e6: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:30:40,838 INFO: Request 6dda1476176e71ea: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:40,840 INFO: Response 6db9b2df5a19558a: 304 in 0.017s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:30:40,842 INFO: Request d8a894453753cb9d: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:40,866 INFO: Response 6dda1476176e71ea: 304 in 0.028s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:30:40,917 INFO: Response d8a894453753cb9d: 304 in 0.075s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:30:41,040 INFO: Request 098d3743c355a9cc: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:41,071 INFO: Response 098d3743c355a9cc: 304 in 0.031s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:30:41,275 INFO: Request 964c00d0e8bfc18f: GET /static/favicon.svg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:30:41,452 INFO: Response 964c00d0e8bfc18f: 304 in 0.176s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:31:51,109 INFO: Request a44d2458050bee54: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:31:58,306 INFO: Response a44d2458050bee54: 200 in 7.197s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:31:58,736 INFO: Request e8ea3f9915e42fc9: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:31:58,739 INFO: Response e8ea3f9915e42fc9: 304 in 0.003s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:31:58,836 INFO: Request c5565370f4088c37: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:31:58,930 INFO: Response c5565370f4088c37: 304 in 0.094s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:18,976 INFO: Request 19153a9b3d5f1772: GET /invoice/property/740 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:33,020 INFO: 📊 Invoice View - INVNBPR-00744-2025 (Year 2025):
+  Total Invoiced (all years ≤ 2025): GHS 6,274.29
+  Total Paid (all years ≤ 2025): GHS 5,254.86
+  Overall Credit/Debt: GHS -1,019.43
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2022: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2023: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=0.00
+  2024: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=1,019.43
+  2025: Invoice=1,254.86, Paid=1,254.86, Balance=0.00, After Auto-Credit=0.00
+  
+  === CURRENT INVOICE (2025) ===
+  Outstanding (before credit): GHS 0.00
+  Credit Applied: GHS 0.00
+  Outstanding (after credit): GHS 0.00
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 2,509.72
+  Credit Applied to Arrears: GHS 1,490.28
+  Arrears (after credit): GHS 1,019.43
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 1,019.43
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 21:32:33,715 INFO: Response 19153a9b3d5f1772: 200 in 14.738s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:34,136 INFO: Request 9e153dc4fcd8fdd3: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:34,162 INFO: Request c9be5d0208346dec: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:34,167 INFO: Request a40b727b0834322e: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:34,168 INFO: Response 9e153dc4fcd8fdd3: 304 in 0.032s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:34,173 INFO: Response c9be5d0208346dec: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:34,179 INFO: Request 26c01e2092a8b9f8: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:34,177 INFO: Response a40b727b0834322e: 304 in 0.009s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:34,185 INFO: Request 647901f5e0b0f45f: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:34,192 INFO: Response 26c01e2092a8b9f8: 304 in 0.013s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:34,221 INFO: Response 647901f5e0b0f45f: 304 in 0.036s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:34,558 INFO: Request 6988fbfff29db9d9: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:34,558 INFO: Response 6988fbfff29db9d9: 304 in 0.000s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:42,490 INFO: Request 9a0352be7f25995a: GET /property/744 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:54,034 INFO: Response 9a0352be7f25995a: 200 in 11.543s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:56,331 INFO: Request 0579de496520799a: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:56,333 INFO: Response 0579de496520799a: 304 in 0.002s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:32:56,502 INFO: Request 15ffebfc9535cb9f: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:32:56,521 INFO: Response 15ffebfc9535cb9f: 304 in 0.018s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:33:05,684 INFO: Request d8e404e5b235eb40: GET /invoice/property/904 from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:33:10,165 INFO: 📊 Invoice View - INVNBPR-00744-2024 (Year 2024):
+  Total Invoiced (all years ≤ 2024): GHS 5,019.43
+  Total Paid (all years ≤ 2024): GHS 4,000.00
+  Overall Credit/Debt: GHS -1,019.43
+  
+  === INVOICE BREAKDOWN ===
+  2021: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2022: Invoice=1,254.86, Paid=2,000.00, Balance=-745.14, After Auto-Credit=0.00 [OVERPAYMENT: 745.14]
+  2023: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=0.00
+  2024: Invoice=1,254.86, Paid=0.00, Balance=1,254.86, After Auto-Credit=1,019.43
+  
+  === CURRENT INVOICE (2024) ===
+  Outstanding (before credit): GHS 1,254.86
+  Credit Applied: GHS 235.43
+  Outstanding (after credit): GHS 1,019.43
+  
+  === ARREARS ===
+  Arrears (before credit): GHS 1,254.86
+  Credit Applied to Arrears: GHS 1,254.86
+  Arrears (after credit): GHS 0.00
+  
+  === TOTALS ===
+  Grand Total Outstanding: GHS 1,019.43
+  Remaining Unused Credit: GHS 0.00 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:2721]
+2025-11-14 21:33:10,901 INFO: Response d8e404e5b235eb40: 200 in 5.217s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:33:12,726 INFO: Request 959e407fb719e716: GET /static/images/logo.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:33:12,730 INFO: Response 959e407fb719e716: 304 in 0.004s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:33:12,749 INFO: Request 583d83cb890ed8ae: GET /static/images/MFO_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:33:12,750 INFO: Request 50f6c8d4b487add2: GET /static/images/MCD_signature.jpg from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:33:12,772 INFO: Request 9ae477d172f4040f: GET /static/images/ghana_coat_of_arms.png from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:33:12,773 INFO: Response 583d83cb890ed8ae: 304 in 0.024s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:33:12,777 INFO: Request 4b1a9ed62b9b1c1c: GET /static/js/realtime-search.js from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:33:12,780 INFO: Response 50f6c8d4b487add2: 304 in 0.030s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:33:12,782 INFO: Response 9ae477d172f4040f: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:33:12,787 INFO: Response 4b1a9ed62b9b1c1c: 304 in 0.011s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]
+2025-11-14 21:33:12,899 INFO: Request 89dae5845b30a848: GET /static/favicon.ico from 127.0.0.1 [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:138]
+2025-11-14 21:33:13,004 INFO: Response 89dae5845b30a848: 304 in 0.105s [in C:\Users\kwame\OneDrive\Desktop\revenue-management-system-main\app.py:149]

@@ -730,16 +730,15 @@
                     <i class="nav-icon fas fa-download"></i>
                     <span class="nav-text">Export Data</span>
                 </a>
-            </div>
-            {% endif %} 
-            <div class="section-title">REPORTS & EXPORTS</div>   
+            </div>   
                 <div class="submenu" id="exports-submenu">
                     <a href="{{ url_for('export_properties') }}"><i class="fas fa-file-csv"></i> Export Properties</a>
                     <a href="{{ url_for('export_businesses') }}"><i class="fas fa-file-csv"></i> Export Businesses</a>
                     <a href="{{ url_for('export_payments') }}"><i class="fas fa-file-csv"></i> Export Payments</a>
                 </div>
+            {% endif %}
             
-            
+            <div class="section-title">REPORTS & EXPORTS</div>
             <div class="nav-item">
                 <a class="nav-link has-submenu" onclick="toggleSubmenu(event, 'templates')">
                     <i class="nav-icon fas fa-file-download"></i>
