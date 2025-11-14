@@ -890,6 +890,34 @@ def bulk_upload_with_update(df, model_class, unique_field, update_fields, create
     
     return results    
 
+def parse_numeric_value(value):
+    """
+    Safely parse numeric values from CSV, handling commas and various formats
+    
+    Args:
+        value: String or numeric value to parse
+    
+    Returns:
+        float: Parsed numeric value, or 0.0 if parsing fails
+    """
+    if pd.isna(value) or value in ['', None, 'N/A', '-']:
+        return 0.0
+    
+    try:
+        # Convert to string and remove common formatting
+        value_str = str(value).strip()
+        
+        # Remove currency symbols and whitespace
+        value_str = value_str.replace('GHS', '').replace('GHâ‚µ', '').replace('$', '').strip()
+        
+        # Remove commas (thousands separator)
+        value_str = value_str.replace(',', '')
+        
+        # Convert to float
+        return float(value_str)
+    except (ValueError, TypeError, AttributeError):
+        return 0.0
+
 # ==================== UPDATED process_payment function ====================
 # Replace the existing process_payment function in app.py (around line 620) with this:
 
@@ -2541,7 +2569,7 @@ def list_products():
 @app.route('/invoice/property/<int:invoice_id>')
 @login_required
 def view_property_invoice(invoice_id):
-    """View property invoice with proper credit application to arrears"""
+    """View property invoice with proper credit application and display"""
     invoice = PropertyInvoice.query.get_or_404(invoice_id)
     
     # Get all payments for this specific invoice
@@ -2556,54 +2584,22 @@ def view_property_invoice(invoice_id):
     # Get invoice total
     invoice_total = getattr(invoice, 'total_amount', None) or invoice.amount
     
-    # Calculate outstanding balance for current invoice
-    outstanding_balance = invoice_total - total_paid
+    # Calculate outstanding balance for current invoice (before credit)
+    outstanding_balance_before_credit = invoice_total - total_paid
     
     # ========================================================================
-    # STEP 1: Calculate arrears from previous years (BEFORE credit)
-    # ========================================================================
-    previous_invoices = PropertyInvoice.query.filter(
-        PropertyInvoice.property_id == invoice.property_id,
-        PropertyInvoice.year < invoice.year
-    ).order_by(PropertyInvoice.year.asc()).all()  # Oldest first
-    
-    # Calculate raw arrears (before credit application)
-    total_arrears_before_credit = 0.0
-    arrears_breakdown_raw = []
-    
-    for prev_invoice in previous_invoices:
-        prev_invoice_total = getattr(prev_invoice, 'total_amount', None) or prev_invoice.amount
-        
-        prev_payments = Payment.query.filter_by(
-            property_invoice_id=prev_invoice.id,
-            invoice_type='Property'
-        ).all()
-        prev_total_paid = sum(p.payment_amount for p in prev_payments)
-        
-        prev_balance = prev_invoice_total - prev_total_paid
-        
-        if prev_balance > 0:
-            total_arrears_before_credit += prev_balance
-            arrears_breakdown_raw.append({
-                'year': prev_invoice.year,
-                'invoice_no': prev_invoice.invoice_no,
-                'invoice_id': prev_invoice.id,
-                'total': prev_invoice_total,
-                'paid': prev_total_paid,
-                'balance': prev_balance,
-                'original_balance': prev_balance  # Keep original for reference
-            })
-    
-    # ========================================================================
-    # STEP 2: Get available credit from ALL previous years (including current)
+    # STEP 1: Calculate ALL payments and invoices up to current year
     # ========================================================================
     all_invoices = PropertyInvoice.query.filter(
         PropertyInvoice.property_id == invoice.property_id,
-        PropertyInvoice.year <= invoice.year  # Include current year
-    ).all()
+        PropertyInvoice.year <= invoice.year
+    ).order_by(PropertyInvoice.year.asc()).all()
     
     total_all_invoices = 0.0
     total_all_payments = 0.0
+    
+    # Track each invoice's balance
+    invoice_balances = []
     
     for inv in all_invoices:
         inv_total = getattr(inv, 'total_amount', None) or inv.amount
@@ -2613,142 +2609,154 @@ def view_property_invoice(invoice_id):
             property_invoice_id=inv.id,
             invoice_type='Property'
         ).all()
-        total_all_payments += sum(p.payment_amount for p in inv_payments)
+        inv_paid = sum(p.payment_amount for p in inv_payments)
+        total_all_payments += inv_paid
+        
+        inv_balance = inv_total - inv_paid
+        
+        invoice_balances.append({
+            'year': inv.year,
+            'invoice_no': inv.invoice_no,
+            'invoice_id': inv.id,
+            'total': inv_total,
+            'paid': inv_paid,
+            'balance_before_credit': inv_balance,
+            'is_current': inv.id == invoice_id
+        })
     
-    # Available credit is when total payments exceed total invoices
+    # ========================================================================
+    # STEP 2: Calculate available credit (overpayments)
+    # ========================================================================
     available_credit = max(0, total_all_payments - total_all_invoices)
     
     # ========================================================================
-    # STEP 3: Apply credit to arrears (oldest first)
+    # STEP 3: Apply credit to outstanding balances (oldest first)
     # ========================================================================
     remaining_credit = available_credit
-    total_arrears_after_credit = 0.0
-    arrears_breakdown_final = []
     
-    for arrear in arrears_breakdown_raw:
-        if remaining_credit > 0 and arrear['balance'] > 0:
-            # Apply credit to this arrear
-            credit_applied_to_arrear = min(remaining_credit, arrear['balance'])
-            arrear['balance'] -= credit_applied_to_arrear
-            remaining_credit -= credit_applied_to_arrear
-            arrear['credit_applied'] = credit_applied_to_arrear
+    # Separate arrears from current invoice
+    arrears_breakdown = []
+    current_invoice_data = None
+    
+    for inv_data in invoice_balances:
+        if inv_data['balance_before_credit'] > 0:
+            # Apply credit to this balance
+            if remaining_credit > 0:
+                credit_applied = min(remaining_credit, inv_data['balance_before_credit'])
+                inv_data['credit_applied'] = credit_applied
+                inv_data['balance_after_credit'] = inv_data['balance_before_credit'] - credit_applied
+                remaining_credit -= credit_applied
+            else:
+                inv_data['credit_applied'] = 0.0
+                inv_data['balance_after_credit'] = inv_data['balance_before_credit']
+            
+            # Add to arrears if not current invoice
+            if not inv_data['is_current']:
+                arrears_breakdown.append(inv_data)
+            else:
+                current_invoice_data = inv_data
         else:
-            arrear['credit_applied'] = 0
-        
-        # Only include in final breakdown if there's still a balance
-        if arrear['balance'] > 0:
-            total_arrears_after_credit += arrear['balance']
-            arrears_breakdown_final.append(arrear)
+            inv_data['credit_applied'] = 0.0
+            inv_data['balance_after_credit'] = 0.0
+            
+            if inv_data['is_current']:
+                current_invoice_data = inv_data
     
     # ========================================================================
-    # STEP 4: Apply any remaining credit to current invoice
+    # STEP 4: Calculate final totals
     # ========================================================================
-    credit_applied_to_current = 0.0
-    if remaining_credit > 0 and outstanding_balance > 0:
-        credit_applied_to_current = min(remaining_credit, outstanding_balance)
-        outstanding_balance -= credit_applied_to_current
-        remaining_credit -= credit_applied_to_current
+    total_arrears_before_credit = sum(a['balance_before_credit'] for a in arrears_breakdown)
+    total_arrears_after_credit = sum(a['balance_after_credit'] for a in arrears_breakdown)
+    total_credit_to_arrears = sum(a['credit_applied'] for a in arrears_breakdown)
+    
+    # Current invoice balances
+    if current_invoice_data:
+        outstanding_balance_after_credit = current_invoice_data['balance_after_credit']
+        credit_to_current = current_invoice_data['credit_applied']
+    else:
+        outstanding_balance_after_credit = outstanding_balance_before_credit
+        credit_to_current = 0.0
+    
+    # Grand total
+    grand_total_outstanding = outstanding_balance_after_credit + total_arrears_after_credit
+    
+    # Total credit applied (arrears + current)
+    total_credit_applied = available_credit - remaining_credit
     
     # ========================================================================
-    # STEP 5: Final calculations
+    # STEP 5: Get adjustments
     # ========================================================================
-    grand_total_outstanding = outstanding_balance + total_arrears_after_credit
-    
-    # Fetch adjustments for this invoice
     adjustments = InvoiceAdjustment.query.filter_by(
         property_invoice_id=invoice_id,
         invoice_type='Property'
     ).order_by(InvoiceAdjustment.created_at.desc()).all()
     
-    # Log credit application for debugging
-    if available_credit > 0:
-        app.logger.info(
-            f"Credit Application - Invoice {invoice.invoice_no}: "
-            f"Available: GHS {available_credit:.2f}, "
-            f"Applied to Arrears: GHS {available_credit - remaining_credit:.2f}, "
-            f"Applied to Current: GHS {credit_applied_to_current:.2f}, "
-            f"Remaining: GHS {remaining_credit:.2f}"
-        )
+    # ========================================================================
+    # STEP 6: Log for debugging
+    # ========================================================================
+    app.logger.info(
+        f"📊 Invoice View - {invoice.invoice_no}:\n"
+        f"  Total Invoiced (all years): GHS {total_all_invoices:,.2f}\n"
+        f"  Total Paid (all years): GHS {total_all_payments:,.2f}\n"
+        f"  Available Credit: GHS {available_credit:,.2f}\n"
+        f"  Credit to Arrears: GHS {total_credit_to_arrears:,.2f}\n"
+        f"  Credit to Current: GHS {credit_to_current:,.2f}\n"
+        f"  Remaining Credit: GHS {remaining_credit:,.2f}\n"
+        f"  Current Outstanding (before credit): GHS {outstanding_balance_before_credit:,.2f}\n"
+        f"  Current Outstanding (after credit): GHS {outstanding_balance_after_credit:,.2f}\n"
+        f"  Arrears (before credit): GHS {total_arrears_before_credit:,.2f}\n"
+        f"  Arrears (after credit): GHS {total_arrears_after_credit:,.2f}\n"
+        f"  Grand Total Outstanding: GHS {grand_total_outstanding:,.2f}"
+    )
     
-    # Return with all variables
+    # ========================================================================
+    # STEP 7: Render template with all data
+    # ========================================================================
     return render_template('property_invoice_view.html', 
                          invoice=invoice, 
                          property=invoice.property,
                          payments=payments,
                          total_paid=total_paid,
-                         outstanding_balance=outstanding_balance,
-                         total_arrears=total_arrears_after_credit,  # Already reduced by credit
-                         arrears_breakdown=arrears_breakdown_final,
+                         outstanding_balance=outstanding_balance_after_credit,  # After credit
+                         outstanding_balance_before_credit=outstanding_balance_before_credit,  # NEW
+                         total_arrears=total_arrears_after_credit,
+                         total_arrears_before_credit=total_arrears_before_credit,  # NEW
+                         arrears_breakdown=arrears_breakdown,
                          adjustments=adjustments,
-                         available_credit=remaining_credit,  # Credit still available
-                         credit_applied_to_current=credit_applied_to_current,
-                         total_credit_applied=available_credit - remaining_credit)  # 🆕 NEW #  ADDED
+                         available_credit=available_credit,  # Total credit available
+                         credit_to_current=credit_to_current,  # Credit applied to current invoice
+                         total_credit_to_arrears=total_credit_to_arrears,  # Credit applied to arrears
+                         remaining_credit=remaining_credit,  # Credit still unused
+                         total_credit_applied=total_credit_applied,  # Total credit used
+                         grand_total_outstanding=grand_total_outstanding)  # 🆕 NEW #  ADDED
 
 # Replace the existing view_business_invoice route in app.py with this updated version:
 
 @app.route('/invoice/business/<int:invoice_id>')
 @login_required
 def view_business_invoice(invoice_id):
-    """View business invoice with proper credit application to arrears"""
+    """View business invoice with proper credit application and display"""
     invoice = BOPInvoice.query.get_or_404(invoice_id)
     
     # Get all payments for this specific invoice
     payments = Payment.query.filter_by(
         business_invoice_id=invoice_id, 
         invoice_type='Business'
-    ).all()
+    ).order_by(Payment.payment_date.desc()).all()
+    
     total_paid = sum(p.payment_amount for p in payments)
-    
-    # Get invoice total
     invoice_total = getattr(invoice, 'total_amount', None) or invoice.amount
+    outstanding_balance_before_credit = invoice_total - total_paid
     
-    # Calculate outstanding balance for current invoice
-    outstanding_balance = invoice_total - total_paid
-    
-    # ========================================================================
-    # STEP 1: Calculate arrears from previous years (BEFORE credit)
-    # ========================================================================
-    previous_invoices = BOPInvoice.query.filter(
-        BOPInvoice.business_id == invoice.business_id,
-        BOPInvoice.year < invoice.year
-    ).order_by(BOPInvoice.year.asc()).all()  # Oldest first
-    
-    total_arrears_before_credit = 0.0
-    arrears_breakdown_raw = []
-    
-    for prev_invoice in previous_invoices:
-        prev_invoice_total = getattr(prev_invoice, 'total_amount', None) or prev_invoice.amount
-        
-        prev_payments = Payment.query.filter_by(
-            business_invoice_id=prev_invoice.id,
-            invoice_type='Business'
-        ).all()
-        prev_total_paid = sum(p.payment_amount for p in prev_payments)
-        
-        prev_balance = prev_invoice_total - prev_total_paid
-        
-        if prev_balance > 0:
-            total_arrears_before_credit += prev_balance
-            arrears_breakdown_raw.append({
-                'year': prev_invoice.year,
-                'invoice_no': prev_invoice.invoice_no,
-                'invoice_id': prev_invoice.id,
-                'total': prev_invoice_total,
-                'paid': prev_total_paid,
-                'balance': prev_balance,
-                'original_balance': prev_balance
-            })
-    
-    # ========================================================================
-    # STEP 2: Get available credit from ALL previous years (including current)
-    # ========================================================================
+    # Calculate all invoices and payments
     all_invoices = BOPInvoice.query.filter(
         BOPInvoice.business_id == invoice.business_id,
         BOPInvoice.year <= invoice.year
-    ).all()
+    ).order_by(BOPInvoice.year.asc()).all()
     
     total_all_invoices = 0.0
     total_all_payments = 0.0
+    invoice_balances = []
     
     for inv in all_invoices:
         inv_total = getattr(inv, 'total_amount', None) or inv.amount
@@ -2758,64 +2766,84 @@ def view_business_invoice(invoice_id):
             business_invoice_id=inv.id,
             invoice_type='Business'
         ).all()
-        total_all_payments += sum(p.payment_amount for p in inv_payments)
+        inv_paid = sum(p.payment_amount for p in inv_payments)
+        total_all_payments += inv_paid
+        
+        inv_balance = inv_total - inv_paid
+        
+        invoice_balances.append({
+            'year': inv.year,
+            'invoice_no': inv.invoice_no,
+            'invoice_id': inv.id,
+            'total': inv_total,
+            'paid': inv_paid,
+            'balance_before_credit': inv_balance,
+            'is_current': inv.id == invoice_id
+        })
     
+    # Calculate available credit
     available_credit = max(0, total_all_payments - total_all_invoices)
     
-    # ========================================================================
-    # STEP 3: Apply credit to arrears (oldest first)
-    # ========================================================================
+    # Apply credit to balances
     remaining_credit = available_credit
-    total_arrears_after_credit = 0.0
-    arrears_breakdown_final = []
+    arrears_breakdown = []
+    current_invoice_data = None
     
-    for arrear in arrears_breakdown_raw:
-        if remaining_credit > 0 and arrear['balance'] > 0:
-            credit_applied_to_arrear = min(remaining_credit, arrear['balance'])
-            arrear['balance'] -= credit_applied_to_arrear
-            remaining_credit -= credit_applied_to_arrear
-            arrear['credit_applied'] = credit_applied_to_arrear
+    for inv_data in invoice_balances:
+        if inv_data['balance_before_credit'] > 0:
+            if remaining_credit > 0:
+                credit_applied = min(remaining_credit, inv_data['balance_before_credit'])
+                inv_data['credit_applied'] = credit_applied
+                inv_data['balance_after_credit'] = inv_data['balance_before_credit'] - credit_applied
+                remaining_credit -= credit_applied
+            else:
+                inv_data['credit_applied'] = 0.0
+                inv_data['balance_after_credit'] = inv_data['balance_before_credit']
+            
+            if not inv_data['is_current']:
+                arrears_breakdown.append(inv_data)
+            else:
+                current_invoice_data = inv_data
         else:
-            arrear['credit_applied'] = 0
-        
-        if arrear['balance'] > 0:
-            total_arrears_after_credit += arrear['balance']
-            arrears_breakdown_final.append(arrear)
+            inv_data['credit_applied'] = 0.0
+            inv_data['balance_after_credit'] = 0.0
+            
+            if inv_data['is_current']:
+                current_invoice_data = inv_data
     
-    # ========================================================================
-    # STEP 4: Apply remaining credit to current invoice
-    # ========================================================================
-    credit_applied_to_current = 0.0
-    if remaining_credit > 0 and outstanding_balance > 0:
-        credit_applied_to_current = min(remaining_credit, outstanding_balance)
-        outstanding_balance -= credit_applied_to_current
-        remaining_credit -= credit_applied_to_current
+    # Calculate totals
+    total_arrears_before_credit = sum(a['balance_before_credit'] for a in arrears_breakdown)
+    total_arrears_after_credit = sum(a['balance_after_credit'] for a in arrears_breakdown)
+    total_credit_to_arrears = sum(a['credit_applied'] for a in arrears_breakdown)
     
-    # ========================================================================
-    # STEP 5: Final calculations
-    # ========================================================================
-    grand_total_outstanding = outstanding_balance + total_arrears_after_credit
+    if current_invoice_data:
+        outstanding_balance_after_credit = current_invoice_data['balance_after_credit']
+        credit_to_current = current_invoice_data['credit_applied']
+    else:
+        outstanding_balance_after_credit = outstanding_balance_before_credit
+        credit_to_current = 0.0
     
-    # Resolve product if available
+    grand_total_outstanding = outstanding_balance_after_credit + total_arrears_after_credit
+    total_credit_applied = available_credit - remaining_credit
+    
+    # Get product
     product = None
     if getattr(invoice, 'product_name', None):
         product = Product.query.filter_by(product_name=invoice.product_name).first()
     
-    # Fetch adjustments
+    # Get adjustments
     adjustments = InvoiceAdjustment.query.filter_by(
         business_invoice_id=invoice_id,
         invoice_type='Business'
     ).order_by(InvoiceAdjustment.created_at.desc()).all()
     
-    # Log credit application
-    if available_credit > 0:
-        app.logger.info(
-            f"Credit Application - Invoice {invoice.invoice_no}: "
-            f"Available: GHS {available_credit:.2f}, "
-            f"Applied to Arrears: GHS {available_credit - remaining_credit:.2f}, "
-            f"Applied to Current: GHS {credit_applied_to_current:.2f}, "
-            f"Remaining: GHS {remaining_credit:.2f}"
-        )
+    # Log for debugging
+    app.logger.info(
+        f"📊 Business Invoice View - {invoice.invoice_no}:\n"
+        f"  Available Credit: GHS {available_credit:,.2f}\n"
+        f"  Credit to Current: GHS {credit_to_current:,.2f}\n"
+        f"  Outstanding (after credit): GHS {outstanding_balance_after_credit:,.2f}"
+    )
     
     return render_template('business_invoice_view.html', 
                          invoice=invoice, 
@@ -2823,12 +2851,20 @@ def view_business_invoice(invoice_id):
                          payments=payments,
                          product=product,
                          total_paid=total_paid,
+                         outstanding_balance=outstanding_balance_after_credit,
+                         outstanding_balance_before_credit=outstanding_balance_before_credit,
                          total_arrears=total_arrears_after_credit,
-                         arrears_breakdown=arrears_breakdown_final,
+                         total_arrears_before_credit=total_arrears_before_credit,
+                         arrears_breakdown=arrears_breakdown,
                          adjustments=adjustments,
-                         available_credit=remaining_credit,
-                         credit_applied_to_current=credit_applied_to_current,
-                         total_credit_applied=available_credit - remaining_credit)  # 🆕 NEW
+                         available_credit=available_credit,
+                         credit_to_current=credit_to_current,
+                         total_credit_to_arrears=total_credit_to_arrears,
+                         remaining_credit=remaining_credit,
+                         total_credit_applied=total_credit_applied,
+                         grand_total_outstanding=grand_total_outstanding)  # 🆕 NEW
+    
+    
 @app.route('/invoice/property/<int:invoice_id>/pay', methods=['GET'])
 @login_required
 def pay_property_invoice(invoice_id):

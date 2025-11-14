@@ -555,7 +555,7 @@
                                                 0.00
                                             {% endif %}
                                         </td>
-                                        <td class="text-right"><strong>{{ "{:,.2f}".format(arrear.balance) }}</strong></td>
+                                        <td class="text-right"><strong>{{ "{:,.2f}".format(arrear.balance or 0) }}</strong></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -850,7 +850,7 @@
                                     <td class="text-right">GHS {{ "{:,.2f}".format(arrear.total) }}</td>
                                     <td class="text-right">GHS {{ "{:,.2f}".format(arrear.paid) }}</td>
                                     <td class="text-right">
-                                        <strong style="color: #dc2626;">GHS {{ "{:,.2f}".format(arrear.balance) }}</strong>
+                                        <strong style="color: #dc2626;">GHS {{ "{:,.2f}".format(arrear.balance or 0) }}</strong>
                                     </td>
                                 </tr>
                                 {% endfor %}
