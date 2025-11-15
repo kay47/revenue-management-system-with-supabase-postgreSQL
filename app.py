@@ -18,6 +18,9 @@ import string
 from sqlalchemy import distinct, func, or_, extract
 import importlib
 from typing import TYPE_CHECKING
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_limiter.errors import RateLimitExceeded
 
 # Try a runtime import of python-magic (module name: magic). If unavailable, fall back gracefully.
 # Using importlib avoids static import errors in environments where the package isn't installed.
@@ -71,10 +74,15 @@ class Config:
     UPLOAD_FOLDER = 'uploads'
     MAX_CONTENT_LENGTH = 1024 * 1024 * 1024  # 16MB
     PERMANENT_SESSION_LIFETIME = timedelta(hours=2)
+    SESSION_COOKIE_SECURE = True  # HTTPS only
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_REGENERATE = True
     ALLOWED_EXTENSIONS = {'csv', 'xlsx', 'png', 'jpg', 'jpeg', 'pdf'}
     ITEMS_PER_PAGE = 20
+    
+    # Rate Limiting
+    RATELIMIT_STORAGE_URL = "redis://localhost:6379"  # Use Redis in production
     
     # 🆕 NEW: Activity timeout settings
     AUTO_LOCK_TIMEOUT = 120  # 2 minutes (in seconds)
@@ -106,15 +114,55 @@ VONAGE_API_SECRET = os.getenv('VONAGE_API_SECRET')
 VONAGE_SENDER_ID = os.getenv('VONAGE_SENDER_ID', 'AWMA')
 
 # Email Fallback
+MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+MAIL_PORT = int(os.getenv('MAIL_PORT', '587'))
+MAIL_USE_TLS = True
+MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
+
+# SMTP Configuration (for email sending)
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
 SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))
 SMTP_USERNAME = os.getenv('SMTP_USERNAME')
 SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
-FROM_EMAIL = os.getenv('FROM_EMAIL', SMTP_USERNAME)  
+FROM_EMAIL = os.getenv('FROM_EMAIL', MAIL_DEFAULT_SENDER)
 
 # ==================== App Initialization ====================
 app = Flask(__name__)
 app.config.from_object(Config)
+
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
+
+# 🔐 Enforce HTTPS only in production
+if not app.debug:
+    from flask_talisman import Talisman
+    
+    # Configure Talisman for security headers + HTTPS enforcement
+    csp = {
+        'default-src': [
+            "'self'"
+        ]
+    }
+
+    Talisman(
+        app,
+        force_https=True,
+        strict_transport_security=True,
+        strict_transport_security_max_age=31536000,  # 1 year
+        content_security_policy=csp
+    )
+
+# ✔ Secure cookies
+app.config['SESSION_COOKIE_SECURE'] = not app.debug      # Only secure on HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
 
 # Create necessary directories
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -162,6 +210,10 @@ def after_request_logging(response):
 def handle_exception(e):
     """Global exception handler"""
     request_id = getattr(g, 'request_id', 'unknown')
+    
+    # Don't log rate limit errors as exceptions (they're expected)
+    if isinstance(e, RateLimitExceeded):
+        return ratelimit_handler(e)
     
     app.logger.error(
         f'Unhandled exception in request {request_id}: {str(e)}',
@@ -1633,6 +1685,23 @@ def send_otp_sms(phone_number, otp_code, amount):
         app.logger.error(f'Unknown SMS provider: {provider}')
         return False, f'Invalid SMS provider: {provider}. Use: mock, twilio, africastalking, or vonage'    
 
+def regenerate_session():
+    """Regenerate session ID to prevent session fixation attacks"""
+    # Store data we want to keep
+    data_to_keep = {}
+    for key in list(session.keys()):
+        if key not in ['_fresh', '_id', '_user_id']:
+            data_to_keep[key] = session[key]
+    
+    # Clear session
+    session.clear()
+    
+    # Restore kept data
+    for key, value in data_to_keep.items():
+        session[key] = value
+    
+    # Mark as modified to force new session ID
+    session.modified = True
     
 # ==================== Error Handlers ====================
 @app.errorhandler(404)
@@ -1650,11 +1719,19 @@ def request_entity_too_large(error):
     flash('File too large. Maximum size is 16MB.', 'error')
     return redirect(request.url), 413
 
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    """Handle rate limit exceeded errors"""
+    app.logger.warning(f'Rate limit exceeded: {request.remote_addr} - {request.path}')
+    flash('Too many requests. Please wait a moment before trying again.', 'error')
+    return render_template('errors/429.html'), 429
+
 # ==================== Authentication Routes ====================
 # ==================== Authentication Routes ====================
 # REPLACE your existing login route with this updated version
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")  # Max 5 login attempts per minute
 def login():
     if current_user.is_authenticated:
         if current_user.is_temp_password:
@@ -1667,7 +1744,9 @@ def login():
         user = User.query.filter_by(username=username).first()
         
         if user and user.check_password(password):
+            session.clear()
             login_user(user)
+            session.modified = True
             
             # Clear any existing flash messages
             session.pop('_flashes', None)
@@ -5175,8 +5254,8 @@ def create_user():
         # 🔒 STORE TEMPORARY PASSWORD
         temp_password_record = TemporaryPassword(
             user_id=user.id,
-            temp_password=temp_password,  # Store plain text for admin to view
-            expires_at=datetime.utcnow() + timedelta(days=7),  # Expires in 7 days
+            temp_password_hash=generate_password_hash(temp_password),  # Hash it!
+            expires_at=datetime.utcnow() + timedelta(days=7),
             created_by=current_user.id
         )
         db.session.add(temp_password_record)
@@ -5539,12 +5618,14 @@ def reset_sequences():
             # SQLite sequence reset (existing code)
             max_property_id = db.session.query(db.func.max(Property.id)).scalar() or 0
             db.session.execute(
-                db.text(f"UPDATE sqlite_sequence SET seq = {max_property_id} WHERE name = 'property'")
+                db.text("UPDATE sqlite_sequence SET seq = :seq WHERE name = 'property'"),
+                {'seq': max_property_id}
             )
             
             max_business_id = db.session.query(db.func.max(BusinessOccupant.id)).scalar() or 0
             db.session.execute(
-                db.text(f"UPDATE sqlite_sequence SET seq = {max_business_id} WHERE name = 'business_occupant'")
+                db.text("UPDATE sqlite_sequence SET seq = :seq WHERE name = 'business_occupant'"),
+                {'seq': max_business_id}
             )
             
             max_product_id = db.session.query(db.func.max(Product.id)).scalar() or 0
@@ -6170,42 +6251,77 @@ def change_temp_password():
     return render_template('admin/temp_password.html')
 
 # 3. Forgot Password Route
+def send_reset_email(email, reset_link):
+    """Send password reset email"""
+    try:
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+        
+        msg = MIMEMultipart()
+        msg['From'] = FROM_EMAIL
+        msg['To'] = email
+        msg['Subject'] = 'Password Reset - AWMA Revenue System'
+        
+        body = f"""
+        <html>
+        <body>
+            <h2>Password Reset Request</h2>
+            <p>Click the link below to reset your password:</p>
+            <p><a href="{reset_link}">{reset_link}</a></p>
+            <p><strong>This link expires in 1 hour.</strong></p>
+            <p style="color: #dc3545;">
+                ⚠️ If you didn't request this, ignore this email.
+            </p>
+        </body>
+        </html>
+        """
+        
+        msg.attach(MIMEText(body, 'html'))
+        
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(SMTP_USERNAME, SMTP_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+        
+        app.logger.info(f'✅ Reset email sent to {email}')
+        return True
+        
+    except Exception as e:
+        app.logger.error(f'❌ Email error: {str(e)}')
+        return False
+
 @app.route('/forgot-password', methods=['GET', 'POST'])
+@limiter.limit("3 per hour")  # Max 3 reset requests per hour
 def forgot_password():
-    """Send password reset link to user's email/phone"""
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     
     if request.method == 'POST':
         email_or_phone = request.form.get('email_or_phone', '').strip()
-        
-        # Find user by email or phone
         user = User.query.filter(
-            db.or_(
-                User.email == email_or_phone,
-                User.phone_number == email_or_phone
-            )
+            db.or_(User.email == email_or_phone, User.phone_number == email_or_phone)
         ).first()
         
         if user:
-            # Generate reset token
             token = serializer.dumps(user.email, salt='password-reset-salt')
-            
-            # Create reset link
             reset_link = url_for('reset_password', token=token, _external=True)
             
-            # Log the action
-            log_action('Password reset requested', 'User', user.id, f'Email/Phone: {email_or_phone}')
+            if app.debug:
+                # Development mode
+                app.logger.info(f'🔧 DEV MODE - Reset link: {reset_link}')
+                flash('Check server logs for reset link (DEV MODE)', 'info')
+            else:
+                # Production mode
+                if send_reset_email(user.email, reset_link):
+                    flash('Password reset instructions sent to your email.', 'success')
+                else:
+                    flash('Error sending email. Contact administrator.', 'error')
             
-            # TODO: Send email/SMS with reset link
-            # For now, we'll just flash the link (in production, send via email/SMS)
-            app.logger.info(f'Password reset link for {user.username}: {reset_link}')
-            
-            flash(f'Password reset instructions have been sent to your registered contact. '
-                  f'Reset link (for testing): {reset_link}', 'success')
+            log_action('Password reset requested', 'User', user.id)
         else:
-            # Don't reveal if user exists or not (security best practice)
-            flash('If that email or phone number is registered, you will receive reset instructions.', 'info')
+            flash('If that contact exists, reset instructions were sent.', 'info')
         
         return redirect(url_for('login'))
     
@@ -7488,6 +7604,16 @@ def fix_user_timestamps():
         print(f'✓ Fixed {len(users_without_timestamp)} users')    
     # The context ends here
 
+@app.cli.command()
+def migrate_temp_passwords():
+    """One-time: Remove plain-text temporary passwords"""
+    with app.app_context():
+        # Delete all existing temp password records
+        count = TemporaryPassword.query.delete()
+        db.session.commit()
+        print(f'✅ Deleted {count} plain-text temporary password records')
+        print('⚠️ Admins must create new temporary passwords for affected users')
+        
 # ==================== Main ====================
 if __name__ == '__main__':
     with app.app_context():

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Too Many Requests - AWMA Revenue System{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="error-template">
+                <h1 class="display-1 text-warning">429</h1>
+                <h2>Too Many Requests</h2>
+                <div class="error-details mt-4 mb-4">
+                    <p class="lead">You've made too many requests in a short period.</p>
+                    <p>Please wait a moment before trying again.</p>
+                </div>
+                <div class="error-actions">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-arrow-left"></i> Back to Login
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-home"></i> Go Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-template {
+        padding: 40px 15px;
+        text-align: center;
+    }
+    .error-details {
+        color: #6c757d;
+    }
+    .display-1 {
+        font-size: 8rem;
+        font-weight: 300;
+    }
+</style>
+{% endblock %}
